@@ -8,7 +8,7 @@ export class EncryptHelper {
      * @param {string}input 
      * @returns 
      */
-     private static _base64encode(input: string) {
+     public static base64encode(input: string) {
         let keyStr: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         let output: string = "", chr1: number, chr2: number, chr3: number, enc1: number, enc2: number, enc3: number, enc4: number, i: number = 0;
         input = this._utf8Encode(input);
@@ -93,7 +93,7 @@ export class EncryptHelper {
      * @param {string}input 解密字符串
      * @returns 
      */
-    private static _base64Decode(input: string) {
+    public static base64Decode(input: string) {
         let keyStr: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         let output: string = "";
         let chr1: number;
@@ -126,18 +126,18 @@ export class EncryptHelper {
     }
 
     /**
-     * 数据解密【请根据实际情况重写该方法】
+     * 数据解密[请根据实际情况修改解密方式]
      * @param {String} str 
      */
      public static decrypt(b64Data: string) {
-        return this._base64Decode(b64Data);
+        return this.base64Decode(b64Data);
     }
 
     /**
-     * 数据加密[请根据实际情况重写该方法]
+     * 数据加密[请根据实际情况修改加密方式]
      * @param {String} str 
      */
     public static encrypt(str: string) {
-        return this._base64encode(str);
+        return this.base64encode(str);
     }
 }

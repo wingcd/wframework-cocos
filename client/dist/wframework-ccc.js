@@ -3628,7 +3628,7 @@ define("common/EncryptHelper", ["require", "exports"], function (require, export
          * @param {string}input
          * @returns
          */
-        static _base64encode(input) {
+        static base64encode(input) {
             let keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             let output = "", chr1, chr2, chr3, enc1, enc2, enc3, enc4, i = 0;
             input = this._utf8Encode(input);
@@ -3714,7 +3714,7 @@ define("common/EncryptHelper", ["require", "exports"], function (require, export
          * @param {string}input 解密字符串
          * @returns
          */
-        static _base64Decode(input) {
+        static base64Decode(input) {
             let keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             let output = "";
             let chr1;
@@ -3746,18 +3746,18 @@ define("common/EncryptHelper", ["require", "exports"], function (require, export
             return output;
         }
         /**
-         * 数据解密【请根据实际情况重写该方法】
+         * 数据解密[请根据实际情况修改解密方式]
          * @param {String} str
          */
         static decrypt(b64Data) {
-            return this._base64Decode(b64Data);
+            return this.base64Decode(b64Data);
         }
         /**
-         * 数据加密[请根据实际情况重写该方法]
+         * 数据加密[请根据实际情况修改加密方式]
          * @param {String} str
          */
         static encrypt(str) {
-            return this._base64encode(str);
+            return this.base64encode(str);
         }
     }
     exports.EncryptHelper = EncryptHelper;
