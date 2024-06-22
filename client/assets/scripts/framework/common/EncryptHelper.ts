@@ -138,6 +138,6 @@ export class EncryptHelper {
      * @param {String} str 
      */
     public static encrypt(str: string) {
-        return str;
+        return this._base64encode(str);
     }
 }

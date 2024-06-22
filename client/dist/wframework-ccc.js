@@ -3757,7 +3757,7 @@ define("common/EncryptHelper", ["require", "exports"], function (require, export
          * @param {String} str
          */
         static encrypt(str) {
-            return str;
+            return this._base64encode(str);
         }
     }
     exports.EncryptHelper = EncryptHelper;
