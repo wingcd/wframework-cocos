@@ -1,0 +1,13 @@
+{
+  "name": "client",
+  "uuid": "03b9a8d2-6328-4daa-b261-6f7369fa47b7",
+  "creator": {
+    "version": "3.8.1"
+  },
+  "dependencies": {
+    "fairygui-cc": "^1.2.2",
+    "lru-cache": "^7.12.0",
+    "minigame-api-typings": "^3.8.4",
+    "protobufjs": "^7.3.2"
+  }
+}
