@@ -3628,7 +3628,7 @@ define("common/EncryptHelper", ["require", "exports"], function (require, export
          * @param {string}input
          * @returns
          */
-        static base64encode(input) {
+        static base64Encode(input) {
             let keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             let output = "", chr1, chr2, chr3, enc1, enc2, enc3, enc4, i = 0;
             input = this._utf8Encode(input);
@@ -3757,7 +3757,7 @@ define("common/EncryptHelper", ["require", "exports"], function (require, export
          * @param {String} str
          */
         static encrypt(str) {
-            return this.base64encode(str);
+            return this.base64Encode(str);
         }
     }
     exports.EncryptHelper = EncryptHelper;

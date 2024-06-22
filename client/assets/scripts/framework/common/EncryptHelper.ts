@@ -8,7 +8,7 @@ export class EncryptHelper {
      * @param {string}input 
      * @returns 
      */
-     public static base64encode(input: string) {
+     public static base64Encode(input: string) {
         let keyStr: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         let output: string = "", chr1: number, chr2: number, chr3: number, enc1: number, enc2: number, enc3: number, enc4: number, i: number = 0;
         input = this._utf8Encode(input);
@@ -138,6 +138,6 @@ export class EncryptHelper {
      * @param {String} str 
      */
     public static encrypt(str: string) {
-        return this.base64encode(str);
+        return this.base64Encode(str);
     }
 }
