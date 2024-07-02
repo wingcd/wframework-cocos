@@ -1,6 +1,6 @@
 import { EaseType, GRoot, GTween, Transition } from "fairygui-cc";
-import { UtilsHelper } from "../common/UtilsHelper";
 import Window from "./Window";
+import { CoroutineUtils } from "../utils/CoroutineUtils";
 
 export class TweenWindow extends Window {
     static enterTransition: Transition;
@@ -33,7 +33,7 @@ export class TweenWindow extends Window {
             await this.playTransition(this.inAnimation);
         } else {
             this.playDefaultShowAnimation();
-            await UtilsHelper.wait(this.inDuration);
+            await CoroutineUtils.wait(this.inDuration);
         }
 
         this.component.touchable = true;
@@ -45,7 +45,7 @@ export class TweenWindow extends Window {
         tr.play(() => {
             next = true;
         });
-        await UtilsHelper.until(() => next);
+        await CoroutineUtils.until(() => next);
     }
 
     private playDefaultShowAnimation() {
@@ -62,7 +62,7 @@ export class TweenWindow extends Window {
             await this.playTransitionWithHide(this.outAnimation);
         } else {
             this.playDefaultHideAnimation();
-            await UtilsHelper.wait(this.outDuration);
+            await CoroutineUtils.wait(this.outDuration);
         }
 
         this.component.touchable = true;
@@ -75,7 +75,7 @@ export class TweenWindow extends Window {
             this.hideImmediately();
             next = true;
         });
-        await UtilsHelper.until(() => next);
+        await CoroutineUtils.until(() => next);
     }
 
     private playDefaultHideAnimation() {
@@ -98,7 +98,7 @@ export class TweenWindow extends Window {
 
     protected async registTap() {
         if (!this.waitAnimation) {
-            await UtilsHelper.until(() => !this.isShowing);
+            await CoroutineUtils.until(() => !this.isShowing);
         }
         super.registTap();
     }

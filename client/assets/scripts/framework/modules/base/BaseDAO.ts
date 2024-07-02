@@ -1,4 +1,4 @@
-import { UtilsHelper } from "../../common/UtilsHelper";
+import { UtilsHelper } from "../../utils/UtilsHelper";
 import { StorageManager } from "../../common/StorageManager";
 import { Bridge } from "../Bridge";
 import { ModelMapper } from "../ModelMapper";

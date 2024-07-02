@@ -1,4 +1,4 @@
-import { UtilsHelper } from "../common/UtilsHelper";
+import { UtilsHelper } from "../utils/UtilsHelper";
 import { UIManager } from "./UIManager";
 import Skin from "./Skin";
 import { Activity } from "./Activity";

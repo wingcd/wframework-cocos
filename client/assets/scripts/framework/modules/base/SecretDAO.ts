@@ -7,7 +7,7 @@ class SecretDAO extends BaseDAO<SecretModel> {
     private _innerSave = false;
 
     get storageKey(): string {
-        return "game_data_secret";
+        return "secret";
     }
 
     constructor(model: new()=>SecretModel) {

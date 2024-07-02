@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Game, Director, director, game } from 'cc';
-import { UtilsHelper } from './UtilsHelper';
+import { UtilsHelper } from '../utils/UtilsHelper';
 const { ccclass, property } = _decorator;
 
 class TimerItem {

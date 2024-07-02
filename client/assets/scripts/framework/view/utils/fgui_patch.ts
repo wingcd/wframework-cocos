@@ -1,8 +1,10 @@
 import { Vec2 } from "cc";
 import { GObject, GComponent, GLoader, GButton, UIPackage, ScrollPane } from "fairygui-cc";
 import { I18N } from "../../plugins/config/I18N";
-import { UtilsHelper } from "../../common/UtilsHelper";
+import { UtilsHelper } from "../../utils/UtilsHelper";
 import { UIManager } from "../UIManager";
+import { StringUtils } from "../../utils/StringUtils";
+import { CoroutineUtils } from "../../utils/CoroutineUtils";
 
 // 解决fairygui层级不一致造成mask异常问题
 var addChildAt = GComponent.prototype.addChildAt;
@@ -32,6 +34,27 @@ GLoader.prototype["_hitTest"] = function (pt: Vec2, globalPt: Vec2): GObject {
         return null;
 }
 
+/**
+ * 设置延迟点击
+ * @param gObj GObject
+ * @param cd  延迟时间（秒）
+ */
+async function setClickCD (gObj: GObject, cd: number = 1) {
+    if(gObj["_ck_interval_"]) {
+        return;
+    }
+    gObj["_ck_interval_"] = true;
+    await CoroutineUtils.oneframe();
+    if(gObj.isDisposed) {
+        return;
+    }
+    delete gObj["_ck_interval_"];
+
+    gObj.touchable = false;
+    await CoroutineUtils.wait(cd);
+    gObj.touchable = true;
+}
+
 let btnClick1 = GButton.prototype["onClick_1"];
 GButton.prototype["onClick_1"] = function () {
     let that = this as GButton;
@@ -41,7 +64,7 @@ GButton.prototype["onClick_1"] = function () {
     btnClick1.call(that);
     let clickInterval = this.clickInterval || 0;
     if (clickInterval > 0) {
-        UtilsHelper.setClickCD(that, clickInterval);
+        setClickCD(that, clickInterval);
     }
 };
 
@@ -54,9 +77,9 @@ GObject.prototype["setTitle"] = function (data: number | string, ...args: string
     if (typeof data == "number") {
         let text = I18N.inst.getItem(data)?.Text || `[lang${data}]`;
         if (text) { text = text.replace(/\\n/g, '\n'); }
-        this.text = UtilsHelper.format(text, ...args);
+        this.text = StringUtils.format(text, ...args);
     } else {
-        this.text = UtilsHelper.format(data, ...args);
+        this.text = StringUtils.format(data, ...args);
     }
 };
 
@@ -64,9 +87,9 @@ GObject.prototype["setText"] = function (data: number | string, ...args: string[
     if (typeof data == "number") {
         let text = I18N.inst.getItem(data)?.Text || `[lang${data}]`;
         if (text) { text = text.replace(/\\n/g, '\n'); }
-        this.text = UtilsHelper.format(text, ...args);
+        this.text = StringUtils.format(text, ...args);
     } else {
-        this.text = UtilsHelper.format(data, ...args);
+        this.text = StringUtils.format(data, ...args);
     }
 };
 

@@ -2,7 +2,7 @@
 import { _decorator, Component, Node, isValid } from 'cc';
 import { IPoolable, PoolManager } from './PoolManager';
 import Container from '../view/Container';
-import { UtilsHelper } from './UtilsHelper';
+import { CoroutineUtils } from '../utils/CoroutineUtils';
 const { ccclass, property } = _decorator;
 
 class EventHandler implements IPoolable{
@@ -137,7 +137,7 @@ export class EventCenter {
      */
     public async emitDelay(eventName: string, delay: number, ...args: any) {
         if(delay && delay > 0) {
-            await UtilsHelper.wait(delay);
+            await CoroutineUtils.wait(delay);
         }
         this.emit(eventName, ...args);
     }

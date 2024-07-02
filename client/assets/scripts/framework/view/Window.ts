@@ -6,13 +6,13 @@ import IWindow from "./interface/IWindow";
 import Container from "./Container";
 import { Color, Event, SpriteFrame, game } from "cc";
 import { UIManager } from "./UIManager";
-import { UtilsHelper } from "../common/UtilsHelper";
 import { Timer } from "../common/Timer";
 import { GLoader } from "fairygui-cc";
 import { NATIVE } from "cc/env";
 import { CaptureHelper } from "../plugins/capture/CaptureHelper";
 import { LoaderFillType } from "fairygui-cc";
 import { SoundManager } from "../common/SoundManager";
+import { CoroutineUtils } from "../utils/CoroutineUtils";
 
 export default class Window extends Container implements IWindow, IInjectInfo{
     static EVENT_WINDOW_BEFORE_HIDE = "onwindowbeforehide";
@@ -324,7 +324,7 @@ export default class Window extends Container implements IWindow, IInjectInfo{
     }
 
     protected async registTap() {
-        await UtilsHelper.oneframe();
+        await CoroutineUtils.oneframe();
         if(this.enableTapClose) {
             let comp = this.getModualLayer();
             comp.onClick(this.modualClick, this);
@@ -339,7 +339,7 @@ export default class Window extends Container implements IWindow, IInjectInfo{
     private async modualClick(event: Event) {
         let topWindow = UIManager.instance.getTopModalWindow();
         // 等待一帧，防止点击多窗口同时关闭
-        await UtilsHelper.oneframe();
+        await CoroutineUtils.oneframe();
         if(topWindow == this) {
             UIManager.instance.hideCurrentWindow(false, null, true);
             this.clearModualClick();

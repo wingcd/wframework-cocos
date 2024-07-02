@@ -1,9 +1,10 @@
-import { UtilsHelper } from "../../common/UtilsHelper";
+import { UtilsHelper } from "../../utils/UtilsHelper";
 import { Md5 } from "../../libs/md5";
 import { Bridge } from "../Bridge";
 import { BaseController } from "./BaseController";
 import { secretDAO } from "./SecretDAO";
 import { ISecretController } from "./types";
+import { StringUtils } from "../../utils/StringUtils";
 
 export class SecretController extends BaseController implements ISecretController {
     public static SECRET_DAO_ON_SAVED = "SECRET_DAO_ON_SAVED";
@@ -41,7 +42,7 @@ export class SecretController extends BaseController implements ISecretControlle
 
         for(let i=0;i<fields.length;i++) {
             let field = fields[i];
-            let token = UtilsHelper.randomString(6);
+            let token = StringUtils.randomString(6);
             let obj = this.getTarget(target, field);
             let md5 = this.getMd5(obj, token);
             if(field == null) {

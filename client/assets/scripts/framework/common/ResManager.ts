@@ -1,5 +1,5 @@
 import { _decorator, resources, __private, assetManager, Asset, AssetManager } from 'cc';
-import { UtilsHelper } from './UtilsHelper';
+import { UtilsHelper } from '../utils/UtilsHelper';
 import { PackageVersionMap } from '../patch/ccc_patch';
 import { UIPackage } from 'fairygui-cc';
 import FGUIExt from '../view/utils/FGUIExt';

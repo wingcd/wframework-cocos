@@ -62,9 +62,9 @@ export class GameSettings {
 
         let keys = Object.keys(config);
         for (let key of keys) {
-            if (key == "isDebug") {
-                continue;
-            }
+            // if (key == "isDebug") {
+            //     continue;
+            // }
 
             this[key] = config[key];
         }

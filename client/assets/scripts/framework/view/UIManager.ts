@@ -8,7 +8,6 @@ import Window from "./Window";
 import LRU from "lru-cache";
 import { Timer } from "../common/Timer";
 import Container from "./Container";
-import { UtilsHelper } from "../common/UtilsHelper";
 import IView from "./interface/IView";
 import ViewMap from "./ViewMap";
 import { UIPackage } from "fairygui-cc";
@@ -17,7 +16,7 @@ import { WindowPriority, WindowPriorityMap } from "./WindowPriorityMap";
 import { GTween } from "fairygui-cc";
 import { PREVIEW } from "cc/env";
 import { GButton } from "fairygui-cc";
-import IContainer from "./interface/IContainer";
+import { CoroutineUtils } from "../utils/CoroutineUtils";
 
 GWindow.prototype["onTouchBegin_1"] = function(evt: Event): void {
     let that = this as GWindow;
@@ -575,7 +574,7 @@ export class UIManager {
         wnd.once(Window.EVENT_WINDOW_HIDE, () => {
             next = true;
         }, this);
-        await UtilsHelper.until(() => next);
+        await CoroutineUtils.until(() => next);
         return wnd.exitCode;
     }
 
