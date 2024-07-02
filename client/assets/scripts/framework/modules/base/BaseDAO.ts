@@ -5,6 +5,7 @@ import { ModelMapper } from "../ModelMapper";
 import { BaseModel } from "./BaseModel";
 import { IBaseDAO } from "./types";
 import { GameSettings } from "../../GameSettings";
+import { StringUtils } from "../../utils/StringUtils";
 
 export class BaseDAO<T extends BaseModel> implements IBaseDAO {
     public serverDirty: boolean = false;
@@ -114,7 +115,7 @@ export class BaseDAO<T extends BaseModel> implements IBaseDAO {
                 continue;
             }
 
-            let token = UtilsHelper.randomString(6);
+            let token = StringUtils.randomString(6);
             this._needValidKeys[key] = {
                 token,
                 md5: Bridge.secertCtrl.getMd5(this.model[key], token),

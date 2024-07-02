@@ -5,17 +5,22 @@
   /* Add your custom configuration here. */
   "compilerOptions": {
     "strict": false,
-    "target": "ES2017",
+    "target": "ES2015",
     "module": "AMD",
     "isolatedModules": false,
     "outFile": "./dist/wframework-ccc.js",  
     "allowSyntheticDefaultImports":true,
     "noEmit": false,
     "skipLibCheck": true,
+    "noLib": false,
     //是否移除注释
     "removeComments": false,
     "types": [
       "minigame-api-typings"
+    ],
+    "lib": [
+      "dom",
+      "ES2017"
     ]
-  },
+  }
 }
