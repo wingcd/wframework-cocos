@@ -1,7 +1,7 @@
-import { inject } from "../Decorators";
+import { inject } from "../../../framework/view/Decorators";
 import { GLabel } from "fairygui-cc";
 import { Transition } from "fairygui-cc";
-import View from "../View";
+import View from "../../../framework/view/View";
 import { UIPackage } from "fairygui-cc";
 import { GRoot } from "fairygui-cc";
 

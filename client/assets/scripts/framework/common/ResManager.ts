@@ -167,4 +167,12 @@ export class ResManager {
 
         return true;
     }
+
+    static getById<T extends Asset>(id:number, type: __private._types_globals__Constructor<T>) {
+        return null;
+    }
+
+    static async getByIdAsync<T extends Asset>(id:number, type: __private._types_globals__Constructor<T>) {
+        return null;
+    }
 }

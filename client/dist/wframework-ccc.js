@@ -19688,15 +19688,96 @@ var init_Pool = __esm({
   }
 });
 
+// assets/scripts/framework/common/Pools.ts
+var Pools_exports = {};
+__export(Pools_exports, {
+  CGPathPoint: () => CGPathPoint,
+  GComponentPool: () => GComponentPool,
+  GPathPointPool: () => GPathPointPool,
+  PoolableGComponent: () => PoolableGComponent,
+  PoolableNode: () => PoolableNode,
+  UINodePool: () => UINodePool
+});
+var import_cc9, CGPathPoint, GPathPointPool, PoolableGComponent, GComponentPool, PoolableNode, UINodePool;
+var init_Pools = __esm({
+  "assets/scripts/framework/common/Pools.ts"() {
+    import_cc9 = require("cc");
+    init_fairygui();
+    init_PoolManager();
+    init_ResManager();
+    CGPathPoint = class extends GPathPoint {
+      createFromPool(data) {
+      }
+      fromPool() {
+        this.x = 0;
+        this.y = 0;
+        this.control1_x = 0;
+        this.control1_y = 0;
+        this.control2_x = 0;
+        this.control2_y = 0;
+        this.curveType = 1;
+      }
+    };
+    GPathPointPool = new PoolManager(CGPathPoint);
+    PoolableGComponent = class {
+      get component() {
+        return this._component;
+      }
+      createFromPool(url) {
+        if (!this._component) {
+          this._component = UIPackage.createObjectFromURL(url);
+        }
+        return this._component;
+      }
+      fromPool() {
+        if (this._component) {
+          this._component.visible = true;
+        }
+      }
+      toPool() {
+        if (this._component) {
+          this._component.removeFromParent();
+          this._component.visible = false;
+        }
+      }
+    };
+    GComponentPool = new PoolManager(PoolableGComponent);
+    PoolableNode = class {
+      get node() {
+        return this._node;
+      }
+      createFromPool(url) {
+        if (!this._node) {
+          let prefab = ResManager.getById(url, import_cc9.Prefab);
+          this._node = (0, import_cc9.instantiate)(prefab);
+        }
+        return this._node;
+      }
+      fromPool() {
+        if (this._node) {
+          this._node.active = true;
+        }
+      }
+      toPool() {
+        if (this._node) {
+          this._node.removeFromParent();
+          this._node.active = false;
+        }
+      }
+    };
+    UINodePool = new PoolManager(PoolableNode);
+  }
+});
+
 // assets/scripts/framework/common/SoundManager.ts
 var SoundManager_exports = {};
 __export(SoundManager_exports, {
   SoundManager: () => SoundManager
 });
-var import_cc9, import_env6, _SoundManager, SoundManager;
+var import_cc10, import_env6, _SoundManager, SoundManager;
 var init_SoundManager = __esm({
   "assets/scripts/framework/common/SoundManager.ts"() {
-    import_cc9 = require("cc");
+    import_cc10 = require("cc");
     import_env6 = require("cc/env");
     init_fairygui();
     _SoundManager = class _SoundManager {
@@ -19704,11 +19785,11 @@ var init_SoundManager = __esm({
         this.audioFinder = null;
         this.musicVolume = 1;
         this.soundVolume = 1;
-        this._persistRootNode = new import_cc9.Node("SoundManager");
-        import_cc9.game.addPersistRootNode(this._persistRootNode);
+        this._persistRootNode = new import_cc10.Node("SoundManager");
+        import_cc10.game.addPersistRootNode(this._persistRootNode);
         let isPlayAudio = true;
         if (import_env6.JSB) {
-          isPlayAudio = import_cc9.native.reflection.callStaticMethod("com/cocos/game/AppActivity", "isPlayAudio", "()Z");
+          isPlayAudio = import_cc10.native.reflection.callStaticMethod("com/cocos/game/AppActivity", "isPlayAudio", "()Z");
         }
         this.isPlayAudio = isPlayAudio;
       }
@@ -19738,7 +19819,7 @@ var init_SoundManager = __esm({
        * @param loop 
        */
       async playMusic(name, loop = true) {
-        this.music = this.music || this._persistRootNode.addComponent(import_cc9.AudioSource);
+        this.music = this.music || this._persistRootNode.addComponent(import_cc10.AudioSource);
         await this.playAudio(name, loop, this.music);
       }
       /**
@@ -19750,7 +19831,7 @@ var init_SoundManager = __esm({
         if (!this.soundVolume) {
           return;
         }
-        this.sound = this.sound || this._persistRootNode.addComponent(import_cc9.AudioSource);
+        this.sound = this.sound || this._persistRootNode.addComponent(import_cc10.AudioSource);
         await this.playAudio(name, false, this.sound);
       }
       /**
@@ -19762,7 +19843,7 @@ var init_SoundManager = __esm({
         if (!this.soundVolume) {
           return;
         }
-        this.sound = this.sound || this._persistRootNode.addComponent(import_cc9.AudioSource);
+        this.sound = this.sound || this._persistRootNode.addComponent(import_cc10.AudioSource);
         this.sound.volume = this.soundVolume;
         this.sound.loop = false;
         this.sound.playOneShot(clip);
@@ -19802,10 +19883,10 @@ var StorageManager_exports = {};
 __export(StorageManager_exports, {
   StorageManager: () => StorageManager
 });
-var import_cc10, Storage, _StorageManager, StorageManager;
+var import_cc11, Storage, _StorageManager, StorageManager;
 var init_StorageManager = __esm({
   "assets/scripts/framework/common/StorageManager.ts"() {
-    import_cc10 = require("cc");
+    import_cc11 = require("cc");
     init_EncryptHelper();
     init_EventHandler();
     Storage = class {
@@ -19822,15 +19903,15 @@ var init_StorageManager = __esm({
        * @returns 获取配置文件路径
        */
       _getConfigPath() {
-        let platform = import_cc10.sys.platform;
+        let platform = import_cc11.sys.platform;
         let path4 = "";
-        if (platform === import_cc10.sys.OS.WINDOWS) {
+        if (platform === import_cc11.sys.OS.WINDOWS) {
           path4 = "src/conf";
-        } else if (platform === import_cc10.sys.OS.LINUX) {
+        } else if (platform === import_cc11.sys.OS.LINUX) {
           path4 = "./conf";
         } else {
-          if (import_cc10.sys.isNative) {
-            path4 = import_cc10.native.fileUtils.getWritablePath();
+          if (import_cc11.sys.isNative) {
+            path4 = import_cc11.native.fileUtils.getWritablePath();
             path4 = path4 + "conf";
           } else {
             path4 = "src/conf";
@@ -19840,12 +19921,12 @@ var init_StorageManager = __esm({
       }
       _loadData() {
         var content;
-        if (import_cc10.sys.isNative) {
-          if (import_cc10.native.fileUtils.isFileExist(this._path)) {
-            content = import_cc10.native.fileUtils.getStringFromFile(this._path);
+        if (import_cc11.sys.isNative) {
+          if (import_cc11.native.fileUtils.isFileExist(this._path)) {
+            content = import_cc11.native.fileUtils.getStringFromFile(this._path);
           }
         } else {
-          content = import_cc10.sys.localStorage.getItem(this._file);
+          content = import_cc11.sys.localStorage.getItem(this._file);
         }
         if (content && content.length) {
           if (content.startsWith("@")) {
@@ -19888,12 +19969,12 @@ var init_StorageManager = __esm({
         if (fireEvent) {
           StorageManager.anyItemSaved.fire(this._file);
         }
-        if (!import_cc10.sys.isNative) {
-          var ls = import_cc10.sys.localStorage;
+        if (!import_cc11.sys.isNative) {
+          var ls = import_cc11.sys.localStorage;
           ls.setItem(this._file, zipStr);
           return;
         }
-        import_cc10.native.fileUtils.writeStringToFile(this._file, zipStr);
+        import_cc11.native.fileUtils.writeStringToFile(this._file, zipStr);
         return true;
       }
     };
@@ -21386,10 +21467,10 @@ var ControllerManager_exports = {};
 __export(ControllerManager_exports, {
   ControllerManager: () => ControllerManager
 });
-var import_cc11, import_env7, ControllerManager;
+var import_cc12, import_env7, ControllerManager;
 var init_ControllerManager = __esm({
   "assets/scripts/framework/modules/ControllerManager.ts"() {
-    import_cc11 = require("cc");
+    import_cc12 = require("cc");
     import_env7 = require("cc/env");
     init_StorageManager();
     init_SecretController();
@@ -21459,12 +21540,12 @@ var init_ControllerManager = __esm({
         for (let i = 0; i < this._ctrls.length; i++) {
           this._ctrls[i].reset();
         }
-        import_cc11.director.pause();
+        import_cc12.director.pause();
         localStorage.clear();
         if (import_env7.DEBUG) {
           location.reload();
         } else {
-          import_cc11.game.end();
+          import_cc12.game.end();
           if (PlatformSDK.inMiniGame) {
             PlatformSDK.restartMiniProgram({});
           }
@@ -21572,11 +21653,11 @@ function preformanceNodeRenderer(node, childLevel = 2) {
   };
 }
 function setSorting(node, orderLayer, order) {
-  let render = node.getComponent(import_cc12.Renderer);
-  if (render && (render instanceof Image || render instanceof import_cc12.Sprite)) {
-    let sorting = node.getComponent(import_cc12.Sorting);
+  let render = node.getComponent(import_cc13.Renderer);
+  if (render && (render instanceof Image || render instanceof import_cc13.Sprite)) {
+    let sorting = node.getComponent(import_cc13.Sorting);
     if (!sorting) {
-      sorting = node.addComponent(import_cc12.Sorting);
+      sorting = node.addComponent(import_cc13.Sorting);
     }
     sorting.sortingLayer = orderLayer;
     sorting.sortingOrder = order;
@@ -21641,11 +21722,11 @@ function updateOpacity(renderData, opacity) {
   let offset = 0;
   for (let i = 0; i < vfmt.length; ++i) {
     attr = vfmt[i];
-    format = import_cc12.gfx.FormatInfos[attr.format];
+    format = import_cc13.gfx.FormatInfos[attr.format];
     if (format.hasAlpha) {
       stride = renderData.floatStride;
       if (format.size / format.count === 1) {
-        const alpha = ~~(0, import_cc12.clamp)(Math.round(opacity * 255), 0, 255);
+        const alpha = ~~(0, import_cc13.clamp)(Math.round(opacity * 255), 0, 255);
         for (let color = offset; color < vb.length; color += stride) {
           vb[color] = (vb[color] & 4294967040 | alpha) >>> 0;
         }
@@ -21658,10 +21739,10 @@ function updateOpacity(renderData, opacity) {
     offset += format.size >> 2;
   }
 }
-var import_cc12, Stage, overlay;
+var import_cc13, Stage, overlay;
 var init_ccc_pref_renderer = __esm({
   "assets/scripts/framework/patch/ccc_pref_renderer.ts"() {
-    import_cc12 = require("cc");
+    import_cc13 = require("cc");
     init_fairygui();
     init_fairygui();
     Stage = /* @__PURE__ */ ((Stage2) => {
@@ -21675,7 +21756,7 @@ var init_ccc_pref_renderer = __esm({
       return Stage2;
     })(Stage || {});
     overlay = [];
-    import_cc12.UI.prototype.walk = function(node, level = 0) {
+    import_cc13.UI.prototype.walk = function(node, level = 0) {
       if (!node.activeInHierarchy || !isVisibility(node)) {
         return;
       }
@@ -21687,7 +21768,7 @@ var init_ccc_pref_renderer = __esm({
       const selfOpacity = render && render.color ? render.color.a / 255 : 1;
       this._pOpacity = opacity *= selfOpacity * uiProps.localOpacity;
       uiProps.setOpacity(opacity);
-      if (!import_cc12.math.approx(opacity, 0, import_cc12.EPSILON)) {
+      if (!import_cc13.math.approx(opacity, 0, import_cc13.EPSILON)) {
         if (uiProps.colorDirty) {
           this._opacityDirty++;
         }
@@ -21762,10 +21843,10 @@ var init_ccc_pref_renderer = __esm({
       this._pOpacity = parentOpacity;
       if (render && render.enabledInHierarchy) {
         render.postUpdateAssembler(this);
-        if ((render.stencilStage === 2 /* ENTER_LEVEL */ || render.stencilStage === 6 /* ENTER_LEVEL_INVERTED */) && import_cc12.StencilManager.sharedManager.getMaskStackSize() > 0) {
+        if ((render.stencilStage === 2 /* ENTER_LEVEL */ || render.stencilStage === 6 /* ENTER_LEVEL_INVERTED */) && import_cc13.StencilManager.sharedManager.getMaskStackSize() > 0) {
           this.autoMergeBatches(this._currComponent);
           this.resetRenderStates();
-          import_cc12.StencilManager.sharedManager.exitMask();
+          import_cc13.StencilManager.sharedManager.exitMask();
         }
       }
       level += 1;
@@ -21899,10 +21980,10 @@ var CanvasPool_exports = {};
 __export(CanvasPool_exports, {
   CanvasPool: () => CanvasPool
 });
-var import_cc13, _canvasPool, CanvasPool;
+var import_cc14, _canvasPool, CanvasPool;
 var init_CanvasPool = __esm({
   "assets/scripts/framework/plugins/capture/CanvasPool.ts"() {
-    import_cc13 = require("cc");
+    import_cc14 = require("cc");
     CanvasPool = class _CanvasPool {
       constructor() {
         this.pool = [];
@@ -21916,7 +21997,7 @@ var init_CanvasPool = __esm({
       get() {
         let data = this.pool.pop();
         if (!data) {
-          const canvas = import_cc13.cclegacy._global.window.document.createElement("canvas");
+          const canvas = import_cc14.cclegacy._global.window.document.createElement("canvas");
           const context = canvas.getContext("2d");
           data = {
             canvas,
@@ -21926,7 +22007,7 @@ var init_CanvasPool = __esm({
         return data;
       }
       put(canvas) {
-        if (this.pool.length >= import_cc13.macro.MAX_LABEL_CANVAS_POOL_SIZE) {
+        if (this.pool.length >= import_cc14.macro.MAX_LABEL_CANVAS_POOL_SIZE) {
           return;
         }
         this.pool.push(canvas);
@@ -21940,13 +22021,13 @@ var CaptureHelper_exports = {};
 __export(CaptureHelper_exports, {
   CaptureHelper: () => CaptureHelper
 });
-var import_cc14, canvasPool, versions, mVersion, FLIP_Y_VERSION, CaptureHelper;
+var import_cc15, canvasPool, versions, mVersion, FLIP_Y_VERSION, CaptureHelper;
 var init_CaptureHelper = __esm({
   "assets/scripts/framework/plugins/capture/CaptureHelper.ts"() {
-    import_cc14 = require("cc");
+    import_cc15 = require("cc");
     init_CanvasPool();
     canvasPool = CanvasPool;
-    versions = import_cc14.VERSION.split(".");
+    versions = import_cc15.VERSION.split(".");
     mVersion = parseInt(versions[0]);
     FLIP_Y_VERSION = mVersion != 3 || mVersion == 3 && parseInt(versions[1]) != 6;
     CaptureHelper = class {
@@ -22051,26 +22132,26 @@ var init_CaptureHelper = __esm({
        * @returns 返回数组
        */
       static readTexturePixels(src, rect, buffer) {
-        rect = rect || new import_cc14.Rect(0, 0, src.width, src.height);
+        rect = rect || new import_cc15.Rect(0, 0, src.width, src.height);
         rect.x = Math.floor(rect.x);
         rect.y = Math.floor(rect.y);
         rect.width = Math.floor(rect.width);
         rect.height = Math.floor(rect.height);
         const gfxTexture = src.getGFXTexture();
         if (!gfxTexture) {
-          (0, import_cc14.errorID)(7606);
+          (0, import_cc15.errorID)(7606);
           return null;
         }
         const needSize = 4 * rect.width * rect.height;
         if (buffer === void 0) {
           buffer = new Uint8Array(needSize);
         } else if (buffer.length < needSize) {
-          (0, import_cc14.errorID)(7607, needSize);
+          (0, import_cc15.errorID)(7607, needSize);
           return null;
         }
         const bufferViews = [];
         const regions = [];
-        const region0 = new import_cc14.gfx.BufferTextureCopy();
+        const region0 = new import_cc15.gfx.BufferTextureCopy();
         region0.texOffset.x = rect.x;
         region0.texOffset.y = rect.y;
         region0.texExtent.width = rect.width;
@@ -22106,23 +22187,23 @@ var init_CaptureHelper = __esm({
        * @returns 纹理
        */
       static async capture(target, cam, rect, scale, pos, useRawCamera, flipY = true) {
-        let node = new import_cc14.Node("CaptureCamera");
+        let node = new import_cc15.Node("CaptureCamera");
         cam.node.parent.addChild(node);
         let wpos = cam.node.worldPosition;
         let camera;
         if (useRawCamera) {
           camera = cam;
         } else {
-          let layer = 1 << import_cc14.Layers.nameToLayer("CAPTURE");
+          let layer = 1 << import_cc15.Layers.nameToLayer("CAPTURE");
           if (pos) {
             node.setWorldPosition(pos.x, pos.y, wpos.z);
           } else {
             node.setWorldPosition(wpos.x, wpos.y, wpos.z);
           }
-          camera = node.addComponent(import_cc14.Camera);
+          camera = node.addComponent(import_cc15.Camera);
           camera.node.setWorldScale(cam.node.getWorldScale());
-          camera.clearFlags = import_cc14.gfx.ClearFlagBit.ALL;
-          camera.clearColor = new import_cc14.Color(0, 0, 0, 0);
+          camera.clearFlags = import_cc15.gfx.ClearFlagBit.ALL;
+          camera.clearColor = new import_cc15.Color(0, 0, 0, 0);
           camera.clearDepth = cam.clearDepth;
           camera.clearStencil = cam.clearStencil;
           camera.projection = cam.projection;
@@ -22141,22 +22222,22 @@ var init_CaptureHelper = __esm({
           camera.visibility = layer;
           this.setChildLayer(target, layer);
           await new Promise((resolve) => {
-            import_cc14.director.once(import_cc14.Director.EVENT_BEGIN_FRAME, () => {
+            import_cc15.director.once(import_cc15.Director.EVENT_BEGIN_FRAME, () => {
               resolve(0);
             });
           });
         }
         let camScale;
         if (flipY) {
-          camScale = (0, import_cc14.v3)(camera.node.scale);
+          camScale = (0, import_cc15.v3)(camera.node.scale);
           camera.node.setScale(camScale.x, -camScale.y, camScale.z);
         }
         scale = scale || 1;
-        let rt = new import_cc14.RenderTexture();
-        let size = import_cc14.view.getVisibleSize();
+        let rt = new import_cc15.RenderTexture();
+        let size = import_cc15.view.getVisibleSize();
         rt.reset({ width: size.width * scale, height: size.height * scale });
         camera.targetTexture = rt;
-        import_cc14.director.root.frameMove(0);
+        import_cc15.director.root.frameMove(0);
         let clear = () => {
           node.destroy();
           camera.targetTexture = null;
@@ -22172,11 +22253,11 @@ var init_CaptureHelper = __esm({
             rect.y = size.height - rect.y - rect.height;
           }
           rect.set(rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
-          let tex2d = new import_cc14.Texture2D();
+          let tex2d = new import_cc15.Texture2D();
           tex2d.reset({
             width: rect.width,
             height: rect.height,
-            format: import_cc14.Texture2D.PixelFormat.RGBA8888,
+            format: import_cc15.Texture2D.PixelFormat.RGBA8888,
             mipmapLevel: 0
           });
           tex2d.uploadData(rt.readPixels(rect.x, rect.y, rect.width, rect.height));
@@ -22197,7 +22278,7 @@ var init_CaptureHelper = __esm({
       static async captureUI2Texture(target, cam, opts) {
         opts = opts || {};
         opts.useRawCamera = opts.useRawCamera ?? true;
-        let utr = target.getComponent(import_cc14.UITransform);
+        let utr = target.getComponent(import_cc15.UITransform);
         let rect = (opts == null ? void 0 : opts.rect) ?? utr.getBoundingBox();
         let width = rect.width;
         let height = rect.height;
@@ -22218,25 +22299,25 @@ var init_CaptureHelper = __esm({
             width = height * opts.aspect;
           }
         }
-        let pos = utr.convertToWorldSpaceAR((0, import_cc14.v3)(-width * utr.anchorX, -height * utr.anchorY, 0));
+        let pos = utr.convertToWorldSpaceAR((0, import_cc15.v3)(-width * utr.anchorX, -height * utr.anchorY, 0));
         let snapPos = null;
         if (!opts.useRawCamera) {
           rect.x = 0;
           rect.y = 0;
-          let size = import_cc14.view.getVisibleSize();
+          let size = import_cc15.view.getVisibleSize();
           pos.x += size.width * 0.5;
           pos.y += size.height * 0.5;
           let ap = size.width / size.height;
-          let policy = import_cc14.view.getResolutionPolicy();
+          let policy = import_cc15.view.getResolutionPolicy();
           let strategy = policy["_contentStrategy"];
           if (strategy && strategy.name == "ShowAll" && ap < 1) {
-            if (import_cc14.sys.platform == import_cc14.sys.Platform.DESKTOP_BROWSER) {
-              pos.y += size.height * (1 - import_cc14.screen.devicePixelRatio) * 0.5;
+            if (import_cc15.sys.platform == import_cc15.sys.Platform.DESKTOP_BROWSER) {
+              pos.y += size.height * (1 - import_cc15.screen.devicePixelRatio) * 0.5;
             } else {
-              pos.y += (import_cc14.view.getViewportRect().height - size.height) * 0.5;
+              pos.y += (import_cc15.view.getViewportRect().height - size.height) * 0.5;
             }
           }
-          snapPos = (0, import_cc14.v2)(pos.x, pos.y);
+          snapPos = (0, import_cc15.v2)(pos.x, pos.y);
         } else {
           rect.x = pos.x;
           rect.y = pos.y;
@@ -22254,22 +22335,22 @@ var init_CaptureHelper = __esm({
        */
       static async textureToImage(texture, type = "png", trimHeader, quality = 1, flipY = null) {
         let arrayBuffer = await this.readTexturePixels(texture);
-        return await this.toBase64Image(arrayBuffer, new import_cc14.Size(texture.width, texture.height), type, trimHeader, quality, flipY);
+        return await this.toBase64Image(arrayBuffer, new import_cc15.Size(texture.width, texture.height), type, trimHeader, quality, flipY);
       }
       /**
        * 按实际屏幕分辨率，全屏截图，此方法直接截取游戏canvas画面[不支持原生平台]
        * @returns 纹理
        */
       static async captureFullScreen() {
-        let tex2d = new import_cc14.Texture2D();
+        let tex2d = new import_cc15.Texture2D();
         tex2d.reset({
-          width: import_cc14.game.canvas.width,
-          height: import_cc14.game.canvas.height,
-          format: import_cc14.Texture2D.PixelFormat.RGBA8888,
+          width: import_cc15.game.canvas.width,
+          height: import_cc15.game.canvas.height,
+          format: import_cc15.Texture2D.PixelFormat.RGBA8888,
           mipmapLevel: 0
         });
-        import_cc14.director.root.frameMove(0);
-        tex2d.uploadData(import_cc14.game.canvas);
+        import_cc15.director.root.frameMove(0);
+        tex2d.uploadData(import_cc15.game.canvas);
         return tex2d;
       }
       /**
@@ -22278,8 +22359,8 @@ var init_CaptureHelper = __esm({
        * @returns 返回指定格式的base64编码图片
        */
       static async captureFullScreenToImage(trimHeader, quality = 1) {
-        import_cc14.director.root.frameMove(0);
-        var base64 = await this.canvasEncodeTexture(import_cc14.game.canvas, "jpeg", quality);
+        import_cc15.director.root.frameMove(0);
+        var base64 = await this.canvasEncodeTexture(import_cc15.game.canvas, "jpeg", quality);
         if (trimHeader) {
           let index = base64.indexOf(",");
           if (index != -1) {
@@ -22324,7 +22405,7 @@ var init_CaptureHelper = __esm({
        * @returns 
        */
       static downloadImage(base64, type = "png", name) {
-        if (!import_cc14.sys.isBrowser) {
+        if (!import_cc15.sys.isBrowser) {
           return;
         }
         var byteCharacters = atob(
@@ -22357,10 +22438,10 @@ __export(DataAccess_exports, {
   DataItem: () => DataItem,
   DataTable: () => DataTable
 });
-var import_cc15, DataAccess, DataItem, DataTable;
+var import_cc16, DataAccess, DataItem, DataTable;
 var init_DataAccess = __esm({
   "assets/scripts/framework/plugins/config/DataAccess.ts"() {
-    import_cc15 = require("cc");
+    import_cc16 = require("cc");
     DataAccess = class {
       static initial(dataDir, loadHandle, fileNameGenerateHandle) {
         this.dataDir = dataDir;
@@ -22426,7 +22507,7 @@ var init_DataAccess = __esm({
         if (DataAccess.loader != null) {
           return DataAccess.loader(datafile);
         }
-        this.source = import_cc15.resources.get(datafile, import_cc15.BufferAsset);
+        this.source = import_cc16.resources.get(datafile, import_cc16.BufferAsset);
         if (this.source) {
           return new Uint8Array(this.source.buffer());
         }
@@ -28444,11 +28525,11 @@ var LongTouchGesture_exports = {};
 __export(LongTouchGesture_exports, {
   default: () => LongTouchGesture
 });
-var import_cc16, _LongTouchGesture, LongTouchGesture;
+var import_cc17, _LongTouchGesture, LongTouchGesture;
 var init_LongTouchGesture = __esm({
   "assets/scripts/framework/plugins/gesture/LongTouchGesture.ts"() {
     init_Gesture();
-    import_cc16 = require("cc");
+    import_cc17 = require("cc");
     init_fairygui();
     init_Timer();
     _LongTouchGesture = class _LongTouchGesture extends Gesture {
@@ -28466,7 +28547,7 @@ var init_LongTouchGesture = __esm({
          * 是否进行实时移动检查
          */
         this.checkEndOnMoving = true;
-        this._touchPos = new import_cc16.Vec2();
+        this._touchPos = new import_cc17.Vec2();
         this._started = false;
         this._paused = false;
         this._enabled = false;
@@ -28495,7 +28576,7 @@ var init_LongTouchGesture = __esm({
         this.enable(false);
       }
       checkTouchValid(evt) {
-        return this.minDistance <= 0 || import_cc16.Vec2.distance(evt.pos, this._touchPos) <= this.minDistance;
+        return this.minDistance <= 0 || import_cc17.Vec2.distance(evt.pos, this._touchPos) <= this.minDistance;
       }
       /**
        * 多段触摸时，时间重置
@@ -28580,11 +28661,11 @@ var PinchGesture_exports = {};
 __export(PinchGesture_exports, {
   default: () => PinchGesture
 });
-var import_cc17, _PinchGesture, PinchGesture;
+var import_cc18, _PinchGesture, PinchGesture;
 var init_PinchGesture = __esm({
   "assets/scripts/framework/plugins/gesture/PinchGesture.ts"() {
     init_Gesture();
-    import_cc17 = require("cc");
+    import_cc18 = require("cc");
     init_fairygui();
     _PinchGesture = class _PinchGesture extends Gesture {
       constructor() {
@@ -28600,7 +28681,7 @@ var init_PinchGesture = __esm({
         /**
          * 中心位置
          */
-        this.center = new import_cc17.Vec2();
+        this.center = new import_cc18.Vec2();
         this._startDistance = 0;
         this._lastScale = 0;
         this._started = false;
@@ -28634,7 +28715,7 @@ var init_PinchGesture = __esm({
             evt.captureTouch();
             let pt1 = GRoot.inst.getTouchPosition(touchIds[0]);
             let pt2 = GRoot.inst.getTouchPosition(touchIds[1]);
-            let dist = import_cc17.Vec2.distance(pt1, pt2);
+            let dist = import_cc18.Vec2.distance(pt1, pt2);
             this._startDistance = Math.max(1, dist);
             GRoot.inst.on(Event.TOUCH_MOVE, this.__touchMove, this);
             GRoot.inst.on(Event.TOUCH_END, this.__touchEnd, this);
@@ -28652,7 +28733,7 @@ var init_PinchGesture = __esm({
         }
         let pt1 = GRoot.inst.getTouchPosition(touchIds[0]);
         let pt2 = GRoot.inst.getTouchPosition(touchIds[1]);
-        let dist = import_cc17.Vec2.distance(pt1, pt2);
+        let dist = import_cc18.Vec2.distance(pt1, pt2);
         this.center.set(pt1);
         this.center.add(pt2).multiplyScalar(0.5);
         if (!this._started && Math.abs(dist - this._startDistance) > this.touchDragSensitivity) {
@@ -28706,10 +28787,10 @@ var SwipeGesture_exports = {};
 __export(SwipeGesture_exports, {
   default: () => SwipeGesture
 });
-var import_cc18, _SwipeGesture, SwipeGesture, s_vec22;
+var import_cc19, _SwipeGesture, SwipeGesture, s_vec22;
 var init_SwipeGesture = __esm({
   "assets/scripts/framework/plugins/gesture/SwipeGesture.ts"() {
-    import_cc18 = require("cc");
+    import_cc19 = require("cc");
     init_fairygui();
     init_Pool();
     init_Timer();
@@ -28720,15 +28801,15 @@ var init_SwipeGesture = __esm({
         /// <summary>
         /// 手指离开时的加速度
         /// </summary>
-        this.velocity = new import_cc18.Vec2(0, 0);
+        this.velocity = new import_cc19.Vec2(0, 0);
         /// <summary>
         /// 你可以在onBegin事件中设置这个值，那个后续将根据手指移动的距离修改这个值。如果不设置，那position初始为(0,0)，反映手指扫过的距离。
         /// </summary>
-        this.position = new import_cc18.Vec2(0, 0);
+        this.position = new import_cc19.Vec2(0, 0);
         /// <summary>
         /// 移动的变化值
         /// </summary>
-        this.delta = new import_cc18.Vec2(0, 0);
+        this.delta = new import_cc19.Vec2(0, 0);
         /// <summary>
         /// The min distance to fire onAction event
         /// 派发onAction事件的最小距离。如果手指扫过的距离少于此值，onAction不会触发（但onEnd仍然会派发）
@@ -28739,9 +28820,9 @@ var init_SwipeGesture = __esm({
         /// </summary>
         this.snapping = true;
         this._enabled = false;
-        this._startPoint = new import_cc18.Vec2(0, 0);
-        this._lastPoint = new import_cc18.Vec2(0, 0);
-        this._lastPoint2 = new import_cc18.Vec2(0, 0);
+        this._startPoint = new import_cc19.Vec2(0, 0);
+        this._lastPoint = new import_cc19.Vec2(0, 0);
+        this._lastPoint2 = new import_cc19.Vec2(0, 0);
         this._time = 0;
         this._deltaTime = 0;
         this._started = false;
@@ -28817,7 +28898,7 @@ var init_SwipeGesture = __esm({
         }
         s_vec22.set(this.delta);
         s_vec22.divide2f(deltaTime, deltaTime);
-        import_cc18.Vec2.lerp(this.velocity, this.velocity, s_vec22, deltaTime * 10);
+        import_cc19.Vec2.lerp(this.velocity, this.velocity, s_vec22, deltaTime * 10);
         this._time = Timer.inst.unscaleTimer;
         this.position.add(this.delta);
         this._lastPoint2.set(this._lastPoint);
@@ -28883,7 +28964,7 @@ var init_SwipeGesture = __esm({
     /// </summary>
     _SwipeGesture.SWIPE_ACTION = "onSwipeAction";
     SwipeGesture = _SwipeGesture;
-    s_vec22 = new import_cc18.Vec2(0, 0);
+    s_vec22 = new import_cc19.Vec2(0, 0);
   }
 });
 
@@ -29254,10 +29335,10 @@ __export(RedDotManager_exports, {
   RedDotItemInfo: () => RedDotItemInfo,
   RedDotManager: () => RedDotManager
 });
-var import_cc19, RedDotItemInfo, compPool, RedDotManager;
+var import_cc20, RedDotItemInfo, compPool, RedDotManager;
 var init_RedDotManager = __esm({
   "assets/scripts/framework/plugins/reddot/RedDotManager.ts"() {
-    import_cc19 = require("cc");
+    import_cc20 = require("cc");
     init_fairygui();
     init_RedDotTree();
     init_Timer();
@@ -29272,7 +29353,7 @@ var init_RedDotManager = __esm({
          */
         this.selectedIndex = -1;
         // 相对位置(0-1)
-        this.pos = (0, import_cc19.v2)();
+        this.pos = (0, import_cc20.v2)();
       }
     };
     compPool = /* @__PURE__ */ new Map();
@@ -29417,7 +29498,7 @@ var init_RedDotManager = __esm({
             y -= info.holder.height * info.holder.pivotY;
           }
           Timer.inst.callLater(() => {
-            let pos = info.holder.localToGlobal(x, y, new import_cc19.Vec2());
+            let pos = info.holder.localToGlobal(x, y, new import_cc20.Vec2());
             pos = info.realDocker.globalToLocal(pos.x, pos.y, pos);
             reddot.setPosition(pos.x, pos.y);
           }, this);
@@ -29566,23 +29647,23 @@ var SpaceUtils_exports = {};
 __export(SpaceUtils_exports, {
   SpaceUtils: () => SpaceUtils
 });
-var import_cc20, s_vec23, s_vec32, s_vec3_22, SpaceUtils;
+var import_cc21, s_vec23, s_vec32, s_vec3_22, SpaceUtils;
 var init_SpaceUtils = __esm({
   "assets/scripts/framework/utils/SpaceUtils.ts"() {
-    import_cc20 = require("cc");
+    import_cc21 = require("cc");
     init_Pool();
     init_fairygui();
-    s_vec23 = new import_cc20.Vec2();
-    s_vec32 = new import_cc20.Vec3();
-    s_vec3_22 = new import_cc20.Vec3();
+    s_vec23 = new import_cc21.Vec2();
+    s_vec32 = new import_cc21.Vec3();
+    s_vec3_22 = new import_cc21.Vec3();
     SpaceUtils = class {
       static convertTouchLocationToNodeSpaceAR(pos, node, outPos, nodeCamera) {
-        var camera = nodeCamera ? nodeCamera.camera : import_cc20.director.root.batcher2D.getFirstRenderCamera(node);
+        var camera = nodeCamera ? nodeCamera.camera : import_cc21.director.root.batcher2D.getFirstRenderCamera(node);
         s_vec3_22.set(pos.x, pos.y, 0);
         camera.screenToWorld(s_vec32, s_vec3_22);
         node._uiProps.uiTransformComp.convertToNodeSpaceAR(s_vec32, s_vec3_22);
         if (!outPos) {
-          outPos = new import_cc20.Vec3();
+          outPos = new import_cc21.Vec3();
         }
         outPos.set(s_vec3_22);
         return outPos;
@@ -29593,7 +29674,7 @@ var init_SpaceUtils = __esm({
         let vec2 = Vec2Pool.get(vec3.x, vec3.y);
         this.cnode2groot(vec2, node, vec2);
         if (!outPos) {
-          outPos = new import_cc20.Vec2();
+          outPos = new import_cc21.Vec2();
         }
         outPos.set(vec2);
         Vec3Pool.put(vec3);
@@ -29602,7 +29683,7 @@ var init_SpaceUtils = __esm({
       }
       static convertToNodeSpace(pos, sourceNode, targetNode, outPos) {
         if (!outPos) {
-          outPos = new import_cc20.Vec3();
+          outPos = new import_cc21.Vec3();
         }
         outPos.set(s_vec32);
         sourceNode.updateWorldTransform();
@@ -29614,7 +29695,7 @@ var init_SpaceUtils = __esm({
       static grootYFlip(gpos, outpos) {
         s_vec32.set(gpos.x, GRoot.inst.height - gpos.y, 0);
         if (!outpos) {
-          outpos = new import_cc20.Vec2();
+          outpos = new import_cc21.Vec2();
         }
         outpos.set(s_vec32.x, s_vec32.y);
         return outpos;
@@ -29622,21 +29703,21 @@ var init_SpaceUtils = __esm({
       static groot2Screen(gpos, outpos) {
         outpos = this.grootYFlip(gpos, outpos);
         s_vec32.set(outpos.x, outpos.y, 0);
-        var camera = import_cc20.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
+        var camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
         camera.worldToScreen(s_vec32, s_vec32);
         outpos.set(s_vec32.x, s_vec32.y);
         return outpos;
       }
       static groot2cnode(gpos, node, outpos) {
-        var camera = import_cc20.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
+        var camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
         s_vec32.set(gpos.x, GRoot.inst.height - gpos.y, 0);
         camera.worldToScreen(s_vec3_22, s_vec32);
-        camera = import_cc20.director.root.batcher2D.getFirstRenderCamera(node);
+        camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(node);
         camera.screenToWorld(s_vec32, s_vec3_22);
         node.updateWorldTransform();
-        node.getComponent(import_cc20.UITransform).convertToNodeSpaceAR(s_vec32, s_vec3_22);
+        node.getComponent(import_cc21.UITransform).convertToNodeSpaceAR(s_vec32, s_vec3_22);
         if (!outpos) {
-          outpos = new import_cc20.Vec2();
+          outpos = new import_cc21.Vec2();
         }
         outpos.set(s_vec3_22.x, s_vec3_22.y);
         return outpos;
@@ -29652,22 +29733,22 @@ var init_SpaceUtils = __esm({
         camera.convertToUINode(s_vec32, GRoot.inst.node, s_vec32);
         s_vec32.y = -s_vec32.y;
         if (!outpos) {
-          outpos = new import_cc20.Vec2();
+          outpos = new import_cc21.Vec2();
         }
         outpos.set(s_vec32.x, s_vec32.y);
         return outpos;
       }
       static cnode2groot(npos, node, outpos) {
-        var camera = import_cc20.director.root.batcher2D.getFirstRenderCamera(node);
+        var camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(node);
         s_vec3_22.set(npos.x, npos.y);
         node.updateWorldTransform();
-        node.getComponent(import_cc20.UITransform).convertToWorldSpaceAR(s_vec3_22, s_vec32);
+        node.getComponent(import_cc21.UITransform).convertToWorldSpaceAR(s_vec3_22, s_vec32);
         camera.worldToScreen(s_vec3_22, s_vec32);
-        camera = import_cc20.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
+        camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
         camera.screenToWorld(s_vec32, s_vec3_22);
         s_vec23.set(s_vec32.x, GRoot.inst.height - s_vec32.y);
         if (!outpos) {
-          outpos = new import_cc20.Vec2();
+          outpos = new import_cc21.Vec2();
         }
         outpos.set(s_vec23);
         return outpos;
@@ -29697,7 +29778,7 @@ var init_SpaceUtils = __esm({
         let x = go.pivotAsAnchor ? go.width * (0.5 - go.pivotX) : go.width * 0.5;
         let y = go.pivotAsAnchor ? go.height * (0.5 - go.pivotY) : go.height * 0.5;
         if (!outPos) {
-          outPos = new import_cc20.Vec2();
+          outPos = new import_cc21.Vec2();
         }
         outPos.set(x, y);
         return outPos;
@@ -29938,13 +30019,13 @@ __export(ViewHelper_exports, {
   ELayer: () => ELayer,
   ViewHelper: () => ViewHelper
 });
-var import_cc21, ELayer, _ViewHelper, ViewHelper;
+var import_cc22, ELayer, _ViewHelper, ViewHelper;
 var init_ViewHelper = __esm({
   "assets/scripts/framework/view/ViewHelper.ts"() {
     init_fairygui();
     init_Skin();
     init_ViewMap();
-    import_cc21 = require("cc");
+    import_cc22 = require("cc");
     ELayer = /* @__PURE__ */ ((ELayer2) => {
       ELayer2[ELayer2["Background"] = 0] = "Background";
       ELayer2[ELayer2["UI"] = 1] = "UI";
@@ -29984,7 +30065,7 @@ var init_ViewHelper = __esm({
           return;
         }
         this._initialed = true;
-        let dsize = import_cc21.view.getDesignResolutionSize();
+        let dsize = import_cc22.view.getDesignResolutionSize();
         let screenRatio = screen.width / screen.height;
         let designRatio = dsize.x / dsize.y;
         if (screenRatio > designRatio) {
@@ -30160,14 +30241,14 @@ var Window_exports = {};
 __export(Window_exports, {
   default: () => Window2
 });
-var import_cc22, import_env9, _Window, Window2;
+var import_cc23, import_env9, _Window, Window2;
 var init_Window = __esm({
   "assets/scripts/framework/view/Window.ts"() {
     init_fairygui();
     init_Skin();
     init_SkinHelper();
     init_Container();
-    import_cc22 = require("cc");
+    import_cc23 = require("cc");
     init_UIManager();
     init_Timer();
     init_fairygui();
@@ -30199,7 +30280,7 @@ var init_Window = __esm({
         this._enableUpdate = false;
         this._exitCode = 0;
         this._isShowing = false;
-        this._modalLayerColor = new import_cc22.Color();
+        this._modalLayerColor = new import_cc23.Color();
         /**
          * 此模式下，窗口背景将会被截图，用于提高性能(ios下有问题，先关闭)
          */
@@ -30297,7 +30378,7 @@ var init_Window = __esm({
       async enterPreformance() {
         if (!import_env9.NATIVE && this.preformanceMode && !this.fullMode) {
           let bg = await CaptureHelper.captureFullScreen();
-          let sf = new import_cc22.SpriteFrame();
+          let sf = new import_cc23.SpriteFrame();
           sf.texture = bg;
           bg.addRef();
           let image = new GLoader();
@@ -30336,7 +30417,7 @@ var init_Window = __esm({
       }
       setModalLayerColor(color) {
         GRoot.inst.modalLayer.color.set(color);
-        GRoot.inst.modalLayer.drawRect(0, import_cc22.Color.TRANSPARENT, color);
+        GRoot.inst.modalLayer.drawRect(0, import_cc23.Color.TRANSPARENT, color);
       }
       overlayBy(otherWindow) {
         if (this.hideOnOverlay) {
@@ -30510,7 +30591,7 @@ var init_Window = __esm({
         }
       }
       update() {
-        let dt = import_cc22.game.deltaTime * 1e3;
+        let dt = import_cc23.game.deltaTime * 1e3;
         this._secondTicker += dt;
         let seconds = false;
         if (this._secondTicker >= 1e3) {
@@ -31410,13 +31491,13 @@ var UIManager_exports = {};
 __export(UIManager_exports, {
   UIManager: () => UIManager
 });
-var import_cc23, import_lru_cache, import_env10, _UIManager, UIManager;
+var import_cc24, import_lru_cache, import_env10, _UIManager, UIManager;
 var init_UIManager = __esm({
   "assets/scripts/framework/view/UIManager.ts"() {
     init_ViewHelper();
     init_Skin();
     init_fairygui();
-    import_cc23 = require("cc");
+    import_cc24 = require("cc");
     init_Window();
     import_lru_cache = __toESM(require_lru_cache());
     init_Timer();
@@ -31471,10 +31552,10 @@ var init_UIManager = __esm({
         this.initializeLRU();
       }
       initializeCanvasNode() {
-        var cnode = import_cc23.director.getScene().getChildByName("Canvas");
-        import_cc23.game.addPersistRootNode(cnode);
+        var cnode = import_cc24.director.getScene().getChildByName("Canvas");
+        import_cc24.game.addPersistRootNode(cnode);
         this._canvasNode = cnode;
-        this._camera = this._canvasNode.getComponent(import_cc23.Canvas).cameraComponent;
+        this._camera = this._canvasNode.getComponent(import_cc24.Canvas).cameraComponent;
         GRoot.create();
       }
       initializeViewHelper(opts) {
@@ -31557,13 +31638,13 @@ var init_UIManager = __esm({
           */
       showPopup(view5, pos = null, anchorName = null, target = null, dir = PopupDirection.Auto, horAutoAdapt = true) {
         let gobj = view5 instanceof GComponent ? view5 : view5.component;
-        let targetPos = pos || new import_cc23.Vec2(0, 0);
+        let targetPos = pos || new import_cc24.Vec2(0, 0);
         if (target) {
           target.localToGlobal(targetPos.x, targetPos.y, targetPos);
           GRoot.inst.globalToLocal(targetPos.x, targetPos.y, targetPos);
         }
         let anchor = anchorName ? gobj.getChild(anchorName) : null;
-        let rawPos = anchor ? anchor.data || new import_cc23.Vec4(anchor.x, anchor.y, anchor.x / gobj.width, anchor.y / gobj.height) : new import_cc23.Vec4(0, 0, gobj.pivotX, gobj.pivotY);
+        let rawPos = anchor ? anchor.data || new import_cc24.Vec4(anchor.x, anchor.y, anchor.x / gobj.width, anchor.y / gobj.height) : new import_cc24.Vec4(0, 0, gobj.pivotX, gobj.pivotY);
         let offsetX = 0;
         if (horAutoAdapt) {
           let realWidth = gobj.width * gobj.scaleX;
@@ -31578,7 +31659,7 @@ var init_UIManager = __esm({
         }
         GRoot.inst.showPopup(gobj, target, dir);
         gobj.setPosition(targetPos.x - offsetX, targetPos.y);
-        gobj.node.on(import_cc23.Node.EventType.ACTIVE_IN_HIERARCHY_CHANGED, () => {
+        gobj.node.on(import_cc24.Node.EventType.ACTIVE_IN_HIERARCHY_CHANGED, () => {
           if (!gobj.node.activeInHierarchy) {
             let view6 = gobj["_docker_"];
             if (view6) {
@@ -31817,7 +31898,7 @@ var init_UIManager = __esm({
       }
       _setModalLayerColor(color) {
         GRoot.inst.modalLayer.color.set(color);
-        GRoot.inst.modalLayer.drawRect(0, import_cc23.Color.TRANSPARENT, color);
+        GRoot.inst.modalLayer.drawRect(0, import_cc24.Color.TRANSPARENT, color);
       }
       _setModalLayerAlpha(alpha) {
         let color = GRoot.inst.modalLayer.color;
@@ -32048,7 +32129,7 @@ var Activity_exports = {};
 __export(Activity_exports, {
   Activity: () => Activity
 });
-var import_cc24, NAME_REGEX, Activity;
+var import_cc25, NAME_REGEX, Activity;
 var init_Activity = __esm({
   "assets/scripts/framework/view/Activity.ts"() {
     init_fairygui();
@@ -32060,7 +32141,7 @@ var init_Activity = __esm({
     init_Timer();
     init_UIManager();
     init_SoundManager();
-    import_cc24 = require("cc");
+    import_cc25 = require("cc");
     NAME_REGEX = /\[((([tbrlwh]|(?:[xy][+-]\d{0,3})){1}(?:\d{0,3},?))+)\](.*)/i;
     Activity = class extends Container {
       constructor() {
@@ -32269,7 +32350,7 @@ var init_Activity = __esm({
         this.onDispose();
       }
       update() {
-        let dt = import_cc24.game.deltaTime * 1e3;
+        let dt = import_cc25.game.deltaTime * 1e3;
         this._secondTicker += dt;
         let seconds = false;
         if (this._secondTicker >= 1e3) {
@@ -32346,10 +32427,10 @@ var GMDocker_exports = {};
 __export(GMDocker_exports, {
   GMDocker: () => GMDocker
 });
-var import_cc25, GMDocker;
+var import_cc26, GMDocker;
 var init_GMDocker = __esm({
   "assets/scripts/framework/view/GM/GMDocker.ts"() {
-    import_cc25 = require("cc");
+    import_cc26 = require("cc");
     init_fairygui();
     init_UIManager();
     init_Window();
@@ -32371,7 +32452,7 @@ var init_GMDocker = __esm({
         this.canAutoDestory = false;
       }
       onCreate() {
-        this._offsetX = (GRoot.inst.width - import_cc25.view.getVisibleSize().width) / 2;
+        this._offsetX = (GRoot.inst.width - import_cc26.view.getVisibleSize().width) / 2;
         this.window.on(Event.DRAG_END, this.onDragEnd, this);
         this.component.draggable = true;
         this.component.onClick(() => {
@@ -32925,15 +33006,15 @@ __export(LocationManager_exports, {
   LocationManager: () => LocationManager,
   LocationResult: () => LocationResult
 });
-var import_cc26, LocationResult, result_t, _LocationManager, LocationManager;
+var import_cc27, LocationResult, result_t, _LocationManager, LocationManager;
 var init_LocationManager = __esm({
   "assets/scripts/framework/view/common/LocationManager.ts"() {
-    import_cc26 = require("cc");
+    import_cc27 = require("cc");
     init_SpaceUtils();
     LocationResult = class {
       constructor() {
-        this.pos = new import_cc26.Vec2();
-        this.size = new import_cc26.Size();
+        this.pos = new import_cc27.Vec2();
+        this.size = new import_cc27.Size();
         this.auto = true;
       }
       // 自动转为全局坐标
@@ -33368,209 +33449,211 @@ var globRequire;
 var init_ = __esm({
   'require("../../**/*") in assets/scripts/framework/patch/ccc_patch.ts'() {
     globRequire = __glob({
-
+      "../../framework.meta": () => require("../../framework.meta"),
       "../../framework/GameSettings.ts": () => (init_GameSettings(), __toCommonJS(GameSettings_exports)),
-
-
-
+      "../../framework/GameSettings.ts.meta": () => require("../../framework/GameSettings.ts.meta"),
+      "../../framework/activity.meta": () => require("../../framework/activity.meta"),
+      "../../framework/activity/controller.meta": () => require("../../framework/activity/controller.meta"),
       "../../framework/activity/controller/ActivityController.ts": () => (init_ActivityController(), __toCommonJS(ActivityController_exports)),
-
+      "../../framework/activity/controller/ActivityController.ts.meta": () => require("../../framework/activity/controller/ActivityController.ts.meta"),
       "../../framework/activity/controller/BaseActivityController.ts": () => (init_BaseActivityController(), __toCommonJS(BaseActivityController_exports)),
-
-
-
+      "../../framework/activity/controller/BaseActivityController.ts.meta": () => require("../../framework/activity/controller/BaseActivityController.ts.meta"),
+      "../../framework/activity/controller/LoaderHelper.ts.meta": () => require("../../framework/activity/controller/LoaderHelper.ts.meta"),
+      "../../framework/activity/proxy.meta": () => require("../../framework/activity/proxy.meta"),
       "../../framework/activity/proxy/AcitivityProxyManager.ts": () => (init_AcitivityProxyManager(), __toCommonJS(AcitivityProxyManager_exports)),
-
-
+      "../../framework/activity/proxy/AcitivityProxyManager.ts.meta": () => require("../../framework/activity/proxy/AcitivityProxyManager.ts.meta"),
+      "../../framework/activity/proxy/AcitivityViewManager.ts.meta": () => require("../../framework/activity/proxy/AcitivityViewManager.ts.meta"),
       "../../framework/activity/proxy/BaseActivityProxy.ts": () => (init_BaseActivityProxy(), __toCommonJS(BaseActivityProxy_exports)),
-
-
+      "../../framework/activity/proxy/BaseActivityProxy.ts.meta": () => require("../../framework/activity/proxy/BaseActivityProxy.ts.meta"),
+      "../../framework/activity/proxy/BaseActivityView.ts.meta": () => require("../../framework/activity/proxy/BaseActivityView.ts.meta"),
       "../../framework/activity/proxy/IActivityProxy.ts": () => (init_IActivityProxy(), __toCommonJS(IActivityProxy_exports)),
-
-
-
+      "../../framework/activity/proxy/IActivityProxy.ts.meta": () => require("../../framework/activity/proxy/IActivityProxy.ts.meta"),
+      "../../framework/activity/proxy/IActivityView.ts.meta": () => require("../../framework/activity/proxy/IActivityView.ts.meta"),
+      "../../framework/common.meta": () => require("../../framework/common.meta"),
       "../../framework/common/CombineTexMaterialMgr.ts": () => require_CombineTexMaterialMgr(),
-
+      "../../framework/common/CombineTexMaterialMgr.ts.meta": () => require("../../framework/common/CombineTexMaterialMgr.ts.meta"),
       "../../framework/common/EncryptHelper.ts": () => (init_EncryptHelper(), __toCommonJS(EncryptHelper_exports)),
-
+      "../../framework/common/EncryptHelper.ts.meta": () => require("../../framework/common/EncryptHelper.ts.meta"),
       "../../framework/common/EventCenter.ts": () => (init_EventCenter(), __toCommonJS(EventCenter_exports)),
-
+      "../../framework/common/EventCenter.ts.meta": () => require("../../framework/common/EventCenter.ts.meta"),
       "../../framework/common/EventHandler.ts": () => (init_EventHandler(), __toCommonJS(EventHandler_exports)),
-
-
+      "../../framework/common/EventHandler.ts.meta": () => require("../../framework/common/EventHandler.ts.meta"),
+      "../../framework/common/FGUIExt.ts.meta": () => require("../../framework/common/FGUIExt.ts.meta"),
       "../../framework/common/LoaderHelper.ts": () => (init_LoaderHelper(), __toCommonJS(LoaderHelper_exports)),
-
+      "../../framework/common/LoaderHelper.ts.meta": () => require("../../framework/common/LoaderHelper.ts.meta"),
       "../../framework/common/Logger.ts": () => (init_Logger(), __toCommonJS(Logger_exports)),
-
+      "../../framework/common/Logger.ts.meta": () => require("../../framework/common/Logger.ts.meta"),
       "../../framework/common/Pool.ts": () => (init_Pool(), __toCommonJS(Pool_exports)),
-
+      "../../framework/common/Pool.ts.meta": () => require("../../framework/common/Pool.ts.meta"),
       "../../framework/common/PoolManager.ts": () => (init_PoolManager(), __toCommonJS(PoolManager_exports)),
-
+      "../../framework/common/PoolManager.ts.meta": () => require("../../framework/common/PoolManager.ts.meta"),
+      "../../framework/common/Pools.ts": () => (init_Pools(), __toCommonJS(Pools_exports)),
+      "../../framework/common/Pools.ts.meta": () => require("../../framework/common/Pools.ts.meta"),
       "../../framework/common/ResManager.ts": () => (init_ResManager(), __toCommonJS(ResManager_exports)),
-
+      "../../framework/common/ResManager.ts.meta": () => require("../../framework/common/ResManager.ts.meta"),
       "../../framework/common/SoundManager.ts": () => (init_SoundManager(), __toCommonJS(SoundManager_exports)),
-
+      "../../framework/common/SoundManager.ts.meta": () => require("../../framework/common/SoundManager.ts.meta"),
       "../../framework/common/StorageManager.ts": () => (init_StorageManager(), __toCommonJS(StorageManager_exports)),
-
+      "../../framework/common/StorageManager.ts.meta": () => require("../../framework/common/StorageManager.ts.meta"),
       "../../framework/common/TaskManager.ts": () => (init_TaskManager(), __toCommonJS(TaskManager_exports)),
-
+      "../../framework/common/TaskManager.ts.meta": () => require("../../framework/common/TaskManager.ts.meta"),
       "../../framework/common/TimeWatcher.ts": () => (init_TimeWatcher(), __toCommonJS(TimeWatcher_exports)),
-
+      "../../framework/common/TimeWatcher.ts.meta": () => require("../../framework/common/TimeWatcher.ts.meta"),
       "../../framework/common/Timer.ts": () => (init_Timer(), __toCommonJS(Timer_exports)),
-
-
-
+      "../../framework/common/Timer.ts.meta": () => require("../../framework/common/Timer.ts.meta"),
+      "../../framework/core.meta": () => require("../../framework/core.meta"),
+      "../../framework/libs.meta": () => require("../../framework/libs.meta"),
       "../../framework/libs/md5.ts": () => (init_md5(), __toCommonJS(md5_exports)),
-
+      "../../framework/libs/md5.ts.meta": () => require("../../framework/libs/md5.ts.meta"),
       "../../framework/macro.ts": () => (init_macro(), __toCommonJS(macro_exports)),
-
-
+      "../../framework/macro.ts.meta": () => require("../../framework/macro.ts.meta"),
+      "../../framework/modules.meta": () => require("../../framework/modules.meta"),
       "../../framework/modules/Bridge.ts": () => (init_Bridge(), __toCommonJS(Bridge_exports)),
-
+      "../../framework/modules/Bridge.ts.meta": () => require("../../framework/modules/Bridge.ts.meta"),
       "../../framework/modules/ControllerManager.ts": () => (init_ControllerManager(), __toCommonJS(ControllerManager_exports)),
-
+      "../../framework/modules/ControllerManager.ts.meta": () => require("../../framework/modules/ControllerManager.ts.meta"),
       "../../framework/modules/ModelMapper.ts": () => (init_ModelMapper(), __toCommonJS(ModelMapper_exports)),
-
-
+      "../../framework/modules/ModelMapper.ts.meta": () => require("../../framework/modules/ModelMapper.ts.meta"),
+      "../../framework/modules/base.meta": () => require("../../framework/modules/base.meta"),
       "../../framework/modules/base/BaseController.ts": () => (init_BaseController(), __toCommonJS(BaseController_exports)),
-
+      "../../framework/modules/base/BaseController.ts.meta": () => require("../../framework/modules/base/BaseController.ts.meta"),
       "../../framework/modules/base/BaseDAO.ts": () => (init_BaseDAO(), __toCommonJS(BaseDAO_exports)),
-
+      "../../framework/modules/base/BaseDAO.ts.meta": () => require("../../framework/modules/base/BaseDAO.ts.meta"),
       "../../framework/modules/base/BaseModel.ts": () => (init_BaseModel(), __toCommonJS(BaseModel_exports)),
-
+      "../../framework/modules/base/BaseModel.ts.meta": () => require("../../framework/modules/base/BaseModel.ts.meta"),
       "../../framework/modules/base/SecretController.ts": () => (init_SecretController(), __toCommonJS(SecretController_exports)),
-
+      "../../framework/modules/base/SecretController.ts.meta": () => require("../../framework/modules/base/SecretController.ts.meta"),
       "../../framework/modules/base/SecretDAO.ts": () => (init_SecretDAO(), __toCommonJS(SecretDAO_exports)),
-
+      "../../framework/modules/base/SecretDAO.ts.meta": () => require("../../framework/modules/base/SecretDAO.ts.meta"),
       "../../framework/modules/base/SecretModel.ts": () => (init_SecretModel(), __toCommonJS(SecretModel_exports)),
-
+      "../../framework/modules/base/SecretModel.ts.meta": () => require("../../framework/modules/base/SecretModel.ts.meta"),
       "../../framework/modules/base/types.ts": () => (init_types(), __toCommonJS(types_exports)),
-
-
+      "../../framework/modules/base/types.ts.meta": () => require("../../framework/modules/base/types.ts.meta"),
+      "../../framework/modules/system.meta": () => require("../../framework/modules/system.meta"),
       "../../framework/modules/system/SystemController.ts": () => (init_SystemController(), __toCommonJS(SystemController_exports)),
-
-
+      "../../framework/modules/system/SystemController.ts.meta": () => require("../../framework/modules/system/SystemController.ts.meta"),
+      "../../framework/patch.meta": () => require("../../framework/patch.meta"),
       "../../framework/patch/ccc_patch.ts": () => (init_ccc_patch(), __toCommonJS(ccc_patch_exports)),
-
+      "../../framework/patch/ccc_patch.ts.meta": () => require("../../framework/patch/ccc_patch.ts.meta"),
       "../../framework/patch/ccc_pref_renderer.ts": () => (init_ccc_pref_renderer(), __toCommonJS(ccc_pref_renderer_exports)),
-
-
-
+      "../../framework/patch/ccc_pref_renderer.ts.meta": () => require("../../framework/patch/ccc_pref_renderer.ts.meta"),
+      "../../framework/patch/fgui_patch.ts.meta": () => require("../../framework/patch/fgui_patch.ts.meta"),
+      "../../framework/platform.meta": () => require("../../framework/platform.meta"),
       "../../framework/platform/Platform.ts": () => (init_Platform(), __toCommonJS(Platform_exports)),
-
+      "../../framework/platform/Platform.ts.meta": () => require("../../framework/platform/Platform.ts.meta"),
       "../../framework/platform/PlatformSDK.ts": () => (init_PlatformSDK(), __toCommonJS(PlatformSDK_exports)),
-
-
-
+      "../../framework/platform/PlatformSDK.ts.meta": () => require("../../framework/platform/PlatformSDK.ts.meta"),
+      "../../framework/plugins.meta": () => require("../../framework/plugins.meta"),
+      "../../framework/plugins/capture.meta": () => require("../../framework/plugins/capture.meta"),
       "../../framework/plugins/capture/CanvasPool.ts": () => (init_CanvasPool(), __toCommonJS(CanvasPool_exports)),
-
+      "../../framework/plugins/capture/CanvasPool.ts.meta": () => require("../../framework/plugins/capture/CanvasPool.ts.meta"),
       "../../framework/plugins/capture/CaptureHelper.ts": () => (init_CaptureHelper(), __toCommonJS(CaptureHelper_exports)),
-
-
+      "../../framework/plugins/capture/CaptureHelper.ts.meta": () => require("../../framework/plugins/capture/CaptureHelper.ts.meta"),
+      "../../framework/plugins/config.meta": () => require("../../framework/plugins/config.meta"),
       "../../framework/plugins/config/DataAccess.ts": () => (init_DataAccess(), __toCommonJS(DataAccess_exports)),
-
+      "../../framework/plugins/config/DataAccess.ts.meta": () => require("../../framework/plugins/config/DataAccess.ts.meta"),
       "../../framework/plugins/config/I18N.ts": () => (init_I18N(), __toCommonJS(I18N_exports)),
-
+      "../../framework/plugins/config/I18N.ts.meta": () => require("../../framework/plugins/config/I18N.ts.meta"),
       "../../framework/plugins/config/Lang.ts": () => (init_Lang(), __toCommonJS(Lang_exports)),
-
-
+      "../../framework/plugins/config/Lang.ts.meta": () => require("../../framework/plugins/config/Lang.ts.meta"),
+      "../../framework/plugins/fsm.meta": () => require("../../framework/plugins/fsm.meta"),
       "../../framework/plugins/fsm/FSM.ts": () => (init_FSM(), __toCommonJS(FSM_exports)),
-
-
+      "../../framework/plugins/fsm/FSM.ts.meta": () => require("../../framework/plugins/fsm/FSM.ts.meta"),
+      "../../framework/plugins/gesture.meta": () => require("../../framework/plugins/gesture.meta"),
       "../../framework/plugins/gesture/Gesture.ts": () => (init_Gesture(), __toCommonJS(Gesture_exports)),
-
+      "../../framework/plugins/gesture/Gesture.ts.meta": () => require("../../framework/plugins/gesture/Gesture.ts.meta"),
       "../../framework/plugins/gesture/LongTouchGesture.ts": () => (init_LongTouchGesture(), __toCommonJS(LongTouchGesture_exports)),
-
+      "../../framework/plugins/gesture/LongTouchGesture.ts.meta": () => require("../../framework/plugins/gesture/LongTouchGesture.ts.meta"),
       "../../framework/plugins/gesture/PinchGesture.ts": () => (init_PinchGesture(), __toCommonJS(PinchGesture_exports)),
-
+      "../../framework/plugins/gesture/PinchGesture.ts.meta": () => require("../../framework/plugins/gesture/PinchGesture.ts.meta"),
       "../../framework/plugins/gesture/SwipeGesture.ts": () => (init_SwipeGesture(), __toCommonJS(SwipeGesture_exports)),
-
-
+      "../../framework/plugins/gesture/SwipeGesture.ts.meta": () => require("../../framework/plugins/gesture/SwipeGesture.ts.meta"),
+      "../../framework/plugins/reddot.meta": () => require("../../framework/plugins/reddot.meta"),
       "../../framework/plugins/reddot/RedDotManager.ts": () => (init_RedDotManager(), __toCommonJS(RedDotManager_exports)),
-
+      "../../framework/plugins/reddot/RedDotManager.ts.meta": () => require("../../framework/plugins/reddot/RedDotManager.ts.meta"),
       "../../framework/plugins/reddot/RedDotNode.ts": () => (init_RedDotNode(), __toCommonJS(RedDotNode_exports)),
-
+      "../../framework/plugins/reddot/RedDotNode.ts.meta": () => require("../../framework/plugins/reddot/RedDotNode.ts.meta"),
       "../../framework/plugins/reddot/RedDotTree.ts": () => (init_RedDotTree(), __toCommonJS(RedDotTree_exports)),
-
+      "../../framework/plugins/reddot/RedDotTree.ts.meta": () => require("../../framework/plugins/reddot/RedDotTree.ts.meta"),
       "../../framework/plugins/reddot/serialize.ts": () => (init_serialize(), __toCommonJS(serialize_exports)),
-
-
+      "../../framework/plugins/reddot/serialize.ts.meta": () => require("../../framework/plugins/reddot/serialize.ts.meta"),
+      "../../framework/utils.meta": () => require("../../framework/utils.meta"),
       "../../framework/utils/CoroutineUtils.ts": () => (init_CoroutineUtils(), __toCommonJS(CoroutineUtils_exports)),
-
+      "../../framework/utils/CoroutineUtils.ts.meta": () => require("../../framework/utils/CoroutineUtils.ts.meta"),
       "../../framework/utils/MathUtils.ts": () => (init_MathUtils(), __toCommonJS(MathUtils_exports)),
-
+      "../../framework/utils/MathUtils.ts.meta": () => require("../../framework/utils/MathUtils.ts.meta"),
       "../../framework/utils/SpaceUtils.ts": () => (init_SpaceUtils(), __toCommonJS(SpaceUtils_exports)),
-
+      "../../framework/utils/SpaceUtils.ts.meta": () => require("../../framework/utils/SpaceUtils.ts.meta"),
       "../../framework/utils/StringUtils.ts": () => (init_StringUtils(), __toCommonJS(StringUtils_exports)),
-
+      "../../framework/utils/StringUtils.ts.meta": () => require("../../framework/utils/StringUtils.ts.meta"),
       "../../framework/utils/TimeUtils.ts": () => (init_TimeUtils(), __toCommonJS(TimeUtils_exports)),
-
+      "../../framework/utils/TimeUtils.ts.meta": () => require("../../framework/utils/TimeUtils.ts.meta"),
       "../../framework/utils/UtilsHelper.ts": () => (init_UtilsHelper(), __toCommonJS(UtilsHelper_exports)),
-
-
+      "../../framework/utils/UtilsHelper.ts.meta": () => require("../../framework/utils/UtilsHelper.ts.meta"),
+      "../../framework/view.meta": () => require("../../framework/view.meta"),
       "../../framework/view/Activity.ts": () => (init_Activity(), __toCommonJS(Activity_exports)),
-
+      "../../framework/view/Activity.ts.meta": () => require("../../framework/view/Activity.ts.meta"),
       "../../framework/view/Container.ts": () => (init_Container(), __toCommonJS(Container_exports)),
-
+      "../../framework/view/Container.ts.meta": () => require("../../framework/view/Container.ts.meta"),
       "../../framework/view/Decorators.ts": () => (init_Decorators(), __toCommonJS(Decorators_exports)),
-
-
+      "../../framework/view/Decorators.ts.meta": () => require("../../framework/view/Decorators.ts.meta"),
+      "../../framework/view/GM.meta": () => require("../../framework/view/GM.meta"),
       "../../framework/view/GM/GMDocker.ts": () => (init_GMDocker(), __toCommonJS(GMDocker_exports)),
-
+      "../../framework/view/GM/GMDocker.ts.meta": () => require("../../framework/view/GM/GMDocker.ts.meta"),
       "../../framework/view/GM/GMItem.ts": () => (init_GMItem(), __toCommonJS(GMItem_exports)),
-
+      "../../framework/view/GM/GMItem.ts.meta": () => require("../../framework/view/GM/GMItem.ts.meta"),
       "../../framework/view/GM/GMMananger.ts": () => (init_GMMananger(), __toCommonJS(GMMananger_exports)),
-
+      "../../framework/view/GM/GMMananger.ts.meta": () => require("../../framework/view/GM/GMMananger.ts.meta"),
       "../../framework/view/Skin.ts": () => (init_Skin(), __toCommonJS(Skin_exports)),
-
+      "../../framework/view/Skin.ts.meta": () => require("../../framework/view/Skin.ts.meta"),
       "../../framework/view/SkinHelper.ts": () => (init_SkinHelper(), __toCommonJS(SkinHelper_exports)),
-
+      "../../framework/view/SkinHelper.ts.meta": () => require("../../framework/view/SkinHelper.ts.meta"),
       "../../framework/view/TweenWindow.ts": () => (init_TweenWindow(), __toCommonJS(TweenWindow_exports)),
-
+      "../../framework/view/TweenWindow.ts.meta": () => require("../../framework/view/TweenWindow.ts.meta"),
       "../../framework/view/UIManager.ts": () => (init_UIManager(), __toCommonJS(UIManager_exports)),
-
+      "../../framework/view/UIManager.ts.meta": () => require("../../framework/view/UIManager.ts.meta"),
       "../../framework/view/View.ts": () => (init_View(), __toCommonJS(View_exports)),
-
+      "../../framework/view/View.ts.meta": () => require("../../framework/view/View.ts.meta"),
       "../../framework/view/ViewHelper.ts": () => (init_ViewHelper(), __toCommonJS(ViewHelper_exports)),
-
+      "../../framework/view/ViewHelper.ts.meta": () => require("../../framework/view/ViewHelper.ts.meta"),
       "../../framework/view/ViewMap.ts": () => (init_ViewMap(), __toCommonJS(ViewMap_exports)),
-
+      "../../framework/view/ViewMap.ts.meta": () => require("../../framework/view/ViewMap.ts.meta"),
       "../../framework/view/ViewObject.ts": () => (init_ViewObject(), __toCommonJS(ViewObject_exports)),
-
+      "../../framework/view/ViewObject.ts.meta": () => require("../../framework/view/ViewObject.ts.meta"),
       "../../framework/view/Window.ts": () => (init_Window(), __toCommonJS(Window_exports)),
-
+      "../../framework/view/Window.ts.meta": () => require("../../framework/view/Window.ts.meta"),
       "../../framework/view/WindowPriorityMap.ts": () => (init_WindowPriorityMap(), __toCommonJS(WindowPriorityMap_exports)),
-
-
+      "../../framework/view/WindowPriorityMap.ts.meta": () => require("../../framework/view/WindowPriorityMap.ts.meta"),
+      "../../framework/view/common.meta": () => require("../../framework/view/common.meta"),
       "../../framework/view/common/CommonToast.ts": () => (init_CommonToast(), __toCommonJS(CommonToast_exports)),
-
+      "../../framework/view/common/CommonToast.ts.meta": () => require("../../framework/view/common/CommonToast.ts.meta"),
       "../../framework/view/common/LocationManager.ts": () => (init_LocationManager(), __toCommonJS(LocationManager_exports)),
-
+      "../../framework/view/common/LocationManager.ts.meta": () => require("../../framework/view/common/LocationManager.ts.meta"),
       "../../framework/view/common/SpineView.ts": () => (init_SpineView(), __toCommonJS(SpineView_exports)),
-
+      "../../framework/view/common/SpineView.ts.meta": () => require("../../framework/view/common/SpineView.ts.meta"),
       "../../framework/view/index.ts": () => (init_view(), __toCommonJS(view_exports)),
-
-
+      "../../framework/view/index.ts.meta": () => require("../../framework/view/index.ts.meta"),
+      "../../framework/view/interface.meta": () => require("../../framework/view/interface.meta"),
       "../../framework/view/interface/IActivity.ts": () => (init_IActivity(), __toCommonJS(IActivity_exports)),
-
+      "../../framework/view/interface/IActivity.ts.meta": () => require("../../framework/view/interface/IActivity.ts.meta"),
       "../../framework/view/interface/IAutoInject.ts": () => (init_IAutoInject(), __toCommonJS(IAutoInject_exports)),
-
+      "../../framework/view/interface/IAutoInject.ts.meta": () => require("../../framework/view/interface/IAutoInject.ts.meta"),
       "../../framework/view/interface/IComponent.ts": () => (init_IComponent(), __toCommonJS(IComponent_exports)),
-
+      "../../framework/view/interface/IComponent.ts.meta": () => require("../../framework/view/interface/IComponent.ts.meta"),
       "../../framework/view/interface/IContainer.ts": () => (init_IContainer(), __toCommonJS(IContainer_exports)),
-
+      "../../framework/view/interface/IContainer.ts.meta": () => require("../../framework/view/interface/IContainer.ts.meta"),
       "../../framework/view/interface/IInjectInfo.ts": () => (init_IInjectInfo(), __toCommonJS(IInjectInfo_exports)),
-
+      "../../framework/view/interface/IInjectInfo.ts.meta": () => require("../../framework/view/interface/IInjectInfo.ts.meta"),
       "../../framework/view/interface/IView.ts": () => (init_IView(), __toCommonJS(IView_exports)),
-
+      "../../framework/view/interface/IView.ts.meta": () => require("../../framework/view/interface/IView.ts.meta"),
       "../../framework/view/interface/IWindow.ts": () => (init_IWindow(), __toCommonJS(IWindow_exports)),
-
-
+      "../../framework/view/interface/IWindow.ts.meta": () => require("../../framework/view/interface/IWindow.ts.meta"),
+      "../../framework/view/utils.meta": () => require("../../framework/view/utils.meta"),
       "../../framework/view/utils/FGUIExt.ts": () => (init_FGUIExt(), __toCommonJS(FGUIExt_exports)),
-
+      "../../framework/view/utils/FGUIExt.ts.meta": () => require("../../framework/view/utils/FGUIExt.ts.meta"),
       "../../framework/view/utils/fgui_patch.ts": () => (init_fgui_patch(), __toCommonJS(fgui_patch_exports)),
-
-
+      "../../framework/view/utils/fgui_patch.ts.meta": () => require("../../framework/view/utils/fgui_patch.ts.meta"),
+      "../../framework/wxsdk.meta": () => require("../../framework/wxsdk.meta")
     });
   }
 });
@@ -33582,17 +33665,17 @@ __export(ccc_patch_exports, {
   clearUselessCache: () => clearUselessCache,
   default: () => ccc_patch_default
 });
-var import_cc27, import_env11, layer2D, setParent, PackageVersionMap, clearUselessCache, suffix, ccc_patch_default;
+var import_cc28, import_env11, layer2D, setParent, PackageVersionMap, clearUselessCache, suffix, ccc_patch_default;
 var init_ccc_patch = __esm({
   "assets/scripts/framework/patch/ccc_patch.ts"() {
-    import_cc27 = require("cc");
+    import_cc28 = require("cc");
     import_env11 = require("cc/env");
     init_fairygui();
     init_();
     if (!import_env11.EDITOR) {
       layer2D = UIConfig.defaultUILayer;
-      setParent = import_cc27.Node.prototype.setParent;
-      import_cc27.Node.prototype.setParent = function(value, keepWorldTransform) {
+      setParent = import_cc28.Node.prototype.setParent;
+      import_cc28.Node.prototype.setParent = function(value, keepWorldTransform) {
         let that = this;
         setParent.call(that, value, keepWorldTransform);
         if (value && value.$gobj && value.layer == layer2D) {
@@ -33614,8 +33697,8 @@ var init_ccc_patch = __esm({
       }, copyDirsSync = function(srcDir, destDir) {
         let files = fs.readdirSync(srcDir);
         files.forEach((filename) => {
-          let srcPath = import_cc27.path.join(srcDir, filename);
-          let destPath = import_cc27.path.join(destDir, filename);
+          let srcPath = import_cc28.path.join(srcDir, filename);
+          let destPath = import_cc28.path.join(destDir, filename);
           let stat = fs.statSync(srcPath);
           if (stat.isFile()) {
             fs.copyFileSync(srcPath, destPath);
@@ -33649,21 +33732,21 @@ var init_ccc_patch = __esm({
         if (!pkg || typeof pkg !== "object" || pkg.formats == null || pkg.formats.length === 0) {
           return defaultUrl;
         }
-        let device = import_cc27.director.root.device;
+        let device = import_cc28.director.root.device;
         let ext = "";
         if (device) {
           for (let i = 0; i < pkg.formats.length; i++) {
             let tmpExt = pkg.formats[i];
-            if (tmpExt === "astc" && device.getFormatFeatures(import_cc27.gfx.Format.ASTC_RGBA_4X4)) {
+            if (tmpExt === "astc" && device.getFormatFeatures(import_cc28.gfx.Format.ASTC_RGBA_4X4)) {
               ext = ".astc";
               break;
-            } else if (tmpExt === "pvr" && (device.getFormatFeatures(import_cc27.gfx.Format.PVRTC_RGB2) || device.getFormatFeatures(import_cc27.gfx.Format.PVRTC_RGBA2))) {
+            } else if (tmpExt === "pvr" && (device.getFormatFeatures(import_cc28.gfx.Format.PVRTC_RGB2) || device.getFormatFeatures(import_cc28.gfx.Format.PVRTC_RGBA2))) {
               ext = ".pvr";
               break;
-            } else if (tmpExt === "pkm" && device.getFormatFeatures(import_cc27.gfx.Format.ETC_RGB8)) {
+            } else if (tmpExt === "pkm" && device.getFormatFeatures(import_cc28.gfx.Format.ETC_RGB8)) {
               ext = ".pkm";
               break;
-            } else if (tmpExt === "webp" && import_cc27.sys.hasFeature(import_cc27.sys.Feature.WEBP)) {
+            } else if (tmpExt === "webp" && import_cc28.sys.hasFeature(import_cc28.sys.Feature.WEBP)) {
               ext = ".webp";
               break;
             }
@@ -33675,7 +33758,7 @@ var init_ccc_patch = __esm({
         return `${url}/res.${(zipVersion ? zipVersion : "") + ext + "."}zip`;
       }, clearUselessCacheF = function(version) {
         console.log("clearUselessCache", version);
-        let caches = import_cc27.assetManager.cacheManager.cachedFiles;
+        let caches = import_cc28.assetManager.cacheManager.cachedFiles;
         let curVersion = `/${version}/`;
         let versionRegex = /\/((debug\d?)|((\d.*?\.?){1,4}))\//gi;
         let regex = /https?:\/\/.*?\/remote\/(.*?)\/.*?/gi;
@@ -33691,7 +33774,7 @@ var init_ccc_patch = __esm({
               if (pkg == hashValue) {
                 exits = true;
               } else if (pkg.files) {
-                let fn = import_cc27.path.basename(key);
+                let fn = import_cc28.path.basename(key);
                 if (!!pkg.files[fn]) {
                   exits = true;
                 }
@@ -33701,15 +33784,15 @@ var init_ccc_patch = __esm({
             }
             if (!exits) {
               console.log("\u5220\u9664:", value.url, key);
-              import_cc27.assetManager.cacheManager.removeCache(key);
+              import_cc28.assetManager.cacheManager.removeCache(key);
             } else if (key.indexOf(curVersion) < 0) {
               console.log("\u66FF\u6362:", value.url, key);
-              import_cc27.assetManager.cacheManager.cachedFiles.remove(key);
-              import_cc27.assetManager.cacheManager.cachedFiles.add(key.replace(versionRegex, curVersion), value);
+              import_cc28.assetManager.cacheManager.cachedFiles.remove(key);
+              import_cc28.assetManager.cacheManager.cachedFiles.add(key.replace(versionRegex, curVersion), value);
             }
           }
         });
-        import_cc27.assetManager.cacheManager["writeCacheFile"]();
+        import_cc28.assetManager.cacheManager["writeCacheFile"]();
       };
       if (typeof wx != "undefined" && wx.onMemoryWarning) {
         wx.onMemoryWarning && wx.onMemoryWarning(() => {
@@ -33719,12 +33802,12 @@ var init_ccc_patch = __esm({
       }
       const { fs } = window.fsUtils;
       const ASSET_MGR_REGEX = /^https?:\/\/.*/;
-      const cacheManager = import_cc27.assetManager.cacheManager;
-      const downloader = import_cc27.assetManager.downloader;
+      const cacheManager = import_cc28.assetManager.cacheManager;
+      const downloader = import_cc28.assetManager.downloader;
       const downloadJson = downloader["_downloaders"][".json"];
       const downloadBundle = downloader["_downloaders"]["bundle"];
       const subpackages = {};
-      const subpacks = import_cc27.settings.querySettings("assets", "subpackages");
+      const subpacks = import_cc28.settings.querySettings("assets", "subpackages");
       subpacks && subpacks.forEach((x) => subpackages[x] = `subpackages/${x}`);
       const makeDirSync = window.fsUtils.makeDirSync = function(path4, recursive) {
         try {
@@ -33785,27 +33868,27 @@ var init_ccc_patch = __esm({
           onComplete && onComplete(null, targetPath);
         });
       };
-      import_cc27.assetManager.downloader.register("bundle", (nameOrUrl, options, onComplete) => {
+      import_cc28.assetManager.downloader.register("bundle", (nameOrUrl, options, onComplete) => {
         console.log("bundle", nameOrUrl, options);
         let pkg = PackageVersionMap[nameOrUrl];
         if (!pkg) {
           downloadBundle(nameOrUrl, options, onComplete);
           return;
         }
-        let bundleName = import_cc27.path.basename(nameOrUrl);
-        let version = options.version || import_cc27.assetManager.downloader.bundleVers[bundleName];
+        let bundleName = import_cc28.path.basename(nameOrUrl);
+        let version = options.version || import_cc28.assetManager.downloader.bundleVers[bundleName];
         let suffix2 = version ? version + "." : "";
-        let localVersion = import_cc27.assetManager.downloader.bundleVers[bundleName];
+        let localVersion = import_cc28.assetManager.downloader.bundleVers[bundleName];
         let localSuffix = localVersion ? localVersion + "." : "";
         function getConfigPathForSubPackage() {
-          if (import_cc27.sys.platform === import_cc27.sys.Platform.TAOBAO_MINI_GAME) {
+          if (import_cc28.sys.platform === import_cc28.sys.Platform.TAOBAO_MINI_GAME) {
             return `${bundleName}/config.${suffix2}json`;
           }
           return `subpackages/${bundleName}/config.${localSuffix}json`;
         }
         function appendBaseToJsonData(data) {
           if (!data) return;
-          if (import_cc27.sys.platform === import_cc27.sys.Platform.TAOBAO_MINI_GAME) {
+          if (import_cc28.sys.platform === import_cc28.sys.Platform.TAOBAO_MINI_GAME) {
             data.base = `${bundleName}/`;
           } else {
             data.base = `subpackages/${bundleName}/`;
@@ -33839,9 +33922,9 @@ var init_ccc_patch = __esm({
             js = `assets/${bundleName}/index.${localSuffix}js`;
           }
           try {
-            if (import_cc27.sys.platform === import_cc27.sys.Platform.TAOBAO_MINI_GAME) {
+            if (import_cc28.sys.platform === import_cc28.sys.Platform.TAOBAO_MINI_GAME) {
               require(`/../../${js}`);
-            } else if (import_cc27.sys.platform !== import_cc27.sys.Platform.TAOBAO_CREATIVE_APP) {
+            } else if (import_cc28.sys.platform !== import_cc28.sys.Platform.TAOBAO_CREATIVE_APP) {
               globRequire(`../../${js}`);
             }
           } catch (e) {
@@ -33861,7 +33944,7 @@ var init_ccc_patch = __esm({
               handleZip(zipUrl, options, (err2, unzipPath) => {
                 if (!err2) {
                   data.base = unzipPath + "/res/";
-                  if (import_cc27.sys.platform === import_cc27.sys.Platform.ALIPAY_MINI_GAME && import_cc27.sys.os === import_cc27.sys.OS.ANDROID) {
+                  if (import_cc28.sys.platform === import_cc28.sys.Platform.ALIPAY_MINI_GAME && import_cc28.sys.os === import_cc28.sys.OS.ANDROID) {
                     let resPath = unzipPath + "res/";
                     if (fs.accessSync({ path: resPath })) {
                       data.base = resPath;
@@ -33894,10 +33977,10 @@ var ResManager_exports = {};
 __export(ResManager_exports, {
   ResManager: () => ResManager
 });
-var import_cc28, RESOURCES, ResManager;
+var import_cc29, RESOURCES, ResManager;
 var init_ResManager = __esm({
   "assets/scripts/framework/common/ResManager.ts"() {
-    import_cc28 = require("cc");
+    import_cc29 = require("cc");
     init_ccc_patch();
     init_fairygui();
     init_FGUIExt();
@@ -33905,7 +33988,7 @@ var init_ResManager = __esm({
     ResManager = class {
       static async preload(uuid, progress) {
         return new Promise((resolve, reject) => {
-          import_cc28.assetManager.preloadAny(uuid, (p) => {
+          import_cc29.assetManager.preloadAny(uuid, (p) => {
             progress && progress(p);
           }, (err, res) => {
             resolve(res);
@@ -33923,7 +34006,7 @@ var init_ResManager = __esm({
         };
         try {
           let bundle = await new Promise((resolve, reject) => {
-            import_cc28.assetManager.loadBundle(abName, config, (err, bundle2) => {
+            import_cc29.assetManager.loadBundle(abName, config, (err, bundle2) => {
               if (err) {
                 reject(err);
               } else {
@@ -33943,9 +34026,9 @@ var init_ResManager = __esm({
       }
       static getBundle(abName, check = true) {
         if (!abName || abName == RESOURCES) {
-          return import_cc28.resources;
+          return import_cc29.resources;
         }
-        let ab = import_cc28.assetManager.getBundle(abName);
+        let ab = import_cc29.assetManager.getBundle(abName);
         if (!ab && check) {
           console.error(`can not find asset bundle named ${abName}`);
         }
@@ -34026,7 +34109,7 @@ var init_ResManager = __esm({
         UIPackage.removePackage(pkg);
         let b = this.getBundle(bundle);
         b.releaseAll();
-        import_cc28.assetManager.removeBundle(b);
+        import_cc29.assetManager.removeBundle(b);
       }
       static isValidBundleAndPackage(bundle, pkg) {
         if (!pkg || UIPackage.getByName(pkg)) {
@@ -34036,6 +34119,12 @@ var init_ResManager = __esm({
           return false;
         }
         return true;
+      }
+      static getById(id, type) {
+        return null;
+      }
+      static async getByIdAsync(id, type) {
+        return null;
       }
     };
   }
@@ -34277,6 +34366,7 @@ init_LoaderHelper();
 init_Logger();
 init_Pool();
 init_PoolManager();
+init_Pools();
 init_ResManager();
 init_SoundManager();
 init_StorageManager();
