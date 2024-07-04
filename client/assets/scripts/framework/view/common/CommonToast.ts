@@ -13,7 +13,7 @@ export default class CommonToast extends View {
     @inject(Transition, "show")
     private _animation: Transition = null;
 
-    static I: CommonToast;
+    private static I: CommonToast;
 
     static toast(tips: string|number, ...args:string[]) {
         if (!CommonToast.I) {

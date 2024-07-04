@@ -1,6 +1,7 @@
 import { ALIPAY, WECHAT } from "cc/env";
 import { MEITUAN } from "../macro";
 import { PlatformSDK } from "./PlatformSDK";
+import { ShareMonitor } from "./ShareMonitor";
 
 export enum EPlatform {
     WECHAT = "WECHAT",
@@ -70,6 +71,7 @@ export class PlatformHelper {
     static shareAppMessage(options: {
         title?: string,
         imageUrl?: string,
+        imageUrlId?: string,
         query?: string,
         enableMonitor?: boolean,
         success?: () => void,
@@ -85,20 +87,16 @@ export class PlatformHelper {
         PlatformSDK.shareAppMessage({
             title: options.title,
             imageUrl: options.imageUrl,
+            imageUrlId: options.imageUrlId,
             query: options.query,
         });
 
-        const moniterTime = options.enableMonitor === false ? 0 : PlatformHelper.shareMonitorTime;
-        if(moniterTime > 0) {
-            setTimeout(() => {
-                if(options.success) {
-                    options.success();
-                }
-            }, moniterTime * 1000);
+        if(options.enableMonitor !== false) {
+            ShareMonitor.bind(options);
         }else{
             if(options.success) {
                 options.success();
-            }       
+            }      
         }
     }
 
@@ -131,6 +129,18 @@ export class PlatformHelper {
                 options.fail();
             }
         });
+    }
+
+    static onShareAppMessage(callback: (res: any) => void): {
+        title?: string,
+        imageUrl?: string,
+        imageUrlId?: string,
+    } {
+        if(!this.isEnable) {
+            return;
+        }
+
+        PlatformSDK.onShareAppMessage(callback);
     }
 };
 
