@@ -34,6 +34,10 @@ export class ShareMonitor {
             } else {
                 this._options.fail && this._options.fail();
             }
+
+            this._startTime = 0;
+            this._endTime = 0;
+            this._options = {};
         });
 
         wx.onHide(() => {

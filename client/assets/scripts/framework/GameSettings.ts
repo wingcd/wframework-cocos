@@ -11,14 +11,14 @@ interface PackageInfo {
     name: string,
     priority: number,
     weight: number,
-    debug: boolean,
-    preloads: string[],
-    preloadFiles: any[][];
+    debug?: boolean,
+    preloads?: string[],
+    preloadFiles?: any[][];
 };
 
 interface UIPackageInfo extends PackageInfo {
     bundle: string,
-    path: string,
+    path?: string,
 };
 
 export class GameSettings {

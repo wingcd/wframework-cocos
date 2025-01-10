@@ -1,3 +1,6 @@
+import { Vec3 } from "cc";
+import { Vec3Pool } from "../common/Pool";
+
 export class MathUtils {   
 
     /**
@@ -65,6 +68,18 @@ export class MathUtils {
         return source[0];
     }
 
+    public static randomArray<T>(source: T[], count: number) {
+        let temp = source.slice();
+        const result: T[] = [];
+        while (count > 0) {
+            const index = Math.floor(Math.random() * temp.length);
+            result.push(temp[index]);
+            temp.splice(index, 1);
+            count--;
+        }
+        return result;
+    }
+
     public static shuffle<T>(arr: T[]) {
         const result: T[] = [];
         while (arr.length > 0) {
@@ -91,5 +106,50 @@ export class MathUtils {
 
     public static remap(x: number, t1: number, t2: number, s1: number, s2: number) {
         return (s2 - s1) / (t2 - t1) * (x - t1) + s1;
+    }
+
+    public static bezier3(p0:Vec3, p1: Vec3, p2: Vec3, t: number, out?: Vec3)
+    {
+        p0 = Vec3Pool.get(p0.x, p0.y, p0.z);
+        p1 = Vec3Pool.get(p1.x, p1.y, p1.z);
+
+        let result = Vec3Pool.get(0, 0, 0);
+        result.x = Math.pow(1 - t, 2) * p0.x + 2 * t * (1 - t) * p1.x + Math.pow(t, 2) * p2.x;
+        result.y = Math.pow(1 - t, 2) * p0.y + 2 * t * (1 - t) * p1.y + Math.pow(t, 2) * p2.y;
+        result.z = Math.pow(1 - t, 2) * p0.z + 2 * t * (1 - t) * p1.z + Math.pow(t, 2) * p2.z;
+
+        Vec3Pool.put(p0);
+        Vec3Pool.put(p1);
+        Vec3Pool.put(result);
+
+        if(out) {
+            out.set(result);
+        }
+        return result;
+    }
+
+    // 三阶曲线
+    public static bezier4(p0: Vec3, p1: Vec3, p2: Vec3, p3: Vec3, t: number, out?: Vec3)
+    {
+        p0 = Vec3Pool.get(p0.x, p0.y, p0.z);
+        p1 = Vec3Pool.get(p1.x, p1.y, p1.z);
+        p2 = Vec3Pool.get(p2.x, p2.y, p2.z);
+        p3 = Vec3Pool.get(p3.x, p3.y, p3.z);
+
+        let result = Vec3Pool.get(0, 0, 0);
+        result.x = Math.pow(1 - t, 3) * p0.x + 3 * t * Math.pow(1 - t, 2) * p1.x + 3 * Math.pow(t, 2) * (1 - t) * p2.x + Math.pow(t, 3) * p3.x;
+        result.y = Math.pow(1 - t, 3) * p0.y + 3 * t * Math.pow(1 - t, 2) * p1.y + 3 * Math.pow(t, 2) * (1 - t) * p2.y + Math.pow(t, 3) * p3.y;
+        result.z = Math.pow(1 - t, 3) * p0.z + 3 * t * Math.pow(1 - t, 2) * p1.z + 3 * Math.pow(t, 2) * (1 - t) * p2.z + Math.pow(t, 3) * p3.z;
+
+        Vec3Pool.put(p0);
+        Vec3Pool.put(p1);
+        Vec3Pool.put(p2);
+        Vec3Pool.put(p3);
+        Vec3Pool.put(result);
+
+        if(out) {
+            out.set(result);
+        }
+        return result;
     }
 }

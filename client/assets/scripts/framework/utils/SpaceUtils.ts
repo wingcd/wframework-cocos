@@ -1,4 +1,4 @@
-import { Camera, director, Node, renderer, UITransform, Vec2, Vec3 } from "cc";
+import { Camera, director, Node, renderer, UITransform, Vec2, Vec3, view } from "cc";
 import { Vec2Pool, Vec3Pool } from "../common/Pool";
 import { GRoot } from "fairygui-cc";
 import { GObject } from "fairygui-cc";
@@ -91,14 +91,18 @@ export class SpaceUtils {
     }
 
     static cnode2fnode(npos: Vec2, node: Node, fnode: GObject, outpos?: Vec2) {
-        this.cnode2groot(npos, node, outpos);
+        this.cnode2groot(npos, node, outpos);        
+        outpos.y -= GRoot.inst.height;
         fnode.globalToLocal(outpos.x+fnode.width*fnode.pivotX, outpos.y+fnode.height*fnode.pivotY, outpos);
         return outpos;
     }
 
-    static world2groot(node: Node, camera: Camera, outpos?: Vec2): Vec2 {
+    static world2groot(node: Node, camera: Camera, outpos?: Vec2, offset?: Vec3): Vec2 {
         node.updateWorldTransform();
         node.getWorldPosition(s_vec3);
+        if(offset) {
+            s_vec3.add(offset);
+        }
         camera.convertToUINode(s_vec3, GRoot.inst.node, s_vec3);
         s_vec3.y = -s_vec3.y;
 
@@ -107,6 +111,23 @@ export class SpaceUtils {
         }
         outpos.set(s_vec3.x, s_vec3.y);
 
+        return outpos;
+    }
+
+    static groot2world(gpos: Vec2, camera: Camera, outpos?: Vec3, offset?: Vec3): Vec3 {
+        s_vec2.set(gpos.x, gpos.y);
+        this.groot2Screen(s_vec2, s_vec2);
+        // let viewSize = view.getVisibleSize();
+        // s_vec2.y = viewSize.height * 0.5 - s_vec2.y;
+        s_vec3.set(s_vec2.x, s_vec2.y, 0);
+        camera.screenToWorld(s_vec3, s_vec3);
+        if(offset) {
+            s_vec3.add(offset);
+        }
+        if(!outpos) {
+            outpos = new Vec3;
+        }
+        outpos.set(s_vec3);
         return outpos;
     }
 
@@ -136,12 +157,12 @@ export class SpaceUtils {
      * @param outPos 
      * @returns 
      */
-    static getNodeCenterInWorld(node: Node, outPos?: Vec2) {
+    static getNodeCenterInWorld(node: Node, outPos?: Vec3) {
         let tr = node._uiProps.uiTransformComp;
         let temp = Vec3Pool.get();
         temp.set(tr.width * (0.5-tr.anchorX), tr.height * (0.5-tr.anchorY));
         tr.convertToWorldSpaceAR(temp, temp);  
-        outPos.set(temp.x, temp.y);
+        outPos.set(temp.x, temp.y, temp.z);
         Vec3Pool.put(temp);
         return outPos;
     }

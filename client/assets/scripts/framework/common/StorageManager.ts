@@ -112,7 +112,7 @@ class Storage {
         if (!sys.isNative) {
             var ls = sys.localStorage;
             ls.setItem(this._file, zipStr);
-            return;
+            return true;
         }
 
         native.fileUtils.writeStringToFile(this._file, zipStr);
@@ -142,10 +142,7 @@ export class StorageManager {
             this._timer = 0;
 
             if (this._dirty) {
-                let saved = this._storage.save();
-                if (this._fireEvent) {
-                    StorageManager.anyItemSaved.fire(this._storage.file);
-                }
+                let saved = this._storage.save(this._fireEvent);
 
                 if(saved) {
                     this._dirty = false;
@@ -172,9 +169,10 @@ export class StorageManager {
         this._dirty = true;
     }
 
-    setData(data: any) {
+    setData(data: any, fireEvent = true) {
         this._storage.setData(data);
         this._dirty = true;
+        this._fireEvent = fireEvent;
     }
 
     setKV(key: string, value: any) {

@@ -346,15 +346,15 @@ var init_Container = __esm({
       endShown() {
         this._isShown = true;
       }
-      addView(view5) {
+      addView(view7) {
         if (_Container.showDebug)
-          console.error("check point addview", view5.component.name);
-        view5.parent = this;
-        this.children.push(view5);
+          console.error("check point addview", view7.component.name);
+        view7.parent = this;
+        this.children.push(view7);
       }
-      removeView(view5) {
-        view5.parent = null;
-        this.children = this.children.filter((item) => item !== view5);
+      removeView(view7) {
+        view7.parent = null;
+        this.children = this.children.filter((item) => item !== view7);
       }
       on(type, listener, target) {
         this.component.node.on(type, listener, target);
@@ -389,22 +389,63 @@ var init_Container = __esm({
   }
 });
 
+// assets/scripts/framework/macro.ts
+var macro_exports = {};
+__export(macro_exports, {
+  ALIPAY: () => ALIPAY,
+  CHN_DEDDP: () => CHN_DEDDP,
+  CHN_DELXC: () => CHN_DELXC,
+  CHN_DEZBW: () => CHN_DEZBW,
+  CHN_XXDEL: () => CHN_XXDEL,
+  CHN_ZGS: () => CHN_ZGS,
+  MEITUAN: () => MEITUAN,
+  PIAP: () => PIAP,
+  WECHAT: () => WECHAT
+});
+var WECHAT, MEITUAN, PIAP, ALIPAY, CHN_DELXC, CHN_DEDDP, CHN_ZGS, CHN_XXDEL, CHN_DEZBW;
+var init_macro = __esm({
+  "assets/scripts/framework/macro.ts"() {
+    WECHAT = true;
+    MEITUAN = false;
+    PIAP = false;
+    ALIPAY = false;
+    CHN_DELXC = false;
+    CHN_DEDDP = false;
+    CHN_ZGS = false;
+    CHN_XXDEL = false;
+    CHN_DEZBW = false;
+  }
+});
+
 // assets/scripts/framework/platform/PlatformSDK.ts
 var PlatformSDK_exports = {};
 __export(PlatformSDK_exports, {
   PlatformSDK: () => PlatformSDK
 });
-var WX, inMiniGame, PlatformSDK;
+var import_env, WX, API, inMiniGame, PlatformSDK;
 var init_PlatformSDK = __esm({
   "assets/scripts/framework/platform/PlatformSDK.ts"() {
+    import_env = require("cc/env");
+    init_macro();
+    API = WX;
     inMiniGame = typeof wx !== "undefined";
-    if (inMiniGame) {
-      WX = wx;
+    if (import_env.ALIPAY) {
+      globalThis.wx = my;
+      API = my;
+      console.warn("\u652F\u4ED8\u5B9D\u5C0F\u6E38\u620F\u5E73\u53F0");
+      inMiniGame = true;
+    } else if (MEITUAN) {
+      globalThis.wx = mt;
+      API = mt;
+      inMiniGame = true;
+    } else if (typeof wx !== "undefined") {
+      API = wx;
+      inMiniGame = true;
     }
     PlatformSDK = {
       inMiniGame,
-      ...WX
-      // 以下是自定义的接口
+      ...API
+      // 以下是自定义的接口    
     };
   }
 });
@@ -415,11 +456,11 @@ __export(UtilsHelper_exports, {
   EPlatform: () => EPlatform,
   UtilsHelper: () => UtilsHelper
 });
-var import_cc, import_env, EPlatform, _UtilsHelper, UtilsHelper;
+var import_cc, import_env2, EPlatform, _UtilsHelper, UtilsHelper;
 var init_UtilsHelper = __esm({
   "assets/scripts/framework/utils/UtilsHelper.ts"() {
     import_cc = require("cc");
-    import_env = require("cc/env");
+    import_env2 = require("cc/env");
     init_PlatformSDK();
     init_CoroutineUtils();
     EPlatform = /* @__PURE__ */ ((EPlatform3) => {
@@ -601,7 +642,7 @@ var init_UtilsHelper = __esm({
         }
       }
       static restart() {
-        if (import_env.DEBUG) {
+        if (import_env2.DEBUG) {
           location.reload();
         } else {
           if (PlatformSDK.inMiniGame) {
@@ -1470,11 +1511,11 @@ function easeFunc(t, d) {
 function distance(x1, y1, x2, y2) {
   return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
-var import_cc5, import_env2, ButtonMode, AutoSizeType, AlignType, VertAlignType, LoaderFillType, ListLayoutType, ListSelectionMode, OverflowType, PackageItemType, ObjectType, ProgressTitleType, ScrollBarDisplayType, ScrollType, FlipType, ChildrenRenderOrder, GroupLayoutType, PopupDirection, RelationType, FillMethod, FillOrigin, ObjectPropID, BlendMode, BlendModeUtils, factors, Event, eventPool, EaseType, GearBase, GearTweenConfig, GearAnimation, GearColor, GearDisplay, GearDisplay2, GearFontSize, GearIcon, Pool, _PiOver2, _TwoPi, TweenValue, s_vec2$5, GTweener, TweenManager, _activeTweens, _tweenerPool, _totalActiveTweens, _root, GTween, GearLook, GearSize, GearText, GearXY, RelationItem, RelationDef, Relations, UIConfig, _fontRegistry, GObject, GObjectPartner, GearClasses, s_vec2$4, s_vec3$1, s_rect$1, sGlobalDragStart, sGlobalRect, s_dragging, s_dragQuery, Decls$1, constructingDepth, GGroup, GGraph, Image, GImage, MovieClip, GMovieClip, UIContentScaler, RefMannager, PackageItem, TranslationHelper, ByteBuffer, PixelHitTest, PixelHitTestData, ChildHitArea, __awaiter$1, PathUtils, UIPackage, ItemTypeToAssetType, _instById, _instByName, _branch, _vars, Decls, UBBParser, defaultParser, GTextField, __awaiter, RichTextImageAtlas, imageAtlas, GRichTextField, InputProcessor, TouchInfo, s_vec3, s_vec3_2, ControllerAction, PlayTransitionAction, ChangePageAction, _nextPageId, Controller, Margin, ScrollPane, _gestureFlag, TWEEN_TIME_GO, TWEEN_TIME_DEFAULT, PULL_RATIO, s_vec2$3, s_rect, sEndPos, sOldChange, CurveType, GPathPoint, GPath, Transition, OPTION_IGNORE_DISPLAY_CONTROLLER, OPTION_AUTO_STOP_DISABLED, OPTION_AUTO_STOP_AT_END, ActionType, Item, TweenConfig, GComponent, s_vec2$2, Window, GRoot, GTextInput, MyEditBox, GObjectPool, SpritePool, GLoader, GLoader3D, GLabel, GButton, GList, s_n, GComboBox, GSlider, s_vec2$1, GProgressBar, GScrollBar, s_vec2, GTreeNode, GTree, s_list, UIObjectFactory;
+var import_cc5, import_env3, ButtonMode, AutoSizeType, AlignType, VertAlignType, LoaderFillType, ListLayoutType, ListSelectionMode, OverflowType, PackageItemType, ObjectType, ProgressTitleType, ScrollBarDisplayType, ScrollType, FlipType, ChildrenRenderOrder, GroupLayoutType, PopupDirection, RelationType, FillMethod, FillOrigin, ObjectPropID, BlendMode, BlendModeUtils, factors, Event, eventPool, EaseType, GearBase, GearTweenConfig, GearAnimation, GearColor, GearDisplay, GearDisplay2, GearFontSize, GearIcon, Pool, _PiOver2, _TwoPi, TweenValue, s_vec2$5, GTweener, TweenManager, _activeTweens, _tweenerPool, _totalActiveTweens, _root, GTween, GearLook, GearSize, GearText, GearXY, RelationItem, RelationDef, Relations, UIConfig, _fontRegistry, GObject, GObjectPartner, GearClasses, s_vec2$4, s_vec3$1, s_rect$1, sGlobalDragStart, sGlobalRect, s_dragging, s_dragQuery, Decls$1, constructingDepth, GGroup, GGraph, Image, GImage, MovieClip, GMovieClip, UIContentScaler, RefMannager, PackageItem, TranslationHelper, ByteBuffer, PixelHitTest, PixelHitTestData, ChildHitArea, __awaiter$1, PathUtils, UIPackage, ItemTypeToAssetType, _instById, _instByName, _branch, _vars, Decls, UBBParser, defaultParser, GTextField, __awaiter, RichTextImageAtlas, imageAtlas, GRichTextField, InputProcessor, TouchInfo, s_vec3, s_vec3_2, ControllerAction, PlayTransitionAction, ChangePageAction, _nextPageId, Controller, Margin, ScrollPane, _gestureFlag, TWEEN_TIME_GO, TWEEN_TIME_DEFAULT, PULL_RATIO, s_vec2$3, s_rect, sEndPos, sOldChange, CurveType, GPathPoint, GPath, Transition, OPTION_IGNORE_DISPLAY_CONTROLLER, OPTION_AUTO_STOP_DISABLED, OPTION_AUTO_STOP_AT_END, ActionType, Item, TweenConfig, GComponent, s_vec2$2, Window, GRoot, GTextInput, MyEditBox, GObjectPool, SpritePool, GLoader, GLoader3D, GLabel, GButton, GList, s_n, GComboBox, GSlider, s_vec2$1, GProgressBar, GScrollBar, s_vec2, GTreeNode, GTree, s_list, UIObjectFactory;
 var init_fairygui = __esm({
   "node_modules/fairygui-cc/dist/fairygui.mjs"() {
     import_cc5 = require("cc");
-    import_env2 = require("cc/env");
+    import_env3 = require("cc/env");
     (function(ButtonMode2) {
       ButtonMode2[ButtonMode2["Common"] = 0] = "Common";
       ButtonMode2[ButtonMode2["Check"] = 1] = "Check";
@@ -12826,14 +12867,14 @@ var init_fairygui = __esm({
         this._inputProcessor = this.node.addComponent(InputProcessor);
         this._inputProcessor._captureCallback = this.onTouchBegin_1;
         import_cc5.View.instance.on("design-resolution-changed", this.onWinResize, this);
-        if (!import_env2.EDITOR) {
+        if (!import_env3.EDITOR) {
           import_cc5.View.instance.on("canvas-resize", this._thisOnResized);
           window.addEventListener("orientationchange", this._thisOnResized);
         }
       }
       onDestroy() {
         import_cc5.View.instance.off("design-resolution-changed", this.onWinResize, this);
-        if (!import_env2.EDITOR) {
+        if (!import_env3.EDITOR) {
           import_cc5.View.instance.off("canvas-resize", this._thisOnResized);
           window.removeEventListener("orientationchange", this._thisOnResized);
         }
@@ -13625,10 +13666,10 @@ var init_fairygui = __esm({
           if (asset instanceof import_cc5.SpriteFrame)
             this.onExternalLoadSuccess(asset);
           else if (asset instanceof import_cc5.Texture2D) {
-            let sp4 = SpritePool.alloc();
-            sp4.texture = asset;
-            assets.push(sp4);
-            this.onExternalLoadSuccess(sp4);
+            let sp6 = SpritePool.alloc();
+            sp6.texture = asset;
+            assets.push(sp6);
+            this.onExternalLoadSuccess(sp6);
           } else if (asset instanceof import_cc5.ImageAsset) {
             let tex = new import_cc5.Texture2D();
             if (import_cc5.sys.isNative) {
@@ -13640,11 +13681,11 @@ var init_fairygui = __esm({
               });
               tex.uploadData(asset.data);
             }
-            let sp4 = SpritePool.alloc();
-            sp4.texture = tex;
+            let sp6 = SpritePool.alloc();
+            sp6.texture = tex;
             assets.push(tex);
-            assets.push(sp4);
-            this.onExternalLoadSuccess(sp4);
+            assets.push(sp6);
+            this.onExternalLoadSuccess(sp6);
           }
           this.addExternalAssetRef(this._url, assets);
         };
@@ -18345,12 +18386,12 @@ var GameSettings_exports = {};
 __export(GameSettings_exports, {
   GameSettings: () => GameSettings
 });
-var import_env3, import_cc6, _GameSettings, GameSettings;
+var import_env4, import_cc6, _GameSettings, GameSettings;
 var init_GameSettings = __esm({
   "assets/scripts/framework/GameSettings.ts"() {
-    import_env3 = require("cc/env");
+    import_env4 = require("cc/env");
     import_cc6 = require("cc");
-    init_ResManager();
+    init_ResManager2();
     _GameSettings = class _GameSettings {
       static getValue(key) {
         return this.datas[key];
@@ -18380,12 +18421,12 @@ var init_GameSettings = __esm({
        * @returns 
        */
       static resetRemoveServer(configVersion) {
-        if (import_env3.HTML5 && import_env3.PREVIEW) {
+        if (import_env4.HTML5 && import_env4.PREVIEW) {
           console.log("HTML5\u4E0D\u9700\u8981\u91CD\u7F6E\u8FDC\u7A0B\u670D\u52A1\u5668\u5730\u5740");
           return;
         }
         let downloader = import_cc6.assetManager.downloader;
-        if (!import_env3.PREVIEW) {
+        if (!import_env4.PREVIEW) {
           if (!window["configVersion"] && configVersion) {
             const versionCfg = configVersion;
             if (versionCfg && versionCfg.configVersion) {
@@ -18426,10 +18467,10 @@ var AcitivityProxyManager_exports = {};
 __export(AcitivityProxyManager_exports, {
   ActivityProxyManager: () => ActivityProxyManager
 });
-var import_env4, _ActivityProxyManager, ActivityProxyManager;
+var import_env5, _ActivityProxyManager, ActivityProxyManager;
 var init_AcitivityProxyManager = __esm({
   "assets/scripts/framework/activity/proxy/AcitivityProxyManager.ts"() {
-    import_env4 = require("cc/env");
+    import_env5 = require("cc/env");
     _ActivityProxyManager = class _ActivityProxyManager {
       constructor() {
         this._proxyList = [];
@@ -18470,7 +18511,7 @@ var init_AcitivityProxyManager = __esm({
       setEnable(name, enable) {
         let proxy = this._proxyMap[name];
         if (!proxy) {
-          if (import_env4.EDITOR) {
+          if (import_env5.EDITOR) {
             console.error(`\u672A\u6CE8\u518Cproxy=${name}`);
           }
           return;
@@ -18691,34 +18732,39 @@ var init_SkinHelper = __esm({
       }
       static initial() {
         for (let info of this._bindingInfos) {
-          this.bindingSkin(info.type, info.uiPackage, info.componentName, info.data, info.isWindow, info.autoWarpper);
+          this.bindingSkin(info.type, info.uiPackage, info.componentName, info.data, info.isWindow, info.autoWarpper, info.optional);
         }
         this._bindingInfos.length = 0;
       }
-      static preBindingSkin(type, uiPackage, componentName, data, isWindow, autoWarpper) {
+      static preBindingSkin(type, uiPackage, componentName, data, isWindow, autoWarpper, optional) {
         let bindingInfo = {
           type,
           uiPackage,
           componentName,
           data,
           isWindow,
-          autoWarpper
+          autoWarpper,
+          optional
         };
         this._bindingInfos.push(bindingInfo);
       }
-      static bindingSkin(type, uiPackage, componentName, data, isWindow, autoWarpper) {
+      static bindingSkin(type, uiPackage, componentName, data, isWindow, autoWarpper, optional) {
         let info = this.getUIPackage(uiPackage);
         if (!info) {
-          console.error(`UI\u5305 ${uiPackage} \u672A\u7ED1\u5B9A`);
+          if (!optional) {
+            console.error(`UI\u5305 ${uiPackage},\u4F7F\u7528\u7EC4\u4EF6\uFF1A${componentName}`);
+          }
           return;
         }
         let preifx = info.path ? `${info.path}/` : "";
         Skin.bindSkin(type, new Skin(`${preifx}${uiPackage}`, uiPackage, componentName, data, isWindow, autoWarpper, info.abName));
       }
-      static preloadUIPackage(uiPackage, progress) {
+      static preloadUIPackage(uiPackage, progress, optional) {
         let info = this.getUIPackage(uiPackage);
         if (!info) {
-          console.error(`UI\u5305 ${uiPackage} \u672A\u7ED1\u5B9A`);
+          if (!optional) {
+            console.error(`UI\u5305 ${uiPackage}`);
+          }
           return;
         }
         let preifx = info.path ? `${info.path}/` : "";
@@ -18737,9 +18783,9 @@ var init_SkinHelper = __esm({
           return null;
         }
       }
-      static InjectSkin(skin, view5) {
+      static InjectSkin(skin, view7) {
         let go = FGUIExt.createObject(skin);
-        _SkinHelper.InjectView(go, view5);
+        _SkinHelper.InjectView(go, view7);
       }
       static IsGLoader(type) {
         if (type == GLoader) {
@@ -18792,24 +18838,24 @@ var init_SkinHelper = __esm({
         }
         return false;
       }
-      static InjectView(component, view5) {
-        view5 = view5 || component;
-        if (!view5) {
+      static InjectView(component, view7) {
+        view7 = view7 || component;
+        if (!view7) {
           return;
         }
-        if (view5.registInfos) {
-          view5.registInfos();
+        if (view7.registInfos) {
+          view7.registInfos();
         }
-        if (!view5.injectInfos && !view5.__injectInfos) {
+        if (!view7.injectInfos && !view7.__injectInfos) {
           return;
         }
-        component["__docker__"] = view5;
+        component["__docker__"] = view7;
         let injectInfos = {
-          ...view5.__injectInfos || {},
-          ...view5.injectInfos || {}
+          ...view7.__injectInfos || {},
+          ...view7.injectInfos || {}
         };
         for (let field in injectInfos) {
-          let f = view5[field];
+          let f = view7[field];
           let t = typeof f;
           if (f instanceof Function || t == "boolean" || t == "string" || t == "number") {
             continue;
@@ -18926,23 +18972,23 @@ var init_SkinHelper = __esm({
             }
           }
           if (go) {
-            if (type && !view5[field] && !_SkinHelper.IsFGUIObject(type)) {
+            if (type && !view7[field] && !_SkinHelper.IsFGUIObject(type)) {
               var obj = new type();
-              view5[field] = obj;
+              view7[field] = obj;
             }
-            if (view5[field] == null) {
-              view5[field] = go;
+            if (view7[field] == null) {
+              view7[field] = go;
               _SkinHelper.checkButtionAnimation(go, false);
               if (_SkinHelper.IsController(type)) {
                 var loader = go;
                 let comp = _SkinHelper.IsGLoader(go.constructor) && loader.component ? loader.component : go.asCom;
                 if (endIndex >= 0) {
-                  view5[field] = comp.getControllerAt(endIndex);
+                  view7[field] = comp.getControllerAt(endIndex);
                   if (!hasCache) {
                     indices.push(endIndex);
                   }
                 } else {
-                  view5[field] = comp.getController(endName);
+                  view7[field] = comp.getController(endName);
                   if (!hasCache) {
                     for (let i = 0; i < comp.controllers.length; i++) {
                       if (comp.controllers[i].name == endName) {
@@ -18955,12 +19001,12 @@ var init_SkinHelper = __esm({
                 var loader = go;
                 let comp = _SkinHelper.IsGLoader(go.constructor) && loader.component ? loader.component : go.asCom;
                 if (endIndex >= 0) {
-                  view5[field] = comp.getTransitionAt(endIndex);
+                  view7[field] = comp.getTransitionAt(endIndex);
                   if (!hasCache) {
                     indices.push(endIndex);
                   }
                 } else {
-                  view5[field] = comp.getTransition(endName);
+                  view7[field] = comp.getTransition(endName);
                   if (!hasCache) {
                     for (let i = 0; i < comp._transitions.length; i++) {
                       if (comp._transitions[i].name == endName) {
@@ -18970,19 +19016,19 @@ var init_SkinHelper = __esm({
                   }
                 }
               }
-            } else if (view5[field].inject instanceof Function) {
+            } else if (view7[field].inject instanceof Function) {
               _SkinHelper.checkButtionAnimation(go, false);
-              view5[field].injectSource = view5;
-              view5[field].inject(go, data);
+              view7[field].injectSource = view7;
+              view7[field].inject(go, data);
               if (!hasCache) {
                 this.cacheView(field, indices, component.resourceURL);
               }
-              if (view5.addView) {
-                view5.addView(view5[field]);
+              if (view7.addView) {
+                view7.addView(view7[field]);
               }
             }
-          } else if (!go && !view5[field]) {
-            let info = "can not find view in " + typeof view5 + " with path:" + names.join("-");
+          } else if (!go && !view7[field]) {
+            let info = "can not find view in " + typeof view7 + " with path:" + names.join("-");
             if (!optional) {
               console.error(info);
             } else {
@@ -19031,17 +19077,20 @@ var init_SkinHelper = __esm({
       static addButtonCommonAnimation(button) {
         _SkinHelper.checkButtionAnimation(button);
       }
-      static createAndInjectByUrl(type, url, parent, data) {
+      static createAndInjectByUrl(type, url, parent, data, show = true) {
         const comp = UIPackage.createObjectFromURL(url);
-        return _SkinHelper.createAndInject(type, comp, parent, data);
+        return _SkinHelper.createAndInject(type, comp, parent, data, show);
       }
-      static createAndInject(type, comp, parent, data) {
-        const view5 = new type();
-        view5.inject(comp);
-        view5.injectSource = parent;
-        parent == null ? void 0 : parent.addView(view5);
-        view5.show(data, false);
-        return view5;
+      static createAndInject(type, comp, parent, data, show = true) {
+        const view7 = new type();
+        view7.inject(comp);
+        view7.injectSource = parent;
+        parent == null ? void 0 : parent.addView(view7);
+        comp.data = view7;
+        if (show) {
+          view7.show(data, false);
+        }
+        return view7;
       }
     };
     _SkinHelper.regex = /\[\d+\]$/g;
@@ -19249,26 +19298,26 @@ var init_BaseActivityProxy = __esm({
       }
       onCreateView() {
         if (!this.enterView && (this.enterViewComponent || this.context.enterView) && this.enterViewType) {
-          let view5 = this.context.enterView;
-          if (!view5) {
+          let view7 = this.context.enterView;
+          if (!view7) {
             let pkgName = this.ctrl.config.pkgName;
             if (this._holder instanceof GLoader) {
               let url = UIPackage.getItemURL(pkgName, this.enterViewComponent);
               this._holder.url = url;
-              view5 = this._holder.component;
+              view7 = this._holder.component;
             } else {
-              view5 = UIPackage.createObject(pkgName, this.enterViewComponent);
+              view7 = UIPackage.createObject(pkgName, this.enterViewComponent);
               if (this.context.indexInList >= 0) {
-                this._holder.addChildAt(view5, this.context.indexInList);
+                this._holder.addChildAt(view7, this.context.indexInList);
               } else {
-                this._holder.addChild(view5);
+                this._holder.addChild(view7);
               }
             }
           } else {
-            view5.visible = true;
+            view7.visible = true;
           }
           this.enterView = new this.enterViewType();
-          this.enterView.inject(view5);
+          this.enterView.inject(view7);
           this.enterView.injectSource = this._parent;
           this._parent.addView(this.enterView);
           this.enterView.show(null, false);
@@ -19580,10 +19629,10 @@ __export(Logger_exports, {
   LogLevel: () => LogLevel,
   LogSettings: () => LogSettings
 });
-var import_env5, LogLevel, LogSettings;
+var import_env6, LogLevel, LogSettings;
 var init_Logger = __esm({
   "assets/scripts/framework/common/Logger.ts"() {
-    import_env5 = require("cc/env");
+    import_env6 = require("cc/env");
     LogLevel = /* @__PURE__ */ ((LogLevel2) => {
       LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
       LogLevel2[LogLevel2["INFO"] = 1] = "INFO";
@@ -19595,7 +19644,7 @@ var init_Logger = __esm({
     LogSettings = {
       logLevel: 1 /* INFO */
     };
-    if (!import_env5.DEBUG) {
+    if (!import_env6.DEBUG) {
       const sysLog = console.log;
       const sysWarn = console.warn;
       const sysError = console.error;
@@ -19704,7 +19753,7 @@ var init_Pools = __esm({
     import_cc9 = require("cc");
     init_fairygui();
     init_PoolManager();
-    init_ResManager();
+    init_ResManager2();
     CGPathPoint = class extends GPathPoint {
       createFromPool(data) {
       }
@@ -19774,21 +19823,22 @@ var SoundManager_exports = {};
 __export(SoundManager_exports, {
   SoundManager: () => SoundManager
 });
-var import_cc10, import_env6, _SoundManager, SoundManager;
+var import_cc10, import_env7, _SoundManager, SoundManager;
 var init_SoundManager = __esm({
   "assets/scripts/framework/common/SoundManager.ts"() {
     import_cc10 = require("cc");
-    import_env6 = require("cc/env");
+    import_env7 = require("cc/env");
     init_fairygui();
     _SoundManager = class _SoundManager {
       constructor() {
         this.audioFinder = null;
         this.musicVolume = 1;
         this.soundVolume = 1;
+        this._loopSoundCount = 0;
         this._persistRootNode = new import_cc10.Node("SoundManager");
         import_cc10.game.addPersistRootNode(this._persistRootNode);
         let isPlayAudio = true;
-        if (import_env6.JSB) {
+        if (import_env7.JSB) {
           isPlayAudio = import_cc10.native.reflection.callStaticMethod("com/cocos/game/AppActivity", "isPlayAudio", "()Z");
         }
         this.isPlayAudio = isPlayAudio;
@@ -19800,9 +19850,13 @@ var init_SoundManager = __esm({
         return this._instance;
       }
       async playAudio(name, loop, source) {
+        if (!source) return;
         let clip = await this.audioFinder(name);
         if (!clip) {
           console.error(`\u97F3\u9891\u6587\u4EF6${name}\u4E0D\u5B58\u5728`);
+          return;
+        }
+        if (loop && source.clip === clip && source.playing) {
           return;
         }
         source.stop();
@@ -19834,6 +19888,30 @@ var init_SoundManager = __esm({
         this.sound = this.sound || this._persistRootNode.addComponent(import_cc10.AudioSource);
         await this.playAudio(name, false, this.sound);
       }
+      async playLoopSound(name) {
+        if (!this.soundVolume) {
+          return;
+        }
+        if (this._currentLoopSound == name) {
+          this._loopSoundCount++;
+          return;
+        }
+        this._currentLoopSound = name;
+        this._loopSoundCount = 1;
+        this.loopSound = this.loopSound || this._persistRootNode.addComponent(import_cc10.AudioSource);
+        await this.playAudio(name, true, this.loopSound);
+      }
+      stopLoopSound(force = false) {
+        if (this.loopSound) {
+          if (!force && this._loopSoundCount > 1) {
+            this._loopSoundCount--;
+            return;
+          }
+          this._currentLoopSound = null;
+          this._loopSoundCount = 0;
+          this.loopSound.stop();
+        }
+      }
       /**
        * 播放音效
        * @param clip 
@@ -19848,24 +19926,36 @@ var init_SoundManager = __esm({
         this.sound.loop = false;
         this.sound.playOneShot(clip);
       }
-      setVolume(flag, source) {
-        source.volume = flag;
-        if (flag > 0) {
+      setVolume(volume, source) {
+        if (!source) return;
+        source.volume = volume;
+        if (volume > 0) {
           if (source && !source.playing) {
             source.play();
           }
         } else {
           if (source && source.playing) {
-            source.stop();
+            source.pause();
           }
         }
       }
       setMusicVolume(volume) {
         this.musicVolume = volume;
         this.music && this.setVolume(volume, this.music);
+        console.log("setMusicVolume", volume);
       }
       setSoundVolume(volume) {
         this.soundVolume = volume;
+      }
+      //看广告时先将音乐暂停
+      pauseAll() {
+        this.setVolume(0, this.music);
+      }
+      resumeAll() {
+        if (this.musicVolume == 0) {
+          return;
+        }
+        this.setVolume(this.musicVolume, this.music);
       }
     };
     _SoundManager._instance = null;
@@ -19883,7 +19973,7 @@ var StorageManager_exports = {};
 __export(StorageManager_exports, {
   StorageManager: () => StorageManager
 });
-var import_cc11, Storage, _StorageManager, StorageManager;
+var import_cc11, Storage, StorageManager;
 var init_StorageManager = __esm({
   "assets/scripts/framework/common/StorageManager.ts"() {
     import_cc11 = require("cc");
@@ -19972,13 +20062,13 @@ var init_StorageManager = __esm({
         if (!import_cc11.sys.isNative) {
           var ls = import_cc11.sys.localStorage;
           ls.setItem(this._file, zipStr);
-          return;
+          return true;
         }
         import_cc11.native.fileUtils.writeStringToFile(this._file, zipStr);
         return true;
       }
     };
-    _StorageManager = class _StorageManager {
+    StorageManager = class {
       constructor() {
         this._saveInterval = 5;
         //s
@@ -19995,10 +20085,7 @@ var init_StorageManager = __esm({
         if (this._timer >= this._saveInterval) {
           this._timer = 0;
           if (this._dirty) {
-            let saved = this._storage.save();
-            if (this._fireEvent) {
-              _StorageManager.anyItemSaved.fire(this._storage.file);
-            }
+            let saved = this._storage.save(this._fireEvent);
             if (saved) {
               this._dirty = false;
               this._fireEvent = true;
@@ -20019,18 +20106,18 @@ var init_StorageManager = __esm({
       easySave() {
         this._dirty = true;
       }
-      setData(data) {
+      setData(data, fireEvent = true) {
         this._storage.setData(data);
         this._dirty = true;
+        this._fireEvent = fireEvent;
       }
       setKV(key, value) {
         this._storage.setKV(key, value);
         this._dirty = true;
       }
     };
-    _StorageManager.anyItemSaved = new EventHandler();
-    _StorageManager.enableSave = true;
-    StorageManager = _StorageManager;
+    StorageManager.anyItemSaved = new EventHandler();
+    StorageManager.enableSave = true;
   }
 });
 
@@ -20077,7 +20164,14 @@ var init_TaskManager = __esm({
       }
       async runParallel(progress, thisObj) {
         let weight = 0;
-        let tasks = this._tasks.map((task) => this.runTask(task, weight, progress, thisObj));
+        let tasks = [];
+        for (let task of this._tasks) {
+          tasks.push(this.runTask(task, 0, () => {
+            weight += task.weight;
+            let pp = weight / this._totalWeight;
+            progress == null ? void 0 : progress.call(thisObj, pp);
+          }, thisObj));
+        }
         let totalTime = Date.now();
         let results = await Promise.all(tasks);
         console.log(`TM:${this.name} total cost ${Date.now() - totalTime}ms`);
@@ -20477,24 +20571,6 @@ var init_md5 = __esm({
   }
 });
 
-// assets/scripts/framework/macro.ts
-var macro_exports = {};
-__export(macro_exports, {
-  ALIPAY: () => ALIPAY,
-  MEITUAN: () => MEITUAN,
-  PIAP: () => PIAP,
-  WECHAT: () => WECHAT
-});
-var WECHAT, MEITUAN, PIAP, ALIPAY;
-var init_macro = __esm({
-  "assets/scripts/framework/macro.ts"() {
-    WECHAT = false;
-    MEITUAN = false;
-    PIAP = false;
-    ALIPAY = false;
-  }
-});
-
 // assets/scripts/framework/modules/Bridge.ts
 var Bridge_exports = {};
 __export(Bridge_exports, {
@@ -20589,7 +20665,7 @@ var init_BaseController = __esm({
       }
       update(dt) {
         if (this.dao) {
-          this.dao.save();
+          this.dao.checkSave();
           this.dao.update(dt);
         }
         this.onUpdate(dt);
@@ -20917,6 +20993,13 @@ var init_StringUtils = __esm({
         }
         return 0;
       }
+      static padding(num, len, char = "0") {
+        let str = num.toString();
+        while (str.length < len) {
+          str = char + str;
+        }
+        return str;
+      }
       static format(source, ...params) {
         if (!source) {
           return source;
@@ -21148,7 +21231,7 @@ var init_BaseDAO = __esm({
           if (this.storageValidKey) {
             Bridge.secertCtrl.setValidKey(this._model, this.storageValidKey);
           }
-          this._storage.setData(this._model);
+          this._storage.setData(this._model, fireEvent);
           if (now) {
             this._storage.saveNow(fireEvent);
           }
@@ -21176,12 +21259,24 @@ var init_BaseDAO = __esm({
         this.save(true, true, fireEvent);
       }
       save(focus, now = false, fireEvent = true) {
+        this.dirty = true;
+        this.serverDirty = true;
         if (this.storageKey) {
           this.saveData(focus, now, fireEvent);
         } else if (this._owner) {
           this.saveTo(this._owner, this._keys);
         }
         this.dirty = false;
+      }
+      checkSave() {
+        if (this.dirty) {
+          if (this.storageKey) {
+            this.saveData(false, false, true);
+          } else if (this._owner) {
+            this.saveTo(this._owner, this._keys);
+          }
+          this.dirty = false;
+        }
       }
       serialize() {
         if (this.modelName) {
@@ -21447,7 +21542,7 @@ var init_SystemController = __esm({
         let h = this.getH();
         if (this._checkH != h) {
           this._checkH = h;
-          EventCenter.I.emit(_SystemController.SYSTEM_CROSS_HOUR);
+          EventCenter.I.emit(_SystemController.SYSTEM_CROSS_HOUR, h);
         }
       }
       onUpdate(dt) {
@@ -21467,11 +21562,11 @@ var ControllerManager_exports = {};
 __export(ControllerManager_exports, {
   ControllerManager: () => ControllerManager
 });
-var import_cc12, import_env7, ControllerManager;
+var import_cc12, import_env8, ControllerManager;
 var init_ControllerManager = __esm({
   "assets/scripts/framework/modules/ControllerManager.ts"() {
     import_cc12 = require("cc");
-    import_env7 = require("cc/env");
+    import_env8 = require("cc/env");
     init_StorageManager();
     init_SecretController();
     init_SystemController();
@@ -21542,7 +21637,7 @@ var init_ControllerManager = __esm({
         }
         import_cc12.director.pause();
         localStorage.clear();
-        if (import_env7.DEBUG) {
+        if (import_env8.DEBUG) {
           location.reload();
         } else {
           import_cc12.game.end();
@@ -21854,25 +21949,143 @@ var init_ccc_pref_renderer = __esm({
   }
 });
 
-// assets/scripts/framework/platform/Platform.ts
-var Platform_exports = {};
-__export(Platform_exports, {
+// assets/scripts/framework/platform/AlipayAdapter.ts
+var AlipayAdapter_exports = {};
+var init_AlipayAdapter = __esm({
+  "assets/scripts/framework/platform/AlipayAdapter.ts"() {
+    init_macro();
+    init_PlatformSDK();
+    if (ALIPAY && typeof my !== "undefined") {
+      if (my.env.iOSHighPerformance) {
+        console.log("iOSHighPerformance Enabled");
+      } else {
+        console.log("iOSHighPerformance Disabled");
+      }
+      PlatformSDK.createRewardedVideoAd = function(options) {
+        return my.createRewardedAd(options);
+      };
+      PlatformSDK.createBannerAd = function(options) {
+        return my.createGameBanner(options);
+      };
+      PlatformSDK.onShareAppMessage = function(option) {
+        my.onShareAppMessage = function() {
+          return option;
+        };
+      };
+      PlatformSDK.shareAppMessage = function(option) {
+        my.onShareAppMessage = function() {
+          return option;
+        };
+        return my.showSharePanel({
+          success: () => {
+            var _a;
+            (_a = option.success) == null ? void 0 : _a.call(option);
+          },
+          fail: () => {
+            var _a;
+            (_a = option.fail) == null ? void 0 : _a.call(option);
+          },
+          complete: (e) => {
+            console.log(e);
+          }
+        });
+      };
+      PlatformSDK.showShareMenu = function(option) {
+        return my.onShareAppMessage(() => option);
+      };
+      PlatformSDK.login = function(option) {
+        return my.getAuthCode({
+          scopes: "auth_base",
+          success: (res) => {
+            var _a;
+            (_a = option.success) == null ? void 0 : _a.call(option, res);
+          },
+          fail: (err) => {
+            var _a;
+            (_a = option.fail) == null ? void 0 : _a.call(option, err);
+          }
+        });
+      };
+      PlatformSDK.createCustomAd = function(options) {
+        return my.createBannerAd(options);
+      };
+      PlatformSDK.createBannerAd = function(options) {
+        return my.createBannerAd(options);
+      };
+    }
+  }
+});
+
+// assets/scripts/framework/platform/ShareMonitor.ts
+var ShareMonitor_exports = {};
+__export(ShareMonitor_exports, {
+  ShareMonitor: () => ShareMonitor
+});
+var ShareMonitor;
+var init_ShareMonitor = __esm({
+  "assets/scripts/framework/platform/ShareMonitor.ts"() {
+    ShareMonitor = class {
+      static get isEnable() {
+        return this._isEnable;
+      }
+      static _initial() {
+        if (this._initialized) {
+          return;
+        }
+        this._initialized = true;
+        this._isEnable = typeof wx !== "undefined";
+        if (!this._isEnable) {
+          return;
+        }
+        wx.onShow(() => {
+          this._endTime = Date.now();
+          let time = this._endTime - this._startTime;
+          if (time >= this.shareMonitorTime) {
+            this._options.success && this._options.success();
+          } else {
+            this._options.fail && this._options.fail();
+          }
+          this._startTime = 0;
+          this._endTime = 0;
+          this._options = {};
+        });
+        wx.onHide(() => {
+          this._startTime = Date.now();
+        });
+      }
+      static bind(options) {
+        this._initial();
+        this._options = options;
+      }
+    };
+    ShareMonitor.shareMonitorTime = 1e3;
+    ShareMonitor._isEnable = false;
+    ShareMonitor._initialized = false;
+    ShareMonitor._startTime = 0;
+    ShareMonitor._endTime = 0;
+  }
+});
+
+// assets/scripts/framework/platform/PlatformHelper.ts
+var PlatformHelper_exports = {};
+__export(PlatformHelper_exports, {
   EPlatform: () => EPlatform2,
   PlatformHelper: () => PlatformHelper
 });
-var import_env8, EPlatform2, _PlatformHelper, PlatformHelper;
-var init_Platform = __esm({
-  "assets/scripts/framework/platform/Platform.ts"() {
-    import_env8 = require("cc/env");
+var import_env9, EPlatform2, PlatformHelper;
+var init_PlatformHelper = __esm({
+  "assets/scripts/framework/platform/PlatformHelper.ts"() {
+    import_env9 = require("cc/env");
     init_macro();
     init_PlatformSDK();
+    init_ShareMonitor();
     EPlatform2 = /* @__PURE__ */ ((EPlatform3) => {
       EPlatform3["WECHAT"] = "WECHAT";
       EPlatform3["MEITUAN"] = "MEITUAN";
       EPlatform3["ALIPAY"] = "ALIPAY";
       return EPlatform3;
     })(EPlatform2 || {});
-    _PlatformHelper = class _PlatformHelper {
+    PlatformHelper = class {
       static get isEnable() {
         return this._isEnable;
       }
@@ -21885,18 +22098,27 @@ var init_Platform = __esm({
       static get isAlipay() {
         return this.platform === "ALIPAY" /* ALIPAY */;
       }
+      static get rewardVideoAd() {
+        return this._rewardVideoAd;
+      }
       static isMiniGame() {
         return this.platform === "WECHAT" /* WECHAT */ || this.platform === "MEITUAN" /* MEITUAN */ || this.platform === "ALIPAY" /* ALIPAY */;
       }
       static initial(config) {
         this._isEnable = typeof wx !== "undefined";
         if (!this._isEnable) {
+          console.log("\u5C0F\u6E38\u620FSDK\u672A\u521D\u59CB\u5316");
           return;
         }
+        console.log("\u5C0F\u6E38\u620FSDK\u521D\u59CB\u5316");
         this._rewardVideoAd = PlatformSDK.createRewardedVideoAd({
           adUnitId: config.rewardVideoAdUnitId
         });
-        this._rewardVideoAd.load();
+        this._rewardVideoAd.onError(this._onVideoAdError.bind(this));
+        this._rewardVideoAd.onClose(this._onVideoClose.bind(this));
+        setTimeout(() => {
+          this._rewardVideoAd.load();
+        }, 300);
       }
       static login(options) {
         var _a;
@@ -21919,18 +22141,19 @@ var init_Platform = __esm({
         PlatformSDK.shareAppMessage({
           title: options.title,
           imageUrl: options.imageUrl,
-          query: options.query
+          imageUrlId: options.imageUrlId,
+          query: options.query,
+          // @ts-ignore
+          success: options.success,
+          fail: options.fail
         });
-        const moniterTime = options.enableMonitor === false ? 0 : _PlatformHelper.shareMonitorTime;
-        if (moniterTime > 0) {
-          setTimeout(() => {
+        if (!ALIPAY) {
+          if (options.enableMonitor !== false) {
+            ShareMonitor.bind(options);
+          } else {
             if (options.success) {
               options.success();
             }
-          }, moniterTime * 1e3);
-        } else {
-          if (options.success) {
-            options.success();
           }
         }
       }
@@ -21944,34 +22167,169 @@ var init_Platform = __esm({
         this._rewardVideoAd.load().then(() => {
           this._rewardVideoAd.show().then(() => {
             console.log("\u6FC0\u52B1\u89C6\u9891 \u5E7F\u544A\u663E\u793A");
-            if (options.success) {
-              options.success();
-            }
+            this._adVideoOptions = options;
           }).catch(() => {
             console.log("\u6FC0\u52B1\u89C6\u9891 \u5E7F\u544A\u663E\u793A\u5931\u8D25");
             if (options.fail) {
               options.fail();
             }
           });
-        }).catch(() => {
-          console.log("\u6FC0\u52B1\u89C6\u9891 \u5E7F\u544A\u52A0\u8F7D\u5931\u8D25");
+        }).catch((err) => {
+          console.log("\u6FC0\u52B1\u89C6\u9891 \u5E7F\u544A\u52A0\u8F7D\u5931\u8D25,", err);
           if (options.fail) {
             options.fail();
           }
         });
       }
+      static _onVideoAdError() {
+        console.log("\u6FC0\u52B1\u89C6\u9891 \u5E7F\u544A\u52A0\u8F7D\u5931\u8D25");
+        this._adVideoOptions = null;
+      }
+      static _onVideoClose(res) {
+        const options = this._adVideoOptions;
+        if (res && res.isEnded) {
+          options.success && options.success();
+        } else {
+          options.fail && options.fail();
+        }
+        this._adVideoOptions = null;
+      }
+      static onShareAppMessage(callback) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.onShareAppMessage(callback);
+      }
+      static offShareAppMessage(callback) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.offShareAppMessage(callback);
+      }
+      static showShareMenu(opt) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.showShareMenu(opt);
+      }
+      static getSetting(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.getSetting(options);
+      }
+      static authorize(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.authorize(options);
+      }
+      static createUserInfoButton(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        return PlatformSDK.createUserInfoButton(options);
+      }
+      static getUserInfo(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.getUserInfo(options);
+      }
+      static getGameClubData(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        PlatformSDK.getGameClubData(options);
+      }
+      static createGameClubButton(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        return PlatformSDK.createGameClubButton(options);
+      }
+      static getSystemInfoSync() {
+        if (!this.isEnable) {
+          return;
+        }
+        return PlatformSDK.getSystemInfoSync();
+      }
+      static createCustomAd(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        return PlatformSDK.createCustomAd(options);
+      }
+      static createBannerAd(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        return PlatformSDK.createBannerAd(options);
+      }
+      static createInterstitialAd(options) {
+        if (!this.isEnable) {
+          return;
+        }
+        return PlatformSDK.createInterstitialAd(options);
+      }
     };
-    _PlatformHelper.platform = "WECHAT" /* WECHAT */;
-    _PlatformHelper.shareMonitorTime = 2;
-    _PlatformHelper._isEnable = false;
-    PlatformHelper = _PlatformHelper;
+    PlatformHelper.platform = "WECHAT" /* WECHAT */;
+    PlatformHelper.shareMonitorTime = 2;
+    PlatformHelper._isEnable = false;
     if (MEITUAN) {
       PlatformHelper.platform = "MEITUAN" /* MEITUAN */;
-    } else if (import_env8.WECHAT) {
+    } else if (import_env9.WECHAT) {
       PlatformHelper.platform = "WECHAT" /* WECHAT */;
-    } else if (import_env8.ALIPAY) {
+    } else if (ALIPAY) {
       PlatformHelper.platform = "ALIPAY" /* ALIPAY */;
     }
+  }
+});
+
+// assets/scripts/framework/platform/PlatformUIHelper.ts
+var PlatformUIHelper_exports = {};
+__export(PlatformUIHelper_exports, {
+  PlatformUIHelper: () => PlatformUIHelper
+});
+var import_cc14, PlatformUIHelper;
+var init_PlatformUIHelper = __esm({
+  "assets/scripts/framework/platform/PlatformUIHelper.ts"() {
+    init_PlatformHelper();
+    import_cc14 = require("cc");
+    init_fairygui();
+    PlatformUIHelper = class {
+      static addGameGroupButton(clubButton) {
+        if (!PlatformHelper.isEnable || !PlatformHelper.isWechat) {
+          return;
+        }
+        var x = clubButton.x;
+        var y = clubButton.y;
+        let sysInfo = PlatformHelper.getSystemInfoSync();
+        let windowSize = import_cc14.view.getVisibleSize();
+        var width = sysInfo.windowWidth * clubButton.width / GRoot.inst.width;
+        var height = sysInfo.windowHeight * clubButton.height / GRoot.inst.height;
+        var leftRatio = x / windowSize.width;
+        var topRatio = y / windowSize.height;
+        var leftPos = sysInfo.windowWidth * leftRatio;
+        var topPos = sysInfo.windowHeight * topRatio;
+        if (clubButton.pivotAsAnchor) {
+          leftPos -= width * clubButton.pivotX;
+          topPos -= height * clubButton.pivotY;
+        }
+        return PlatformHelper.createGameClubButton({
+          type: "text",
+          text: "",
+          // icon: "green",
+          // @ts-ignore      
+          style: {
+            left: leftPos,
+            top: topPos,
+            width,
+            height
+          }
+        });
+      }
+    };
   }
 });
 
@@ -21980,10 +22338,10 @@ var CanvasPool_exports = {};
 __export(CanvasPool_exports, {
   CanvasPool: () => CanvasPool
 });
-var import_cc14, _canvasPool, CanvasPool;
+var import_cc15, _canvasPool, CanvasPool;
 var init_CanvasPool = __esm({
   "assets/scripts/framework/plugins/capture/CanvasPool.ts"() {
-    import_cc14 = require("cc");
+    import_cc15 = require("cc");
     CanvasPool = class _CanvasPool {
       constructor() {
         this.pool = [];
@@ -21997,7 +22355,7 @@ var init_CanvasPool = __esm({
       get() {
         let data = this.pool.pop();
         if (!data) {
-          const canvas = import_cc14.cclegacy._global.window.document.createElement("canvas");
+          const canvas = import_cc15.cclegacy._global.window.document.createElement("canvas");
           const context = canvas.getContext("2d");
           data = {
             canvas,
@@ -22007,7 +22365,7 @@ var init_CanvasPool = __esm({
         return data;
       }
       put(canvas) {
-        if (this.pool.length >= import_cc14.macro.MAX_LABEL_CANVAS_POOL_SIZE) {
+        if (this.pool.length >= import_cc15.macro.MAX_LABEL_CANVAS_POOL_SIZE) {
           return;
         }
         this.pool.push(canvas);
@@ -22021,13 +22379,13 @@ var CaptureHelper_exports = {};
 __export(CaptureHelper_exports, {
   CaptureHelper: () => CaptureHelper
 });
-var import_cc15, canvasPool, versions, mVersion, FLIP_Y_VERSION, CaptureHelper;
+var import_cc16, canvasPool, versions, mVersion, FLIP_Y_VERSION, CaptureHelper;
 var init_CaptureHelper = __esm({
   "assets/scripts/framework/plugins/capture/CaptureHelper.ts"() {
-    import_cc15 = require("cc");
+    import_cc16 = require("cc");
     init_CanvasPool();
     canvasPool = CanvasPool;
-    versions = import_cc15.VERSION.split(".");
+    versions = import_cc16.VERSION.split(".");
     mVersion = parseInt(versions[0]);
     FLIP_Y_VERSION = mVersion != 3 || mVersion == 3 && parseInt(versions[1]) != 6;
     CaptureHelper = class {
@@ -22132,26 +22490,26 @@ var init_CaptureHelper = __esm({
        * @returns 返回数组
        */
       static readTexturePixels(src, rect, buffer) {
-        rect = rect || new import_cc15.Rect(0, 0, src.width, src.height);
+        rect = rect || new import_cc16.Rect(0, 0, src.width, src.height);
         rect.x = Math.floor(rect.x);
         rect.y = Math.floor(rect.y);
         rect.width = Math.floor(rect.width);
         rect.height = Math.floor(rect.height);
         const gfxTexture = src.getGFXTexture();
         if (!gfxTexture) {
-          (0, import_cc15.errorID)(7606);
+          (0, import_cc16.errorID)(7606);
           return null;
         }
         const needSize = 4 * rect.width * rect.height;
         if (buffer === void 0) {
           buffer = new Uint8Array(needSize);
         } else if (buffer.length < needSize) {
-          (0, import_cc15.errorID)(7607, needSize);
+          (0, import_cc16.errorID)(7607, needSize);
           return null;
         }
         const bufferViews = [];
         const regions = [];
-        const region0 = new import_cc15.gfx.BufferTextureCopy();
+        const region0 = new import_cc16.gfx.BufferTextureCopy();
         region0.texOffset.x = rect.x;
         region0.texOffset.y = rect.y;
         region0.texExtent.width = rect.width;
@@ -22187,23 +22545,23 @@ var init_CaptureHelper = __esm({
        * @returns 纹理
        */
       static async capture(target, cam, rect, scale, pos, useRawCamera, flipY = true) {
-        let node = new import_cc15.Node("CaptureCamera");
+        let node = new import_cc16.Node("CaptureCamera");
         cam.node.parent.addChild(node);
         let wpos = cam.node.worldPosition;
         let camera;
         if (useRawCamera) {
           camera = cam;
         } else {
-          let layer = 1 << import_cc15.Layers.nameToLayer("CAPTURE");
+          let layer = 1 << import_cc16.Layers.nameToLayer("CAPTURE");
           if (pos) {
             node.setWorldPosition(pos.x, pos.y, wpos.z);
           } else {
             node.setWorldPosition(wpos.x, wpos.y, wpos.z);
           }
-          camera = node.addComponent(import_cc15.Camera);
+          camera = node.addComponent(import_cc16.Camera);
           camera.node.setWorldScale(cam.node.getWorldScale());
-          camera.clearFlags = import_cc15.gfx.ClearFlagBit.ALL;
-          camera.clearColor = new import_cc15.Color(0, 0, 0, 0);
+          camera.clearFlags = import_cc16.gfx.ClearFlagBit.ALL;
+          camera.clearColor = new import_cc16.Color(0, 0, 0, 0);
           camera.clearDepth = cam.clearDepth;
           camera.clearStencil = cam.clearStencil;
           camera.projection = cam.projection;
@@ -22222,24 +22580,24 @@ var init_CaptureHelper = __esm({
           camera.visibility = layer;
           this.setChildLayer(target, layer);
           await new Promise((resolve) => {
-            import_cc15.director.once(import_cc15.Director.EVENT_BEGIN_FRAME, () => {
+            import_cc16.director.once(import_cc16.Director.EVENT_BEGIN_FRAME, () => {
               resolve(0);
             });
           });
         }
         let camScale;
         if (flipY) {
-          camScale = (0, import_cc15.v3)(camera.node.scale);
+          camScale = (0, import_cc16.v3)(camera.node.scale);
           camera.node.setScale(camScale.x, -camScale.y, camScale.z);
         }
         scale = scale || 1;
-        let rt = new import_cc15.RenderTexture();
-        let size = import_cc15.view.getVisibleSize();
+        let rt = new import_cc16.RenderTexture();
+        let size = import_cc16.view.getVisibleSize();
         rt.reset({ width: size.width * scale, height: size.height * scale });
         camera.targetTexture = rt;
-        import_cc15.director.root.frameMove(0);
+        import_cc16.director.root.frameMove(0);
         let clear = () => {
-          node.destroy();
+          node.dispose();
           camera.targetTexture = null;
           if (flipY) {
             camera.node.setScale(camScale);
@@ -22253,11 +22611,11 @@ var init_CaptureHelper = __esm({
             rect.y = size.height - rect.y - rect.height;
           }
           rect.set(rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
-          let tex2d = new import_cc15.Texture2D();
+          let tex2d = new import_cc16.Texture2D();
           tex2d.reset({
             width: rect.width,
             height: rect.height,
-            format: import_cc15.Texture2D.PixelFormat.RGBA8888,
+            format: import_cc16.Texture2D.PixelFormat.RGBA8888,
             mipmapLevel: 0
           });
           tex2d.uploadData(rt.readPixels(rect.x, rect.y, rect.width, rect.height));
@@ -22278,7 +22636,7 @@ var init_CaptureHelper = __esm({
       static async captureUI2Texture(target, cam, opts) {
         opts = opts || {};
         opts.useRawCamera = opts.useRawCamera ?? true;
-        let utr = target.getComponent(import_cc15.UITransform);
+        let utr = target.getComponent(import_cc16.UITransform);
         let rect = (opts == null ? void 0 : opts.rect) ?? utr.getBoundingBox();
         let width = rect.width;
         let height = rect.height;
@@ -22299,25 +22657,25 @@ var init_CaptureHelper = __esm({
             width = height * opts.aspect;
           }
         }
-        let pos = utr.convertToWorldSpaceAR((0, import_cc15.v3)(-width * utr.anchorX, -height * utr.anchorY, 0));
+        let pos = utr.convertToWorldSpaceAR((0, import_cc16.v3)(-width * utr.anchorX, -height * utr.anchorY, 0));
         let snapPos = null;
         if (!opts.useRawCamera) {
           rect.x = 0;
           rect.y = 0;
-          let size = import_cc15.view.getVisibleSize();
+          let size = import_cc16.view.getVisibleSize();
           pos.x += size.width * 0.5;
           pos.y += size.height * 0.5;
           let ap = size.width / size.height;
-          let policy = import_cc15.view.getResolutionPolicy();
+          let policy = import_cc16.view.getResolutionPolicy();
           let strategy = policy["_contentStrategy"];
           if (strategy && strategy.name == "ShowAll" && ap < 1) {
-            if (import_cc15.sys.platform == import_cc15.sys.Platform.DESKTOP_BROWSER) {
-              pos.y += size.height * (1 - import_cc15.screen.devicePixelRatio) * 0.5;
+            if (import_cc16.sys.platform == import_cc16.sys.Platform.DESKTOP_BROWSER) {
+              pos.y += size.height * (1 - import_cc16.screen.devicePixelRatio) * 0.5;
             } else {
-              pos.y += (import_cc15.view.getViewportRect().height - size.height) * 0.5;
+              pos.y += (import_cc16.view.getViewportRect().height - size.height) * 0.5;
             }
           }
-          snapPos = (0, import_cc15.v2)(pos.x, pos.y);
+          snapPos = (0, import_cc16.v2)(pos.x, pos.y);
         } else {
           rect.x = pos.x;
           rect.y = pos.y;
@@ -22335,22 +22693,22 @@ var init_CaptureHelper = __esm({
        */
       static async textureToImage(texture, type = "png", trimHeader, quality = 1, flipY = null) {
         let arrayBuffer = await this.readTexturePixels(texture);
-        return await this.toBase64Image(arrayBuffer, new import_cc15.Size(texture.width, texture.height), type, trimHeader, quality, flipY);
+        return await this.toBase64Image(arrayBuffer, new import_cc16.Size(texture.width, texture.height), type, trimHeader, quality, flipY);
       }
       /**
        * 按实际屏幕分辨率，全屏截图，此方法直接截取游戏canvas画面[不支持原生平台]
        * @returns 纹理
        */
       static async captureFullScreen() {
-        let tex2d = new import_cc15.Texture2D();
+        let tex2d = new import_cc16.Texture2D();
         tex2d.reset({
-          width: import_cc15.game.canvas.width,
-          height: import_cc15.game.canvas.height,
-          format: import_cc15.Texture2D.PixelFormat.RGBA8888,
+          width: import_cc16.game.canvas.width,
+          height: import_cc16.game.canvas.height,
+          format: import_cc16.Texture2D.PixelFormat.RGBA8888,
           mipmapLevel: 0
         });
-        import_cc15.director.root.frameMove(0);
-        tex2d.uploadData(import_cc15.game.canvas);
+        import_cc16.director.root.frameMove(0);
+        tex2d.uploadData(import_cc16.game.canvas);
         return tex2d;
       }
       /**
@@ -22359,8 +22717,8 @@ var init_CaptureHelper = __esm({
        * @returns 返回指定格式的base64编码图片
        */
       static async captureFullScreenToImage(trimHeader, quality = 1) {
-        import_cc15.director.root.frameMove(0);
-        var base64 = await this.canvasEncodeTexture(import_cc15.game.canvas, "jpeg", quality);
+        import_cc16.director.root.frameMove(0);
+        var base64 = await this.canvasEncodeTexture(import_cc16.game.canvas, "jpeg", quality);
         if (trimHeader) {
           let index = base64.indexOf(",");
           if (index != -1) {
@@ -22405,7 +22763,7 @@ var init_CaptureHelper = __esm({
        * @returns 
        */
       static downloadImage(base64, type = "png", name) {
-        if (!import_cc15.sys.isBrowser) {
+        if (!import_cc16.sys.isBrowser) {
           return;
         }
         var byteCharacters = atob(
@@ -22438,10 +22796,10 @@ __export(DataAccess_exports, {
   DataItem: () => DataItem,
   DataTable: () => DataTable
 });
-var import_cc16, DataAccess, DataItem, DataTable;
+var import_cc17, DataAccess, DataItem, DataTable;
 var init_DataAccess = __esm({
   "assets/scripts/framework/plugins/config/DataAccess.ts"() {
-    import_cc16 = require("cc");
+    import_cc17 = require("cc");
     DataAccess = class {
       static initial(dataDir, loadHandle, fileNameGenerateHandle) {
         this.dataDir = dataDir;
@@ -22507,7 +22865,7 @@ var init_DataAccess = __esm({
         if (DataAccess.loader != null) {
           return DataAccess.loader(datafile);
         }
-        this.source = import_cc16.resources.get(datafile, import_cc16.BufferAsset);
+        this.source = import_cc17.resources.get(datafile, import_cc17.BufferAsset);
         if (this.source) {
           return new Uint8Array(this.source.buffer());
         }
@@ -28525,11 +28883,11 @@ var LongTouchGesture_exports = {};
 __export(LongTouchGesture_exports, {
   default: () => LongTouchGesture
 });
-var import_cc17, _LongTouchGesture, LongTouchGesture;
+var import_cc18, _LongTouchGesture, LongTouchGesture;
 var init_LongTouchGesture = __esm({
   "assets/scripts/framework/plugins/gesture/LongTouchGesture.ts"() {
     init_Gesture();
-    import_cc17 = require("cc");
+    import_cc18 = require("cc");
     init_fairygui();
     init_Timer();
     _LongTouchGesture = class _LongTouchGesture extends Gesture {
@@ -28547,7 +28905,7 @@ var init_LongTouchGesture = __esm({
          * 是否进行实时移动检查
          */
         this.checkEndOnMoving = true;
-        this._touchPos = new import_cc17.Vec2();
+        this._touchPos = new import_cc18.Vec2();
         this._started = false;
         this._paused = false;
         this._enabled = false;
@@ -28576,7 +28934,7 @@ var init_LongTouchGesture = __esm({
         this.enable(false);
       }
       checkTouchValid(evt) {
-        return this.minDistance <= 0 || import_cc17.Vec2.distance(evt.pos, this._touchPos) <= this.minDistance;
+        return this.minDistance <= 0 || import_cc18.Vec2.distance(evt.pos, this._touchPos) <= this.minDistance;
       }
       /**
        * 多段触摸时，时间重置
@@ -28661,11 +29019,11 @@ var PinchGesture_exports = {};
 __export(PinchGesture_exports, {
   default: () => PinchGesture
 });
-var import_cc18, _PinchGesture, PinchGesture;
+var import_cc19, _PinchGesture, PinchGesture;
 var init_PinchGesture = __esm({
   "assets/scripts/framework/plugins/gesture/PinchGesture.ts"() {
     init_Gesture();
-    import_cc18 = require("cc");
+    import_cc19 = require("cc");
     init_fairygui();
     _PinchGesture = class _PinchGesture extends Gesture {
       constructor() {
@@ -28681,7 +29039,7 @@ var init_PinchGesture = __esm({
         /**
          * 中心位置
          */
-        this.center = new import_cc18.Vec2();
+        this.center = new import_cc19.Vec2();
         this._startDistance = 0;
         this._lastScale = 0;
         this._started = false;
@@ -28715,7 +29073,7 @@ var init_PinchGesture = __esm({
             evt.captureTouch();
             let pt1 = GRoot.inst.getTouchPosition(touchIds[0]);
             let pt2 = GRoot.inst.getTouchPosition(touchIds[1]);
-            let dist = import_cc18.Vec2.distance(pt1, pt2);
+            let dist = import_cc19.Vec2.distance(pt1, pt2);
             this._startDistance = Math.max(1, dist);
             GRoot.inst.on(Event.TOUCH_MOVE, this.__touchMove, this);
             GRoot.inst.on(Event.TOUCH_END, this.__touchEnd, this);
@@ -28733,7 +29091,7 @@ var init_PinchGesture = __esm({
         }
         let pt1 = GRoot.inst.getTouchPosition(touchIds[0]);
         let pt2 = GRoot.inst.getTouchPosition(touchIds[1]);
-        let dist = import_cc18.Vec2.distance(pt1, pt2);
+        let dist = import_cc19.Vec2.distance(pt1, pt2);
         this.center.set(pt1);
         this.center.add(pt2).multiplyScalar(0.5);
         if (!this._started && Math.abs(dist - this._startDistance) > this.touchDragSensitivity) {
@@ -28787,10 +29145,10 @@ var SwipeGesture_exports = {};
 __export(SwipeGesture_exports, {
   default: () => SwipeGesture
 });
-var import_cc19, _SwipeGesture, SwipeGesture, s_vec22;
+var import_cc20, _SwipeGesture, SwipeGesture, s_vec22;
 var init_SwipeGesture = __esm({
   "assets/scripts/framework/plugins/gesture/SwipeGesture.ts"() {
-    import_cc19 = require("cc");
+    import_cc20 = require("cc");
     init_fairygui();
     init_Pool();
     init_Timer();
@@ -28801,15 +29159,15 @@ var init_SwipeGesture = __esm({
         /// <summary>
         /// 手指离开时的加速度
         /// </summary>
-        this.velocity = new import_cc19.Vec2(0, 0);
+        this.velocity = new import_cc20.Vec2(0, 0);
         /// <summary>
         /// 你可以在onBegin事件中设置这个值，那个后续将根据手指移动的距离修改这个值。如果不设置，那position初始为(0,0)，反映手指扫过的距离。
         /// </summary>
-        this.position = new import_cc19.Vec2(0, 0);
+        this.position = new import_cc20.Vec2(0, 0);
         /// <summary>
         /// 移动的变化值
         /// </summary>
-        this.delta = new import_cc19.Vec2(0, 0);
+        this.delta = new import_cc20.Vec2(0, 0);
         /// <summary>
         /// The min distance to fire onAction event
         /// 派发onAction事件的最小距离。如果手指扫过的距离少于此值，onAction不会触发（但onEnd仍然会派发）
@@ -28820,9 +29178,9 @@ var init_SwipeGesture = __esm({
         /// </summary>
         this.snapping = true;
         this._enabled = false;
-        this._startPoint = new import_cc19.Vec2(0, 0);
-        this._lastPoint = new import_cc19.Vec2(0, 0);
-        this._lastPoint2 = new import_cc19.Vec2(0, 0);
+        this._startPoint = new import_cc20.Vec2(0, 0);
+        this._lastPoint = new import_cc20.Vec2(0, 0);
+        this._lastPoint2 = new import_cc20.Vec2(0, 0);
         this._time = 0;
         this._deltaTime = 0;
         this._started = false;
@@ -28898,7 +29256,7 @@ var init_SwipeGesture = __esm({
         }
         s_vec22.set(this.delta);
         s_vec22.divide2f(deltaTime, deltaTime);
-        import_cc19.Vec2.lerp(this.velocity, this.velocity, s_vec22, deltaTime * 10);
+        import_cc20.Vec2.lerp(this.velocity, this.velocity, s_vec22, deltaTime * 10);
         this._time = Timer.inst.unscaleTimer;
         this.position.add(this.delta);
         this._lastPoint2.set(this._lastPoint);
@@ -28964,7 +29322,7 @@ var init_SwipeGesture = __esm({
     /// </summary>
     _SwipeGesture.SWIPE_ACTION = "onSwipeAction";
     SwipeGesture = _SwipeGesture;
-    s_vec22 = new import_cc19.Vec2(0, 0);
+    s_vec22 = new import_cc20.Vec2(0, 0);
   }
 });
 
@@ -29299,6 +29657,9 @@ var init_RedDotTree = __esm({
         this.removeNode(node);
       }
       getNode(key) {
+        if (typeof key == "string") {
+          return this.getNodeByPath(key);
+        }
         return this._keyNodes[key];
       }
       getNodeByPath(path4, index = -1) {
@@ -29335,10 +29696,10 @@ __export(RedDotManager_exports, {
   RedDotItemInfo: () => RedDotItemInfo,
   RedDotManager: () => RedDotManager
 });
-var import_cc20, RedDotItemInfo, compPool, RedDotManager;
+var import_cc21, RedDotItemInfo, compPool, RedDotManager;
 var init_RedDotManager = __esm({
   "assets/scripts/framework/plugins/reddot/RedDotManager.ts"() {
-    import_cc20 = require("cc");
+    import_cc21 = require("cc");
     init_fairygui();
     init_RedDotTree();
     init_Timer();
@@ -29353,7 +29714,8 @@ var init_RedDotManager = __esm({
          */
         this.selectedIndex = -1;
         // 相对位置(0-1)
-        this.pos = (0, import_cc20.v2)();
+        this.pos = (0, import_cc21.v2)();
+        this.autoCreateReddot = true;
       }
     };
     compPool = /* @__PURE__ */ new Map();
@@ -29377,6 +29739,12 @@ var init_RedDotManager = __esm({
           this._onReddotShown = this._internalShowReddot;
         }
       }
+      /**
+       * 创建一个节点
+       * @param path 
+       * @param childNum 
+       * @returns 
+       */
       create(path4, childNum = 0) {
         let node = this._tree.addNode(path4);
         for (let i = 0; i < childNum; i++) {
@@ -29385,6 +29753,12 @@ var init_RedDotManager = __esm({
         }
         return node;
       }
+      /**
+       * 注册一个节点
+       * @param path 
+       * @param config 
+       * @returns 
+       */
       regist(path4, config) {
         let index = config.index ?? -1;
         let info = null;
@@ -29401,9 +29775,33 @@ var init_RedDotManager = __esm({
         info.selectedIndex = config.ctrlIdx ?? -1;
         info.onRender = config.onRender;
         info.realDocker = config.realDocker;
+        info.autoCreateReddot = config.autoCreateReddot;
         node = this.bind(path4, info, index);
         this._regist(path4);
         return node;
+      }
+      addMessage(key, count = 1) {
+        if (count === 0) {
+          return;
+        }
+        if (count < 0) {
+          console.warn(`RedDotManager: addMessage count is less than 0, key: ${key}, count: ${count}`);
+          return;
+        }
+        this._tree.addMessage(key, count);
+      }
+      subMessage(key, count = 1) {
+        if (count === 0) {
+          return;
+        }
+        if (count < 0) {
+          console.warn(`RedDotManager: subMessage count is less than 0, key: ${key}, count: ${count}`);
+          return;
+        }
+        this._tree.addMessage(key, -count);
+      }
+      clearMessage(key) {
+        this._tree.clearMessage(key);
       }
       bind(path4, info, index = -1) {
         if (info.node) {
@@ -29427,22 +29825,29 @@ var init_RedDotManager = __esm({
         }
       }
       unRegist(node, destory = false) {
+        if (typeof node === "string") {
+          node = this._tree.getNodeByPath(node);
+        } else if (typeof node === "number") {
+          node = this._tree.getNode(node);
+        }
         if (node) {
           let data = node.userData;
           if (data && data.reddot) {
             if (destory) {
               data.reddot.dispose();
               data.reddot = null;
-            } else {
+            } else if (data.autoCreateReddot) {
               let url = data.reddotResUrl ?? this._defaultRedDotResUrl;
-              let pool = compPool.get(url);
-              if (!pool) {
-                pool = [];
-                compPool.set(url, pool);
+              if (url) {
+                let pool = compPool.get(url);
+                if (!pool) {
+                  pool = [];
+                  compPool.set(url, pool);
+                }
+                pool.push(data.reddot);
+                data.reddot.removeFromParent();
+                data.reddot = null;
               }
-              pool.push(data.reddot);
-              data.reddot.removeFromParent();
-              data.reddot = null;
             }
           }
           node.onChanged.remove(this._internalHandleNodeChanged, this);
@@ -29498,7 +29903,7 @@ var init_RedDotManager = __esm({
             y -= info.holder.height * info.holder.pivotY;
           }
           Timer.inst.callLater(() => {
-            let pos = info.holder.localToGlobal(x, y, new import_cc20.Vec2());
+            let pos = info.holder.localToGlobal(x, y, new import_cc21.Vec2());
             pos = info.realDocker.globalToLocal(pos.x, pos.y, pos);
             reddot.setPosition(pos.x, pos.y);
           }, this);
@@ -29521,29 +29926,69 @@ var init_RedDotManager = __esm({
         let info = node.userData;
         let reddot = info.reddot;
         if (node.messageCount > 0) {
-          if (reddot == null) {
+          if (reddot == null && info.autoCreateReddot) {
             const url = info.reddotResUrl ?? this._defaultRedDotResUrl;
-            let reddotPool = compPool.get(url);
-            while ((reddot == null || reddot.isDisposed) && reddotPool && reddotPool.length > 0) {
-              reddot = reddotPool.pop();
-            }
-            if (!reddot) {
-              reddot = UIPackage.createObjectFromURL(url);
-            }
-            if (reddot) {
-              info.holder.addChild(reddot);
-              this.setPosition(reddot, info, true);
-              info.reddot = reddot;
+            if (url) {
+              let reddotPool = compPool.get(url);
+              while ((reddot == null || reddot.isDisposed) && reddotPool && reddotPool.length > 0) {
+                reddot = reddotPool.pop();
+              }
+              if (!reddot) {
+                reddot = UIPackage.createObjectFromURL(url);
+              }
+              if (reddot) {
+                info.holder.addChild(reddot);
+                this.setPosition(reddot, info, true);
+                info.reddot = reddot;
+              }
             }
           }
           if (reddot) {
             reddot.visible = true;
             reddot.text = node.messageCount.toString();
-            this._onReddotShown(node, info);
           }
         } else if (reddot) {
           reddot.visible = false;
         }
+        this._onReddotShown(node, info);
+        console.log(`RedDotManager: ${node.path} changed, count: ${node.messageCount}`);
+      }
+    };
+  }
+});
+
+// assets/scripts/framework/utils/CustomRandom.ts
+var CustomRandom_exports = {};
+__export(CustomRandom_exports, {
+  CustomRandom: () => CustomRandom
+});
+var CustomRandom;
+var init_CustomRandom = __esm({
+  "assets/scripts/framework/utils/CustomRandom.ts"() {
+    CustomRandom = class {
+      constructor(seed = 0) {
+        this._seed = 0;
+        this._seed = seed;
+      }
+      reset(seed = 0) {
+        this._seed = seed;
+      }
+      random() {
+        this._seed = (this._seed * 9301 + 49297) % 233280;
+        return this._seed / 233280;
+      }
+      randomInt(min, max) {
+        return Math.floor(this.random() * (max - min + 1)) + min;
+      }
+      randomFloat(min, max) {
+        return this.random() * (max - min) + min;
+      }
+      randomList(list, count) {
+        let results = [];
+        for (let i = 0; i < count; i++) {
+          results.push(this.randomInt(0, list.length - 1));
+        }
+        return results;
       }
     };
   }
@@ -29557,6 +30002,7 @@ __export(MathUtils_exports, {
 var MathUtils;
 var init_MathUtils = __esm({
   "assets/scripts/framework/utils/MathUtils.ts"() {
+    init_Pool();
     MathUtils = class {
       /**
        * 返回一个随机整数
@@ -29616,6 +30062,17 @@ var init_MathUtils = __esm({
         }
         return source[0];
       }
+      static randomArray(source, count) {
+        let temp = source.slice();
+        const result = [];
+        while (count > 0) {
+          const index = Math.floor(Math.random() * temp.length);
+          result.push(temp[index]);
+          temp.splice(index, 1);
+          count--;
+        }
+        return result;
+      }
       static shuffle(arr) {
         const result = [];
         while (arr.length > 0) {
@@ -29630,6 +30087,41 @@ var init_MathUtils = __esm({
       }
       static remap(x, t1, t2, s1, s2) {
         return (s2 - s1) / (t2 - t1) * (x - t1) + s1;
+      }
+      static bezier3(p0, p1, p2, t, out) {
+        p0 = Vec3Pool.get(p0.x, p0.y, p0.z);
+        p1 = Vec3Pool.get(p1.x, p1.y, p1.z);
+        let result = Vec3Pool.get(0, 0, 0);
+        result.x = Math.pow(1 - t, 2) * p0.x + 2 * t * (1 - t) * p1.x + Math.pow(t, 2) * p2.x;
+        result.y = Math.pow(1 - t, 2) * p0.y + 2 * t * (1 - t) * p1.y + Math.pow(t, 2) * p2.y;
+        result.z = Math.pow(1 - t, 2) * p0.z + 2 * t * (1 - t) * p1.z + Math.pow(t, 2) * p2.z;
+        Vec3Pool.put(p0);
+        Vec3Pool.put(p1);
+        Vec3Pool.put(result);
+        if (out) {
+          out.set(result);
+        }
+        return result;
+      }
+      // 三阶曲线
+      static bezier4(p0, p1, p2, p3, t, out) {
+        p0 = Vec3Pool.get(p0.x, p0.y, p0.z);
+        p1 = Vec3Pool.get(p1.x, p1.y, p1.z);
+        p2 = Vec3Pool.get(p2.x, p2.y, p2.z);
+        p3 = Vec3Pool.get(p3.x, p3.y, p3.z);
+        let result = Vec3Pool.get(0, 0, 0);
+        result.x = Math.pow(1 - t, 3) * p0.x + 3 * t * Math.pow(1 - t, 2) * p1.x + 3 * Math.pow(t, 2) * (1 - t) * p2.x + Math.pow(t, 3) * p3.x;
+        result.y = Math.pow(1 - t, 3) * p0.y + 3 * t * Math.pow(1 - t, 2) * p1.y + 3 * Math.pow(t, 2) * (1 - t) * p2.y + Math.pow(t, 3) * p3.y;
+        result.z = Math.pow(1 - t, 3) * p0.z + 3 * t * Math.pow(1 - t, 2) * p1.z + 3 * Math.pow(t, 2) * (1 - t) * p2.z + Math.pow(t, 3) * p3.z;
+        Vec3Pool.put(p0);
+        Vec3Pool.put(p1);
+        Vec3Pool.put(p2);
+        Vec3Pool.put(p3);
+        Vec3Pool.put(result);
+        if (out) {
+          out.set(result);
+        }
+        return result;
       }
     };
     MathUtils.seededRandom = function(min, max, seed) {
@@ -29647,23 +30139,23 @@ var SpaceUtils_exports = {};
 __export(SpaceUtils_exports, {
   SpaceUtils: () => SpaceUtils
 });
-var import_cc21, s_vec23, s_vec32, s_vec3_22, SpaceUtils;
+var import_cc22, s_vec23, s_vec32, s_vec3_22, SpaceUtils;
 var init_SpaceUtils = __esm({
   "assets/scripts/framework/utils/SpaceUtils.ts"() {
-    import_cc21 = require("cc");
+    import_cc22 = require("cc");
     init_Pool();
     init_fairygui();
-    s_vec23 = new import_cc21.Vec2();
-    s_vec32 = new import_cc21.Vec3();
-    s_vec3_22 = new import_cc21.Vec3();
+    s_vec23 = new import_cc22.Vec2();
+    s_vec32 = new import_cc22.Vec3();
+    s_vec3_22 = new import_cc22.Vec3();
     SpaceUtils = class {
       static convertTouchLocationToNodeSpaceAR(pos, node, outPos, nodeCamera) {
-        var camera = nodeCamera ? nodeCamera.camera : import_cc21.director.root.batcher2D.getFirstRenderCamera(node);
+        var camera = nodeCamera ? nodeCamera.camera : import_cc22.director.root.batcher2D.getFirstRenderCamera(node);
         s_vec3_22.set(pos.x, pos.y, 0);
         camera.screenToWorld(s_vec32, s_vec3_22);
         node._uiProps.uiTransformComp.convertToNodeSpaceAR(s_vec32, s_vec3_22);
         if (!outPos) {
-          outPos = new import_cc21.Vec3();
+          outPos = new import_cc22.Vec3();
         }
         outPos.set(s_vec3_22);
         return outPos;
@@ -29674,7 +30166,7 @@ var init_SpaceUtils = __esm({
         let vec2 = Vec2Pool.get(vec3.x, vec3.y);
         this.cnode2groot(vec2, node, vec2);
         if (!outPos) {
-          outPos = new import_cc21.Vec2();
+          outPos = new import_cc22.Vec2();
         }
         outPos.set(vec2);
         Vec3Pool.put(vec3);
@@ -29683,7 +30175,7 @@ var init_SpaceUtils = __esm({
       }
       static convertToNodeSpace(pos, sourceNode, targetNode, outPos) {
         if (!outPos) {
-          outPos = new import_cc21.Vec3();
+          outPos = new import_cc22.Vec3();
         }
         outPos.set(s_vec32);
         sourceNode.updateWorldTransform();
@@ -29695,7 +30187,7 @@ var init_SpaceUtils = __esm({
       static grootYFlip(gpos, outpos) {
         s_vec32.set(gpos.x, GRoot.inst.height - gpos.y, 0);
         if (!outpos) {
-          outpos = new import_cc21.Vec2();
+          outpos = new import_cc22.Vec2();
         }
         outpos.set(s_vec32.x, s_vec32.y);
         return outpos;
@@ -29703,52 +30195,70 @@ var init_SpaceUtils = __esm({
       static groot2Screen(gpos, outpos) {
         outpos = this.grootYFlip(gpos, outpos);
         s_vec32.set(outpos.x, outpos.y, 0);
-        var camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
+        var camera = import_cc22.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
         camera.worldToScreen(s_vec32, s_vec32);
         outpos.set(s_vec32.x, s_vec32.y);
         return outpos;
       }
       static groot2cnode(gpos, node, outpos) {
-        var camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
+        var camera = import_cc22.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
         s_vec32.set(gpos.x, GRoot.inst.height - gpos.y, 0);
         camera.worldToScreen(s_vec3_22, s_vec32);
-        camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(node);
+        camera = import_cc22.director.root.batcher2D.getFirstRenderCamera(node);
         camera.screenToWorld(s_vec32, s_vec3_22);
         node.updateWorldTransform();
-        node.getComponent(import_cc21.UITransform).convertToNodeSpaceAR(s_vec32, s_vec3_22);
+        node.getComponent(import_cc22.UITransform).convertToNodeSpaceAR(s_vec32, s_vec3_22);
         if (!outpos) {
-          outpos = new import_cc21.Vec2();
+          outpos = new import_cc22.Vec2();
         }
         outpos.set(s_vec3_22.x, s_vec3_22.y);
         return outpos;
       }
       static cnode2fnode(npos, node, fnode, outpos) {
         this.cnode2groot(npos, node, outpos);
+        outpos.y -= GRoot.inst.height;
         fnode.globalToLocal(outpos.x + fnode.width * fnode.pivotX, outpos.y + fnode.height * fnode.pivotY, outpos);
         return outpos;
       }
-      static world2groot(node, camera, outpos) {
+      static world2groot(node, camera, outpos, offset) {
         node.updateWorldTransform();
         node.getWorldPosition(s_vec32);
+        if (offset) {
+          s_vec32.add(offset);
+        }
         camera.convertToUINode(s_vec32, GRoot.inst.node, s_vec32);
         s_vec32.y = -s_vec32.y;
         if (!outpos) {
-          outpos = new import_cc21.Vec2();
+          outpos = new import_cc22.Vec2();
         }
         outpos.set(s_vec32.x, s_vec32.y);
         return outpos;
       }
+      static groot2world(gpos, camera, outpos, offset) {
+        s_vec23.set(gpos.x, gpos.y);
+        this.groot2Screen(s_vec23, s_vec23);
+        s_vec32.set(s_vec23.x, s_vec23.y, 0);
+        camera.screenToWorld(s_vec32, s_vec32);
+        if (offset) {
+          s_vec32.add(offset);
+        }
+        if (!outpos) {
+          outpos = new import_cc22.Vec3();
+        }
+        outpos.set(s_vec32);
+        return outpos;
+      }
       static cnode2groot(npos, node, outpos) {
-        var camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(node);
+        var camera = import_cc22.director.root.batcher2D.getFirstRenderCamera(node);
         s_vec3_22.set(npos.x, npos.y);
         node.updateWorldTransform();
-        node.getComponent(import_cc21.UITransform).convertToWorldSpaceAR(s_vec3_22, s_vec32);
+        node.getComponent(import_cc22.UITransform).convertToWorldSpaceAR(s_vec3_22, s_vec32);
         camera.worldToScreen(s_vec3_22, s_vec32);
-        camera = import_cc21.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
+        camera = import_cc22.director.root.batcher2D.getFirstRenderCamera(GRoot.inst.node);
         camera.screenToWorld(s_vec32, s_vec3_22);
         s_vec23.set(s_vec32.x, GRoot.inst.height - s_vec32.y);
         if (!outpos) {
-          outpos = new import_cc21.Vec2();
+          outpos = new import_cc22.Vec2();
         }
         outpos.set(s_vec23);
         return outpos;
@@ -29764,7 +30274,7 @@ var init_SpaceUtils = __esm({
         let temp = Vec3Pool.get();
         temp.set(tr.width * (0.5 - tr.anchorX), tr.height * (0.5 - tr.anchorY));
         tr.convertToWorldSpaceAR(temp, temp);
-        outPos.set(temp.x, temp.y);
+        outPos.set(temp.x, temp.y, temp.z);
         Vec3Pool.put(temp);
         return outPos;
       }
@@ -29778,7 +30288,7 @@ var init_SpaceUtils = __esm({
         let x = go.pivotAsAnchor ? go.width * (0.5 - go.pivotX) : go.width * 0.5;
         let y = go.pivotAsAnchor ? go.height * (0.5 - go.pivotY) : go.height * 0.5;
         if (!outPos) {
-          outPos = new import_cc21.Vec2();
+          outPos = new import_cc22.Vec2();
         }
         outPos.set(x, y);
         return outPos;
@@ -29797,8 +30307,22 @@ var init_TimeUtils = __esm({
   "assets/scripts/framework/utils/TimeUtils.ts"() {
     init_SystemController();
     TimeUtils = class {
-      static isSameDay(time) {
-        let nextDay = new Date(systemController.getTimeMS());
+      /**
+       * 判断是否是同一天
+       * @param time 时间戳 (ms)
+       * @returns 
+       */
+      static isToday(time) {
+        return this.isSameDay(time, systemController.getTimeMS());
+      }
+      /**
+       * 判断是否是同一天
+       * @param time 时间戳 (ms)
+       * @param now 当前时间戳 (ms)
+       * @returns 
+       */
+      static isSameDay(time, now) {
+        let nextDay = new Date(now);
         let createTime = new Date(time);
         if (nextDay.getFullYear() != createTime.getFullYear() || nextDay.getMonth() != createTime.getMonth() || nextDay.getDate() != createTime.getDate()) {
           return false;
@@ -29948,6 +30472,12 @@ var init_TimeUtils = __esm({
       static add(num) {
         return num < 10 ? "0" + num : num;
       }
+      /**
+       * 
+       * @param time ms
+       * @param fmt 
+       * @returns 
+       */
       static dateFormat(time, fmt = "yyyy-MM-dd hh:mm:ss") {
         let date = new Date(time);
         var o = {
@@ -29968,6 +30498,12 @@ var init_TimeUtils = __esm({
         };
         return this.formatDateOrTime(fmt, o, date.getFullYear());
       }
+      /**
+       * 
+       * @param t s
+       * @param format 
+       * @returns 
+       */
       static timeFormat(t, format = "hh:mm:ss") {
         const day = Math.floor(t / 86400);
         const hour = Math.floor(t % 86400 / 3600);
@@ -29989,6 +30525,25 @@ var init_TimeUtils = __esm({
           }
         }
         return fmt;
+      }
+    };
+  }
+});
+
+// assets/scripts/framework/utils/VectorUtils.ts
+var VectorUtils_exports = {};
+__export(VectorUtils_exports, {
+  VectorUtils: () => VectorUtils
+});
+var import_cc23, VectorUtils;
+var init_VectorUtils = __esm({
+  "assets/scripts/framework/utils/VectorUtils.ts"() {
+    import_cc23 = require("cc");
+    VectorUtils = class {
+      static project(a, b, out) {
+        if (!out) out = new import_cc23.Vec2();
+        out.set(a.x * b.x + a.y * b.y, a.x * b.y - a.y * b.x);
+        return out;
       }
     };
   }
@@ -30017,21 +30572,29 @@ var init_ViewObject = __esm({
 var ViewHelper_exports = {};
 __export(ViewHelper_exports, {
   ELayer: () => ELayer,
+  EWindowLayer: () => EWindowLayer,
   ViewHelper: () => ViewHelper
 });
-var import_cc22, ELayer, _ViewHelper, ViewHelper;
+var import_cc24, ELayer, EWindowLayer, _ViewHelper, ViewHelper;
 var init_ViewHelper = __esm({
   "assets/scripts/framework/view/ViewHelper.ts"() {
     init_fairygui();
     init_Skin();
     init_ViewMap();
-    import_cc22 = require("cc");
+    import_cc24 = require("cc");
     ELayer = /* @__PURE__ */ ((ELayer2) => {
       ELayer2[ELayer2["Background"] = 0] = "Background";
       ELayer2[ELayer2["UI"] = 1] = "UI";
       ELayer2[ELayer2["Overlay"] = 2] = "Overlay";
+      ELayer2[ELayer2["Window"] = 3] = "Window";
+      ELayer2[ELayer2["Topmost"] = 4] = "Topmost";
       return ELayer2;
     })(ELayer || {});
+    EWindowLayer = /* @__PURE__ */ ((EWindowLayer3) => {
+      EWindowLayer3[EWindowLayer3["Normal"] = 3] = "Normal";
+      EWindowLayer3[EWindowLayer3["Topmost"] = 4] = "Topmost";
+      return EWindowLayer3;
+    })(EWindowLayer || {});
     _ViewHelper = class _ViewHelper {
       constructor() {
         this._views = {};
@@ -30065,7 +30628,7 @@ var init_ViewHelper = __esm({
           return;
         }
         this._initialed = true;
-        let dsize = import_cc22.view.getDesignResolutionSize();
+        let dsize = import_cc24.view.getDesignResolutionSize();
         let screenRatio = screen.width / screen.height;
         let designRatio = dsize.x / dsize.y;
         if (screenRatio > designRatio) {
@@ -30077,9 +30640,9 @@ var init_ViewHelper = __esm({
           this._scaleX = 1;
           this._scaleY = sheight / screen.height;
         }
-        this.addLayer();
-        this.addLayer();
-        this.addLayer();
+        for (let i = 0; i < 5; i++) {
+          this.addLayer();
+        }
       }
       addLayer() {
         let comp = new GComponent();
@@ -30096,43 +30659,43 @@ var init_ViewHelper = __esm({
           console.error("class type cannot be null!");
           return null;
         }
-        let view5 = new mediator();
-        let skin = view5.skin;
+        let view7 = new mediator();
+        let skin = view7.skin;
         if (!this._packages[skin.path]) {
           let pkg = UIPackage.addPackage(skin.path);
           this._packages[skin.path] = pkg;
         }
-        view5.initial();
-        if (!view5.component) {
+        view7.initial();
+        if (!view7.component) {
           return null;
         }
-        return view5;
+        return view7;
       }
       createView(skin, mediator, layer = 1 /* UI */) {
         if (!mediator) {
           console.error("class type cannot be null!");
           return null;
         }
-        let view5 = new mediator();
-        skin = view5.skin;
+        let view7 = new mediator();
+        skin = view7.skin;
         if (!this._packages[skin.path]) {
           let pkg = UIPackage.addPackage(skin.path);
           this._packages[skin.path] = pkg;
         }
-        view5.initial();
-        if (!view5.viewObject.container) {
+        view7.initial();
+        if (!view7.viewObject.container) {
           return null;
         }
         let container = this.getLayer(layer);
-        let warpper = view5.viewObject.container;
+        let warpper = view7.viewObject.container;
         if (warpper != container) {
           container.addChild(warpper);
         }
         warpper.setSize(container.width, container.height);
         warpper.setScale(1, 1);
         warpper.addRelation(container, RelationType.Size);
-        view5.create();
-        return view5;
+        view7.create();
+        return view7;
       }
       getSingleWindowByName(name) {
         let skin = ViewMap.instance.getSkinByName(name);
@@ -30144,15 +30707,15 @@ var init_ViewHelper = __esm({
           return null;
         }
         let key = skin.getKey();
-        let view5 = this._windows[key];
-        if (!view5) {
+        let view7 = this._windows[key];
+        if (!view7) {
           let viewClass = ViewMap.instance.get(skin);
-          view5 = this.createWindow(viewClass);
-          if (view5) {
-            this._windows[key] = view5;
+          view7 = this.createWindow(viewClass);
+          if (view7) {
+            this._windows[key] = view7;
           }
         }
-        return view5;
+        return view7;
       }
       getSingleWindowByType(viewClass) {
         if (!viewClass) {
@@ -30161,14 +30724,14 @@ var init_ViewHelper = __esm({
         }
         let skin = Skin.getSkin(viewClass);
         let key = skin.getKey();
-        let view5 = this._windows[key];
-        if (!view5) {
-          view5 = this.createWindow(viewClass);
-          if (view5) {
-            this._windows[key] = view5;
+        let view7 = this._windows[key];
+        if (!view7) {
+          view7 = this.createWindow(viewClass);
+          if (view7) {
+            this._windows[key] = view7;
           }
         }
-        return view5;
+        return view7;
       }
       getSingleView(skin, layer = 1 /* UI */) {
         if (!skin) {
@@ -30176,15 +30739,15 @@ var init_ViewHelper = __esm({
           return null;
         }
         let key = skin.getKey();
-        let view5 = this._views[key];
-        if (!view5) {
+        let view7 = this._views[key];
+        if (!view7) {
           let viewClass = ViewMap.instance.get(skin);
-          view5 = this.createView(skin, viewClass, layer);
-          if (view5) {
-            this._views[key] = view5;
+          view7 = this.createView(skin, viewClass, layer);
+          if (view7) {
+            this._views[key] = view7;
           }
         }
-        return view5;
+        return view7;
       }
       getSingleViewByType(viewClass, layer = 1 /* UI */) {
         if (!viewClass) {
@@ -30197,33 +30760,33 @@ var init_ViewHelper = __esm({
           return null;
         }
         let tempKey = tempSkin.getKey();
-        let view5 = this._views[tempKey];
-        if (!view5) {
-          view5 = this.createView(null, viewClass, layer);
-          if (view5) {
-            let skin = view5.skin;
+        let view7 = this._views[tempKey];
+        if (!view7) {
+          view7 = this.createView(null, viewClass, layer);
+          if (view7) {
+            let skin = view7.skin;
             let key = skin.getKey();
-            this._views[key] = view5;
+            this._views[key] = view7;
           }
         }
-        return view5;
+        return view7;
       }
       destoryWindow(skin) {
         let key = skin.getKey();
-        let view5 = this._windows[key];
-        if (view5) {
-          view5.dispose();
+        let view7 = this._windows[key];
+        if (view7) {
+          view7.dispose();
           delete this._windows[key];
         }
       }
       destroyView(skin, layer = 1 /* UI */) {
         let key = skin.getKey();
-        let view5 = this._views[key];
-        if (view5) {
+        let view7 = this._views[key];
+        if (view7) {
           let ui = this.getLayer(layer);
-          ui.removeChild(view5.viewObject.container);
+          ui.removeChild(view7.viewObject.container);
           try {
-            view5.dispose();
+            view7.dispose();
           } catch (e) {
             console.error("view " + skin.getKey() + " onDestroy() error:" + e);
           }
@@ -30241,27 +30804,29 @@ var Window_exports = {};
 __export(Window_exports, {
   default: () => Window2
 });
-var import_cc23, import_env9, _Window, Window2;
+var import_cc25, import_env10, _Window, Window2;
 var init_Window = __esm({
   "assets/scripts/framework/view/Window.ts"() {
     init_fairygui();
     init_Skin();
     init_SkinHelper();
     init_Container();
-    import_cc23 = require("cc");
+    import_cc25 = require("cc");
     init_UIManager();
     init_Timer();
     init_fairygui();
-    import_env9 = require("cc/env");
+    import_env10 = require("cc/env");
     init_CaptureHelper();
     init_fairygui();
     init_SoundManager();
     init_CoroutineUtils();
+    init_ViewHelper();
     _Window = class _Window extends Container {
       constructor() {
         super(...arguments);
         this._special = false;
         this._index = 0;
+        this.layer = 3 /* Normal */;
         this.canAutoDestory = true;
         this.modal = true;
         this.topMost = false;
@@ -30278,9 +30843,12 @@ var init_Window = __esm({
         this._updating = false;
         this._secondTicker = 0;
         this._enableUpdate = false;
-        this._exitCode = 0;
+        this._exitData = {
+          code: 0,
+          data: null
+        };
         this._isShowing = false;
-        this._modalLayerColor = new import_cc23.Color();
+        this._modalLayerColor = new import_cc25.Color();
         /**
          * 此模式下，窗口背景将会被截图，用于提高性能(ios下有问题，先关闭)
          */
@@ -30305,8 +30873,8 @@ var init_Window = __esm({
       get visible() {
         return this.window.visible;
       }
-      get exitCode() {
-        return this._exitCode;
+      get exitData() {
+        return this._exitData;
       }
       get isShowing() {
         return this._isShowing;
@@ -30376,9 +30944,9 @@ var init_Window = __esm({
         }
       }
       async enterPreformance() {
-        if (!import_env9.NATIVE && this.preformanceMode && !this.fullMode) {
+        if (!import_env10.NATIVE && this.preformanceMode && !this.fullMode) {
           let bg = await CaptureHelper.captureFullScreen();
-          let sf = new import_cc23.SpriteFrame();
+          let sf = new import_cc25.SpriteFrame();
           sf.texture = bg;
           bg.addRef();
           let image = new GLoader();
@@ -30417,7 +30985,7 @@ var init_Window = __esm({
       }
       setModalLayerColor(color) {
         GRoot.inst.modalLayer.color.set(color);
-        GRoot.inst.modalLayer.drawRect(0, import_cc23.Color.TRANSPARENT, color);
+        GRoot.inst.modalLayer.drawRect(0, import_cc25.Color.TRANSPARENT, color);
       }
       overlayBy(otherWindow) {
         if (this.hideOnOverlay) {
@@ -30434,7 +31002,8 @@ var init_Window = __esm({
       }
       show(data) {
         this._isShown = false;
-        this._exitCode = 0;
+        this._exitData.code = 0;
+        this._exitData.data = null;
         this.component.visible = true;
         this.data = data;
         this.window.visible = true;
@@ -30473,8 +31042,8 @@ var init_Window = __esm({
           }
           this._isShowing = false;
         }
-        this.children.forEach((view5) => {
-          view5.show(data, false);
+        this.children.forEach((view7) => {
+          view7.show(data, false);
         });
         this.safeAlign();
         let ret = this.onShown(data);
@@ -30524,8 +31093,9 @@ var init_Window = __esm({
       }
       async playHideAnimation() {
       }
-      async internalHide(hideImmediately, code) {
-        this._exitCode = code || 0;
+      async internalHide(hideImmediately, exitCode, exitData) {
+        this._exitData.code = exitCode;
+        this._exitData.data = exitData;
         this._component.touchable = false;
         this.setUpdateEnable(false);
         this.clearModualClick();
@@ -30538,8 +31108,8 @@ var init_Window = __esm({
         } else {
           await this.playHideAnimation();
         }
-        this.children.forEach((view5) => {
-          view5.hide(false);
+        this.children.forEach((view7) => {
+          view7.hide(false);
         });
         this.onHide();
         this.window.visible = false;
@@ -30555,8 +31125,8 @@ var init_Window = __esm({
           this.window.hide();
         }
       }
-      hide(code) {
-        this.internalHide(true, code);
+      hide(code, data) {
+        this.internalHide(true, code, data);
       }
       dispose() {
         if (this._destoried) {
@@ -30564,8 +31134,8 @@ var init_Window = __esm({
         }
         this._destoried = true;
         this.clearEventCenter();
-        this.children.forEach((view5) => {
-          view5.dispose();
+        this.children.forEach((view7) => {
+          view7.dispose();
         });
         if (this.window) {
           this.window.dispose();
@@ -30591,7 +31161,7 @@ var init_Window = __esm({
         }
       }
       update() {
-        let dt = import_cc23.game.deltaTime * 1e3;
+        let dt = import_cc25.game.deltaTime * 1e3;
         this._secondTicker += dt;
         let seconds = false;
         if (this._secondTicker >= 1e3) {
@@ -31491,13 +32061,13 @@ var UIManager_exports = {};
 __export(UIManager_exports, {
   UIManager: () => UIManager
 });
-var import_cc24, import_lru_cache, import_env10, _UIManager, UIManager;
+var import_cc26, import_lru_cache, import_env11, _UIManager, UIManager;
 var init_UIManager = __esm({
   "assets/scripts/framework/view/UIManager.ts"() {
     init_ViewHelper();
     init_Skin();
     init_fairygui();
-    import_cc24 = require("cc");
+    import_cc26 = require("cc");
     init_Window();
     import_lru_cache = __toESM(require_lru_cache());
     init_Timer();
@@ -31506,7 +32076,7 @@ var init_UIManager = __esm({
     init_FGUIExt();
     init_WindowPriorityMap();
     init_fairygui();
-    import_env10 = require("cc/env");
+    import_env11 = require("cc/env");
     init_CoroutineUtils();
     Window.prototype["onTouchBegin_1"] = function(evt) {
       let that = this;
@@ -31525,6 +32095,7 @@ var init_UIManager = __esm({
         this._windows = [];
         this._beginCreateTime = -1;
         this._watingModualOpend = false;
+        this._lastActivityName = null;
         this.onResourcesNotReady = null;
         this._waitWindows = [];
         this._autoShowing = 0;
@@ -31539,6 +32110,9 @@ var init_UIManager = __esm({
       get camera() {
         return this._camera;
       }
+      get lastActivityName() {
+        return this._lastActivityName;
+      }
       static get instance() {
         if (this._instance == null) {
           this._instance = new _UIManager();
@@ -31552,10 +32126,10 @@ var init_UIManager = __esm({
         this.initializeLRU();
       }
       initializeCanvasNode() {
-        var cnode = import_cc24.director.getScene().getChildByName("Canvas");
-        import_cc24.game.addPersistRootNode(cnode);
+        var cnode = import_cc26.director.getScene().getChildByName("Canvas");
+        import_cc26.game.addPersistRootNode(cnode);
         this._canvasNode = cnode;
-        this._camera = this._canvasNode.getComponent(import_cc24.Canvas).cameraComponent;
+        this._camera = this._canvasNode.getComponent(import_cc26.Canvas).cameraComponent;
         GRoot.create();
       }
       initializeViewHelper(opts) {
@@ -31621,8 +32195,8 @@ var init_UIManager = __esm({
         }
         return this._windows.includes(window2);
       }
-      hidePopup(view5) {
-        const gobj = view5 instanceof GComponent ? view5 : view5.component;
+      hidePopup(view7) {
+        const gobj = view7 instanceof GComponent ? view7 : view7.component;
         GRoot.inst.hidePopup(gobj);
       }
       /* 
@@ -31636,15 +32210,15 @@ var init_UIManager = __esm({
               - target: The target component to display.
               - dir: The direction of the popup.
           */
-      showPopup(view5, pos = null, anchorName = null, target = null, dir = PopupDirection.Auto, horAutoAdapt = true) {
-        let gobj = view5 instanceof GComponent ? view5 : view5.component;
-        let targetPos = pos || new import_cc24.Vec2(0, 0);
+      showPopup(view7, pos = null, anchorName = null, target = null, dir = PopupDirection.Auto, horAutoAdapt = true) {
+        let gobj = view7 instanceof GComponent ? view7 : view7.component;
+        let targetPos = pos || new import_cc26.Vec2(0, 0);
         if (target) {
           target.localToGlobal(targetPos.x, targetPos.y, targetPos);
           GRoot.inst.globalToLocal(targetPos.x, targetPos.y, targetPos);
         }
         let anchor = anchorName ? gobj.getChild(anchorName) : null;
-        let rawPos = anchor ? anchor.data || new import_cc24.Vec4(anchor.x, anchor.y, anchor.x / gobj.width, anchor.y / gobj.height) : new import_cc24.Vec4(0, 0, gobj.pivotX, gobj.pivotY);
+        let rawPos = anchor ? anchor.data || new import_cc26.Vec4(anchor.x, anchor.y, anchor.x / gobj.width, anchor.y / gobj.height) : new import_cc26.Vec4(0, 0, gobj.pivotX, gobj.pivotY);
         let offsetX = 0;
         if (horAutoAdapt) {
           let realWidth = gobj.width * gobj.scaleX;
@@ -31659,11 +32233,11 @@ var init_UIManager = __esm({
         }
         GRoot.inst.showPopup(gobj, target, dir);
         gobj.setPosition(targetPos.x - offsetX, targetPos.y);
-        gobj.node.on(import_cc24.Node.EventType.ACTIVE_IN_HIERARCHY_CHANGED, () => {
+        gobj.node.on(import_cc26.Node.EventType.ACTIVE_IN_HIERARCHY_CHANGED, () => {
           if (!gobj.node.activeInHierarchy) {
-            let view6 = gobj["_docker_"];
-            if (view6) {
-              view6.hide();
+            let view8 = gobj["_docker_"];
+            if (view8) {
+              view8.hide();
             }
           }
         });
@@ -31683,6 +32257,21 @@ var init_UIManager = __esm({
             this._lru.set(wnd.skin.getKey(), wnd);
           }
           this._autoShowing = 0.5;
+        }
+        let modelWnd = null;
+        for (let i = 0; i < this._windows.length; i++) {
+          let w = this._windows[i];
+          if (w.modal) {
+            modelWnd = w;
+            break;
+          }
+        }
+        if (modelWnd) {
+          let lyr = ViewHelper.instance.getLayer(wnd.layer);
+          let index = lyr.getChildIndex(lyr) - 1;
+          GRoot.inst.modalLayer.node.setSiblingIndex(index);
+        } else {
+          GRoot.inst.modalLayer.removeFromParent();
         }
       }
       /**
@@ -31847,7 +32436,7 @@ var init_UIManager = __esm({
         } else {
           group.splice(insertIndex, 0, context);
         }
-        if (import_env10.PREVIEW) {
+        if (import_env11.PREVIEW) {
           for (let i = 0; i < this._waitWindows.length; i++) {
             for (let j = 0; j < this._waitWindows[i].length; j++) {
               const wnd = this._waitWindows[i][j];
@@ -31890,6 +32479,11 @@ var init_UIManager = __esm({
         if (oldWindow) {
           oldWindow.overlayBy(wnd);
         }
+        let lyr = ViewHelper.instance.getLayer(wnd.layer);
+        if (modal) {
+          lyr._container.addChild(GRoot.inst.modalLayer.node);
+        }
+        lyr._container.addChild(wnd.window.node);
         return wnd;
       }
       setModalLayerColor(color) {
@@ -31898,7 +32492,7 @@ var init_UIManager = __esm({
       }
       _setModalLayerColor(color) {
         GRoot.inst.modalLayer.color.set(color);
-        GRoot.inst.modalLayer.drawRect(0, import_cc24.Color.TRANSPARENT, color);
+        GRoot.inst.modalLayer.drawRect(0, import_cc26.Color.TRANSPARENT, color);
       }
       _setModalLayerAlpha(alpha) {
         let color = GRoot.inst.modalLayer.color;
@@ -31941,7 +32535,7 @@ var init_UIManager = __esm({
           next = true;
         }, this);
         await CoroutineUtils.until(() => next);
-        return wnd.exitCode;
+        return wnd.exitData;
       }
       hideCurrentWindow(dispose = false, code, ignoreTopMost) {
         const wnd = this.topWindow(ignoreTopMost);
@@ -32002,6 +32596,7 @@ var init_UIManager = __esm({
             if (curView) {
               let nextgo = nextView.viewObject.container;
               nextgo.parent.setChildIndex(nextgo, nextgo.parent.numChildren);
+              this._lastActivityName = curView.skin.componentName;
             }
             nextView.enter(data2);
           }
@@ -32043,6 +32638,7 @@ var init_UIManager = __esm({
           if (withResume) {
             resume(data);
           }
+          this._lastActivityName = curView ? curView.skin.componentName : null;
           this.emit(_UIManager.EVENT_ACTIVITY_CHANGED, layer, preView, curView);
           return curView;
         }
@@ -32129,7 +32725,7 @@ var Activity_exports = {};
 __export(Activity_exports, {
   Activity: () => Activity
 });
-var import_cc25, NAME_REGEX, Activity;
+var import_cc27, NAME_REGEX, Activity;
 var init_Activity = __esm({
   "assets/scripts/framework/view/Activity.ts"() {
     init_fairygui();
@@ -32141,7 +32737,7 @@ var init_Activity = __esm({
     init_Timer();
     init_UIManager();
     init_SoundManager();
-    import_cc25 = require("cc");
+    import_cc27 = require("cc");
     NAME_REGEX = /\[((([tbrlwh]|(?:[xy][+-]\d{0,3})){1}(?:\d{0,3},?))+)\](.*)/i;
     Activity = class extends Container {
       constructor() {
@@ -32350,7 +32946,7 @@ var init_Activity = __esm({
         this.onDispose();
       }
       update() {
-        let dt = import_cc25.game.deltaTime * 1e3;
+        let dt = import_cc27.game.deltaTime * 1e3;
         this._secondTicker += dt;
         let seconds = false;
         if (this._secondTicker >= 1e3) {
@@ -32396,7 +32992,8 @@ var init_Activity = __esm({
 var Decorators_exports = {};
 __export(Decorators_exports, {
   inject: () => inject,
-  registSkin: () => registSkin
+  registSkin: () => registSkin,
+  registSkinEx: () => registSkinEx
 });
 function inject(type, path4, data, optional) {
   return function(target, key) {
@@ -32407,14 +33004,21 @@ function inject(type, path4, data, optional) {
     target.__injectInfos[key] = { type, path: path4, data, optional };
   };
 }
-function registSkin(uiPackage, componentName, data, isWindow, autoWarpper, registNow = false) {
+function registSkin(uiPackage, componentName, data, isWindow, autoWarpper, registNow = false, optional = false) {
   return function(target) {
     if (registNow) {
-      SkinHelper.bindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper);
+      SkinHelper.bindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
     } else {
-      SkinHelper.preBindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper);
+      SkinHelper.preBindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
     }
   };
+}
+function registSkinEx(target, uiPackage, componentName, data, isWindow, autoWarpper, registNow = false, optional = false) {
+  if (registNow) {
+    SkinHelper.bindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
+  } else {
+    SkinHelper.preBindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
+  }
 }
 var init_Decorators = __esm({
   "assets/scripts/framework/view/Decorators.ts"() {
@@ -32427,10 +33031,10 @@ var GMDocker_exports = {};
 __export(GMDocker_exports, {
   GMDocker: () => GMDocker
 });
-var import_cc26, GMDocker;
+var import_cc28, GMDocker;
 var init_GMDocker = __esm({
   "assets/scripts/framework/view/GM/GMDocker.ts"() {
-    import_cc26 = require("cc");
+    import_cc28 = require("cc");
     init_fairygui();
     init_UIManager();
     init_Window();
@@ -32452,7 +33056,7 @@ var init_GMDocker = __esm({
         this.canAutoDestory = false;
       }
       onCreate() {
-        this._offsetX = (GRoot.inst.width - import_cc26.view.getVisibleSize().width) / 2;
+        this._offsetX = (GRoot.inst.width - import_cc28.view.getVisibleSize().width) / 2;
         this.window.on(Event.DRAG_END, this.onDragEnd, this);
         this.component.draggable = true;
         this.component.onClick(() => {
@@ -32800,14 +33404,14 @@ var init_GMMananger = __esm({
         this._items[key].push(item);
       }
       _updateItem(item) {
-        let view5 = this.tools.addItemFromPool();
+        let view7 = this.tools.addItemFromPool();
         let gmitem;
-        if (!view5.data) {
+        if (!view7.data) {
           gmitem = new GMItem();
-          gmitem.inject(view5, item);
-          view5.data = gmitem;
+          gmitem.inject(view7, item);
+          view7.data = gmitem;
         } else {
-          gmitem = view5.data;
+          gmitem = view7.data;
         }
         gmitem.reset(item);
       }
@@ -33006,15 +33610,15 @@ __export(LocationManager_exports, {
   LocationManager: () => LocationManager,
   LocationResult: () => LocationResult
 });
-var import_cc27, LocationResult, result_t, _LocationManager, LocationManager;
+var import_cc29, LocationResult, result_t, _LocationManager, LocationManager;
 var init_LocationManager = __esm({
   "assets/scripts/framework/view/common/LocationManager.ts"() {
-    import_cc27 = require("cc");
+    import_cc29 = require("cc");
     init_SpaceUtils();
     LocationResult = class {
       constructor() {
-        this.pos = new import_cc27.Vec2();
-        this.size = new import_cc27.Size();
+        this.pos = new import_cc29.Vec2();
+        this.size = new import_cc29.Size();
         this.auto = true;
       }
       // 自动转为全局坐标
@@ -33044,7 +33648,7 @@ var init_LocationManager = __esm({
       }
       getLocation(loc, data, result = result_t) {
         if (!this._locations[loc] || this._locations[loc].length == 0) {
-          console.error(`\u672A\u6CE8\u518C\u70B9\u4F4D\uFF1A${loc}`);
+          console.warn(`\u672A\u6CE8\u518C\u70B9\u4F4D\uFF1A${loc}`);
           return null;
         }
         result.target = null;
@@ -33403,6 +34007,9 @@ var init_fgui_patch = __esm({
       this.offClick(callback, target);
       this.onClick(callback, target);
     };
+    GObject.prototype["setClickCD"] = function(cd) {
+      setClickCD(this, cd);
+    };
     GObject.prototype["setTitle"] = function(data, ...args) {
       var _a;
       if (typeof data == "number") {
@@ -33441,6 +34048,5789 @@ var init_fgui_patch = __esm({
       }
     });
     fgui_patch_default = null;
+  }
+});
+
+// assets/scripts/game/ad/AdConfig.ts
+var AdConfig_exports = {};
+__export(AdConfig_exports, {
+  AdConfig: () => AdConfig,
+  AdItem: () => AdItem,
+  EAdType: () => EAdType,
+  EWeightMode: () => EWeightMode,
+  ShareInfo: () => ShareInfo,
+  VideoInfo: () => VideoInfo
+});
+var AdConfig, EAdType, EWeightMode, ShareInfo, VideoInfo, AdItem;
+var init_AdConfig = __esm({
+  "assets/scripts/game/ad/AdConfig.ts"() {
+    AdConfig = class {
+      constructor() {
+        this.rewardVideoAdUnitId = "";
+        this.customAdUnitId = "";
+        this.bannerAdUnitId = "";
+        this.interstitialAdUnitId = "";
+        this.shareTitles = [];
+        this.shareImages = [];
+        this.shareInfos = [];
+        this.adItems = [];
+      }
+    };
+    EAdType = /* @__PURE__ */ ((EAdType2) => {
+      EAdType2[EAdType2["None"] = 0] = "None";
+      EAdType2[EAdType2["Share"] = 1] = "Share";
+      EAdType2[EAdType2["Video"] = 2] = "Video";
+      EAdType2[EAdType2["ShareOrVideo"] = 3] = "ShareOrVideo";
+      return EAdType2;
+    })(EAdType || {});
+    EWeightMode = /* @__PURE__ */ ((EWeightMode2) => {
+      EWeightMode2[EWeightMode2["None"] = 0] = "None";
+      EWeightMode2[EWeightMode2["Random"] = 1] = "Random";
+      EWeightMode2[EWeightMode2["Sequence"] = 2] = "Sequence";
+      return EWeightMode2;
+    })(EWeightMode || {});
+    ShareInfo = class {
+      constructor() {
+        this.adType = 1 /* Share */;
+        this.type = 0;
+      }
+    };
+    VideoInfo = class {
+      constructor() {
+        this.adType = 2 /* Video */;
+      }
+    };
+    AdItem = class {
+      constructor() {
+        this.weightMode = 0 /* None */;
+        // 分享权重
+        this.shareWeight = 1;
+        // 视频权重
+        this.videoWeight = 1;
+        // 如果为分享，支持的分享或视频id组合
+        this.shareInfos = [];
+      }
+    };
+  }
+});
+
+// assets/scripts/game/const/GameConst.ts
+var GameConst_exports = {};
+__export(GameConst_exports, {
+  GameConst: () => GameConst,
+  INDEX_LAYER: () => INDEX_LAYER,
+  OUTLINE_LAYER: () => OUTLINE_LAYER,
+  UI_2D_LAYER: () => UI_2D_LAYER
+});
+var import_cc30, GameConst, UI_2D_LAYER, INDEX_LAYER, OUTLINE_LAYER;
+var init_GameConst = __esm({
+  "assets/scripts/game/const/GameConst.ts"() {
+    import_cc30 = require("cc");
+    GameConst = {
+      ENABLE_AD: true,
+      // 数据保存时间
+      DATA_SAVE_TIME: 2 * 60,
+      // 心跳时间
+      BEAT_HEART_TIME: 1 * 60,
+      // 动物刷新时间点
+      ANIMAL_REFRESH_TIME: 8,
+      EDITOR_MODE: false,
+      // Cell类型数量
+      CELL_TYPE_COUNT: 3
+    };
+    UI_2D_LAYER = 1 << import_cc30.Layers.nameToLayer("UI_2D");
+    INDEX_LAYER = 1 << import_cc30.Layers.nameToLayer("INDEX");
+    OUTLINE_LAYER = 1 << import_cc30.Layers.nameToLayer("OUTLINE");
+  }
+});
+
+// assets/scripts/game/ad/AdManager.ts
+var AdManager_exports = {};
+__export(AdManager_exports, {
+  AdManager: () => AdManager
+});
+var import_env12, DefaultVideoShareInfo, _AdManager, AdManager;
+var init_AdManager = __esm({
+  "assets/scripts/game/ad/AdManager.ts"() {
+    import_env12 = require("cc/env");
+    init_PlatformHelper();
+    init_AdConfig();
+    init_GameConst();
+    init_EventCenter();
+    init_SoundManager();
+    DefaultVideoShareInfo = new VideoInfo();
+    _AdManager = class _AdManager {
+      constructor() {
+        this._lastInvokeTime = 0;
+      }
+      static get instance() {
+        if (!this._instance) {
+          this._instance = new _AdManager();
+        }
+        return this._instance;
+      }
+      init(config) {
+        if (!config) {
+          config = new AdConfig();
+        }
+        this._adConfig = config;
+        const withAD = !!config.rewardVideoAdUnitId;
+        for (let item of config.adItems) {
+          if (item.weightMode === 2 /* Sequence */) {
+            item.shareInfos = item.shareInfos || [];
+            item.shareWeight = item.shareWeight || 0;
+            if (!withAD) {
+              item.videoWeight = 0;
+            } else {
+              item.videoWeight = item.videoWeight || 0;
+            }
+          }
+        }
+        PlatformHelper.initial(config);
+        PlatformHelper.onShareAppMessage((res) => {
+          let info = this.randomAdInfo("on_share");
+          let title = this.getShareTitle(info);
+          let imageInfo = this.getShareImage(info);
+          return {
+            title,
+            imageUrlId: imageInfo.imageUrlId,
+            imageUrl: imageInfo.imageUrl
+          };
+        });
+        PlatformHelper.showShareMenu({
+          withShareTicket: true,
+          menus: ["shareAppMessage", "shareTimeline"]
+        });
+        this.initCustomAd();
+        this.initBannerAd();
+        this.initInterstitialAd();
+      }
+      /**
+       * 设置Banner广告是否显示
+       * @param visible 
+       */
+      setBannerAdVisible(visible) {
+        if (!PlatformHelper.isEnable) {
+          return;
+        }
+        if (this._bannerAd) {
+          if (visible) {
+            this._bannerAd.show();
+          } else {
+            this._bannerAd.hide();
+          }
+        } else if (this._customAd) {
+          if (visible) {
+            this._customAd.show();
+          } else {
+            this._customAd.hide();
+          }
+        }
+      }
+      initBannerAd() {
+        if (!PlatformHelper.isEnable) {
+          return;
+        }
+        if (this._adConfig.bannerAdUnitId) {
+          let sysInfo = PlatformHelper.getSystemInfoSync();
+          if (import_env12.ALIPAY) {
+            let width = sysInfo.windowWidth * 0.8;
+            let height = width * 0.6;
+            let left = (sysInfo.windowWidth - width) / 2;
+            let top = sysInfo.windowHeight - height;
+            this._bannerAd = PlatformHelper.createBannerAd({
+              adUnitId: this._adConfig.customAdUnitId,
+              adIntervals: 30,
+              // @ts-ignore
+              style: {
+                left,
+                top,
+                width,
+                height
+              }
+            });
+          } else {
+            let width = sysInfo.windowWidth;
+            let height = width * 0.6;
+            let left = (sysInfo.windowWidth - width) / 2;
+            let top = sysInfo.windowHeight - height;
+            this._bannerAd = PlatformHelper.createBannerAd({
+              adUnitId: this._adConfig.customAdUnitId,
+              adIntervals: 30,
+              // @ts-ignore
+              style: {
+                left,
+                top,
+                width,
+                height
+              }
+            });
+            this._bannerAd.onLoad(() => {
+              this._bannerAd.style.top = sysInfo.windowHeight - (this._bannerAd.style.realHeight || 120);
+              this._bannerAd.style.left = (sysInfo.windowWidth - this._bannerAd.style.realWidth || 0) / 2;
+            });
+          }
+        }
+      }
+      initCustomAd() {
+        if (!PlatformHelper.isEnable) {
+          return;
+        }
+        if (this._adConfig.customAdUnitId) {
+          let sysInfo = PlatformHelper.getSystemInfoSync();
+          if (import_env12.ALIPAY) {
+            let width = sysInfo.windowWidth * 0.8;
+            let height = width * 0.6;
+            let left = (sysInfo.windowWidth - width) / 2;
+            let top = sysInfo.windowHeight - height;
+            this._bannerAd = PlatformHelper.createBannerAd({
+              adUnitId: this._adConfig.customAdUnitId,
+              adIntervals: 30,
+              // @ts-ignore
+              style: {
+                left,
+                top,
+                // @ts-ignore
+                width
+              }
+            });
+          } else {
+            let left = (sysInfo.windowWidth - 360) / 2;
+            this._customAd = PlatformHelper.createCustomAd({
+              adUnitId: this._adConfig.customAdUnitId,
+              adIntervals: 30,
+              style: {
+                fixed: true,
+                left,
+                top: sysInfo.windowHeight - 110,
+                // @ts-ignore
+                width: sysInfo.windowWidth
+              }
+            });
+            this._customAd.onLoad((r) => {
+              this._customAd.style.top = sysInfo.windowHeight - (this._customAd.style.realHeight || 120);
+              this._customAd.style.left = (sysInfo.windowWidth - this._customAd.style.realWidth || 0) / 2;
+            });
+            console.log("create banner ad", this._customAd);
+          }
+        }
+      }
+      initInterstitialAd(show = false) {
+        if (!GameConst.ENABLE_AD) {
+          return;
+        }
+        if (this._adConfig.interstitialAdUnitId) {
+          this._interstitialAd = PlatformHelper.createInterstitialAd({
+            adUnitId: this._adConfig.interstitialAdUnitId
+          });
+          if (this._interstitialAd) {
+            this._interstitialAd.onLoad(() => {
+              console.log("interstitial ad load");
+              if (show) {
+                this.showInterstitialAd();
+              }
+            });
+            this._interstitialAd.onError((err) => {
+              console.error("interstitial ad error:", JSON.stringify(err));
+              this._interstitialAd.destroy();
+              this._interstitialAd = null;
+            });
+            this._interstitialAd.onClose((t) => {
+              console.log("interstitial ad close", JSON.stringify(t));
+              this._interstitialAd.destroy();
+              this._interstitialAd = null;
+              this.initInterstitialAd();
+            });
+            this._interstitialAd.load();
+          }
+          console.log("create interstitial ad", this._interstitialAd);
+        }
+      }
+      showInterstitialAd() {
+        if (!this._interstitialAd) {
+          this.initInterstitialAd(true);
+          return;
+        }
+        if (this._interstitialAd) {
+          this._interstitialAd.show().then(() => {
+            console.log("show interstitial ad success");
+            this._interstitialAd.load();
+          }).catch((err) => {
+            console.error("show interstitial ad error:", JSON.stringify(err));
+            this._interstitialAd.destroy();
+            this._interstitialAd = null;
+            this.initInterstitialAd(true);
+          });
+        }
+      }
+      getShareTitle(info) {
+        return info.title || this._adConfig.shareTitles[Math.floor(Math.random() * this._adConfig.shareTitles.length)];
+      }
+      getShareImage(info) {
+        let hasImage = info.imageUrl || info.imageUrlId;
+        if (hasImage) {
+          return info;
+        }
+        let idx = Math.floor(Math.random() * this._adConfig.shareImages.length);
+        return this._adConfig.shareImages[idx];
+      }
+      getSharesByType(type) {
+        return this._adConfig.shareInfos.filter((shareInfo) => shareInfo.type === type);
+      }
+      getAdItemByKey(key) {
+        let item = this._adConfig.adItems.find((adItem) => adItem.key === key);
+        if (!item) {
+          console.error("no ad item, key:", key);
+          item = this._adConfig.adItems[0];
+        }
+        return item;
+      }
+      randomAdInfo(key) {
+        let adItem = this.getAdItemByKey(key);
+        if (!adItem) {
+          return null;
+        }
+        const weightMode = adItem.weightMode;
+        if (weightMode === 0 /* None */ || !this._adConfig.rewardVideoAdUnitId) {
+          if (adItem.shareWeight == 0 || !adItem.shareInfos || adItem.shareInfos.length == 0) {
+            if (!this._adConfig.rewardVideoAdUnitId) {
+              return this._adConfig.defaultShareAd;
+            }
+            return DefaultVideoShareInfo;
+          }
+          let shareIdx = Math.floor(Math.random() * adItem.shareInfos.length);
+          let idx = adItem.shareInfos[shareIdx];
+          return this._adConfig.shareInfos[idx];
+        } else if (weightMode === 1 /* Random */) {
+          return this.randomAdInfoByRandom(adItem);
+        } else if (weightMode === 2 /* Sequence */) {
+          return this.randomAdInfoBySequence(adItem);
+        }
+      }
+      randomAdInfoByRandom(adItem) {
+        const shareWeight = adItem.shareWeight || 0;
+        const videoWeight = adItem.videoWeight || 0;
+        const totalWeight = shareWeight + videoWeight;
+        let random = Math.random() * totalWeight;
+        if (random <= shareWeight) {
+          let shareIdx = Math.floor(Math.random() * adItem.shareInfos.length);
+          let adInfo = adItem.shareInfos[shareIdx];
+          return this._adConfig.shareInfos[adInfo] || this._adConfig.shareInfos[0];
+        }
+        return DefaultVideoShareInfo;
+      }
+      nextSequenceValue(key) {
+        return this._getSequenceValue(key, false);
+      }
+      /**
+       * 顺序获取下一个广告类型
+       * @param key 
+       * @param peek  
+       * @returns EAdType
+       */
+      _getSequenceValue(key, peek = true) {
+        const saveKey = "ad_sequence_" + key;
+        let needSave = false;
+        let storageValue = localStorage.getItem(saveKey);
+        let sequence = JSON.parse(storageValue || "[]");
+        if (sequence.length === 0) {
+          let item = this._adConfig.adItems.find((item2) => item2.key === key);
+          if (!item) {
+            console.error("no ad item, key:", key);
+            return null;
+          }
+          const videoWeight = item.videoWeight || 0;
+          const shareWeight = item.shareWeight || 0;
+          for (let i = 0; i < shareWeight; i++) {
+            sequence.push(1 /* Share */);
+          }
+          for (let i = 0; i < videoWeight; i++) {
+            sequence.push(2 /* Video */);
+          }
+          for (let i = 0; i < sequence.length; i++) {
+            let j = Math.floor(Math.random() * sequence.length);
+            let tmp = sequence[i];
+            sequence[i] = sequence[j];
+            sequence[j] = tmp;
+          }
+          needSave = true;
+        }
+        let value = peek ? sequence[0] : sequence.shift();
+        if (!peek || needSave) {
+          localStorage.setItem(saveKey, JSON.stringify(sequence));
+        }
+        return value;
+      }
+      peekNextAdType(key) {
+        let type = this._getSequenceValue(key, true);
+        return type;
+      }
+      randomAdInfoBySequence(adItem) {
+        const type = this._getSequenceValue(adItem.key, true);
+        if (type === 1 /* Share */) {
+          let shareIdx = Math.floor(Math.random() * adItem.shareInfos.length);
+          let adInfo = adItem.shareInfos[shareIdx];
+          return this._adConfig.shareInfos[adInfo];
+        }
+        return DefaultVideoShareInfo;
+      }
+      shareOrVideo(config) {
+        var _a, _b, _c;
+        if (!GameConst.ENABLE_AD) {
+          (_a = config.done) == null ? void 0 : _a.call(config, true, 0 /* None */);
+          return;
+        }
+        let now = Date.now();
+        if (now - this._lastInvokeTime < 500) {
+          console.log("invoke too fast");
+          return;
+        }
+        this._lastInvokeTime = now;
+        let adItem = this.getAdItemByKey(config.key);
+        let adInfo = this.randomAdInfo(config.key);
+        if (adInfo) {
+          if (adInfo.adType == 2 /* Video */) {
+            TD.event({
+              id: "watch_video",
+              params: {
+                key: config.key,
+                result: "start"
+              }
+            });
+            SoundManager.instance.pauseAll();
+            PlatformHelper.showRewardedVideoAd({
+              success: () => {
+                var _a2;
+                SoundManager.instance.resumeAll();
+                if (adItem.weightMode === 2 /* Sequence */) {
+                  this.nextSequenceValue(config.key);
+                }
+                EventCenter.I.emit(_AdManager.SHARE_OR_VIDEO_DONE, 2 /* Video */, true);
+                (_a2 = config.done) == null ? void 0 : _a2.call(config, true, 2 /* Video */);
+                TD.event({
+                  id: "watch_video",
+                  params: {
+                    key: config.key,
+                    result: "success"
+                  }
+                });
+              },
+              fail: () => {
+                var _a2;
+                SoundManager.instance.resumeAll();
+                EventCenter.I.emit(_AdManager.SHARE_OR_VIDEO_DONE, 2 /* Video */, false);
+                (_a2 = config.done) == null ? void 0 : _a2.call(config, false, 2 /* Video */);
+                TD.event({
+                  id: "watch_video",
+                  params: {
+                    key: config.key,
+                    result: "fail"
+                  }
+                });
+              }
+            });
+          } else {
+            TD.event({
+              id: "share",
+              params: {
+                key: config.key,
+                result: "start"
+              }
+            });
+            let shareInfo = adInfo;
+            let title = this.getShareTitle(shareInfo);
+            let imageInfo = this.getShareImage(shareInfo);
+            if (import_env12.ALIPAY) {
+              config.moniterTime = false;
+            }
+            PlatformHelper.shareAppMessage({
+              title,
+              imageUrl: imageInfo.imageUrl,
+              imageUrlId: imageInfo.imageUrlId,
+              query: shareInfo.query,
+              enableMonitor: config.moniterTime,
+              success: () => {
+                var _a2;
+                if (adItem.weightMode === 2 /* Sequence */) {
+                  this.nextSequenceValue(config.key);
+                }
+                EventCenter.I.emit(_AdManager.SHARE_OR_VIDEO_DONE, 1 /* Share */, true);
+                (_a2 = config.done) == null ? void 0 : _a2.call(config, true, 1 /* Share */);
+                TD.event({
+                  id: "share",
+                  params: {
+                    key: config.key,
+                    result: "success"
+                  }
+                });
+              },
+              fail: () => {
+                var _a2;
+                EventCenter.I.emit(_AdManager.SHARE_OR_VIDEO_DONE, 1 /* Share */, false);
+                (_a2 = config.done) == null ? void 0 : _a2.call(config, false, 1 /* Share */);
+                TD.event({
+                  id: "share",
+                  params: {
+                    key: config.key,
+                    result: "fail"
+                  }
+                });
+              }
+            });
+          }
+        } else {
+          console.log("no ad info, key:", config.key);
+          if (import_env12.PREVIEW) {
+            if (adItem.weightMode === 2 /* Sequence */) {
+              this.nextSequenceValue(config.key);
+            }
+            EventCenter.I.emit(_AdManager.SHARE_OR_VIDEO_DONE, 1 /* Share */, true);
+            (_b = config.done) == null ? void 0 : _b.call(config, true, 1 /* Share */);
+          } else {
+            EventCenter.I.emit(_AdManager.SHARE_OR_VIDEO_DONE, 1 /* Share */, false);
+            (_c = config.done) == null ? void 0 : _c.call(config, false, 0 /* None */);
+          }
+        }
+      }
+    };
+    _AdManager.SHARE_OR_VIDEO_DONE = "ad_share_or_video_done";
+    AdManager = _AdManager;
+  }
+});
+
+// assets/scripts/game/const/types.ts
+var types_exports2 = {};
+__export(types_exports2, {
+  ActivityType: () => ActivityType,
+  ECellEffectType: () => ECellEffectType,
+  ECellType: () => ECellType,
+  EDirection: () => EDirection,
+  EGameGuideType: () => EGameGuideType,
+  EGameMode: () => EGameMode,
+  EItemType: () => EItemType,
+  EOrderColor: () => EOrderColor,
+  EPlaygroundMode: () => EPlaygroundMode,
+  EResourceType: () => EResourceType,
+  ERewardType: () => ERewardType,
+  EWXTaskStatus: () => EWXTaskStatus,
+  PhysicLayers: () => PhysicLayers,
+  WindowType: () => WindowType
+});
+var WindowType, ActivityType, EItemType, PhysicLayers, ERewardType, EResourceType, EWXTaskStatus, EGameMode, EOrderColor, EDirection, ECellType, EGameGuideType, EPlaygroundMode, ECellEffectType;
+var init_types2 = __esm({
+  "assets/scripts/game/const/types.ts"() {
+    WindowType = /* @__PURE__ */ ((WindowType2) => {
+      WindowType2["GMDocker"] = "GMDocker";
+      WindowType2["GMMananger"] = "GMMananger";
+      WindowType2["CommonToast"] = "CommonToast";
+      WindowType2["CreateMapWindow"] = "CreateMapWindow";
+      WindowType2["SettingsWindow"] = "SettingsWindow";
+      WindowType2["PauseWindow"] = "PauseWindow";
+      WindowType2["FailWindow"] = "FailWindow";
+      WindowType2["SuccessWindow"] = "SuccessWindow";
+      WindowType2["GameProgressWindow"] = "GameProgressWindow";
+      WindowType2["ReliveWindow"] = "ReliveWindow";
+      WindowType2["GuideWindow"] = "GuideWindow";
+      WindowType2["NormalReliveWindow"] = "NormalReliveWindow";
+      WindowType2["ChallengeReliveWindow"] = "ChallengeReliveWindow";
+      WindowType2["CollectionWindow"] = "CollectionWindow";
+      WindowType2["AnimalRewardWindow"] = "AnimalRewardWindow";
+      WindowType2["AnimalWindow"] = "AnimalWindow";
+      WindowType2["GetItemWindow"] = "GetItemWindow";
+      WindowType2["StartGameWindow"] = "StartGameWindow";
+      WindowType2["CStartGameWindow"] = "CStartGameWindow";
+      WindowType2["GameAwardWindow"] = "GameAwardWindow";
+      WindowType2["ShopWindow"] = "ShopWindow";
+      WindowType2["TaskWindow"] = "TaskWindow";
+      WindowType2["DailyGiftWindow"] = "DailyGiftWindow";
+      WindowType2["SevenDaySignWindow"] = "SevenDaySignWindow";
+      WindowType2["TipsWindow"] = "TipsWindow";
+      WindowType2["AdAddEnergyWindow"] = "AdAddEnergyWindow";
+      WindowType2["SubscribeWindow"] = "SubscribeWindow";
+      return WindowType2;
+    })(WindowType || {});
+    ActivityType = /* @__PURE__ */ ((ActivityType2) => {
+      ActivityType2["LoadingActivity"] = "LoadingActivity";
+      ActivityType2["HomeActivity"] = "HomeActivity";
+      ActivityType2["GameActivity"] = "GameActivity";
+      ActivityType2["LevelEditorActivity"] = "LevelEditorActivity";
+      return ActivityType2;
+    })(ActivityType || {});
+    EItemType = /* @__PURE__ */ ((EItemType5) => {
+      EItemType5[EItemType5["None"] = 0] = "None";
+      EItemType5[EItemType5["Remove"] = 1] = "Remove";
+      EItemType5[EItemType5["Collect"] = 2] = "Collect";
+      EItemType5[EItemType5["Shuffle"] = 3] = "Shuffle";
+      EItemType5[EItemType5["BigRocket"] = 4] = "BigRocket";
+      EItemType5[EItemType5["SmallRocket"] = 5] = "SmallRocket";
+      EItemType5[EItemType5["BigTimer"] = 6] = "BigTimer";
+      EItemType5[EItemType5["SmallTimer"] = 7] = "SmallTimer";
+      return EItemType5;
+    })(EItemType || {});
+    PhysicLayers = /* @__PURE__ */ ((PhysicLayers2) => {
+      PhysicLayers2[PhysicLayers2["Default"] = 1] = "Default";
+      PhysicLayers2[PhysicLayers2["Ground"] = 2] = "Ground";
+      return PhysicLayers2;
+    })(PhysicLayers || {});
+    ERewardType = /* @__PURE__ */ ((ERewardType3) => {
+      ERewardType3[ERewardType3["None"] = 0] = "None";
+      ERewardType3[ERewardType3["Resource"] = 1] = "Resource";
+      ERewardType3[ERewardType3["Tool"] = 2] = "Tool";
+      return ERewardType3;
+    })(ERewardType || {});
+    EResourceType = /* @__PURE__ */ ((EResourceType2) => {
+      EResourceType2[EResourceType2["Gold"] = 1] = "Gold";
+      EResourceType2[EResourceType2["Energy"] = 2] = "Energy";
+      EResourceType2[EResourceType2["Star"] = 3] = "Star";
+      return EResourceType2;
+    })(EResourceType || {});
+    EWXTaskStatus = /* @__PURE__ */ ((EWXTaskStatus2) => {
+      EWXTaskStatus2[EWXTaskStatus2["None"] = 0] = "None";
+      EWXTaskStatus2[EWXTaskStatus2["Awarding"] = 1] = "Awarding";
+      EWXTaskStatus2[EWXTaskStatus2["Finish"] = 2] = "Finish";
+      return EWXTaskStatus2;
+    })(EWXTaskStatus || {});
+    EGameMode = /* @__PURE__ */ ((EGameMode2) => {
+      EGameMode2[EGameMode2["Normal"] = 0] = "Normal";
+      EGameMode2[EGameMode2["Challenge"] = 1] = "Challenge";
+      return EGameMode2;
+    })(EGameMode || {});
+    EOrderColor = /* @__PURE__ */ ((EOrderColor2) => {
+      EOrderColor2[EOrderColor2["Red"] = 0] = "Red";
+      EOrderColor2[EOrderColor2["Yellow"] = 1] = "Yellow";
+      EOrderColor2[EOrderColor2["Blue"] = 2] = "Blue";
+      EOrderColor2[EOrderColor2["Green"] = 3] = "Green";
+      EOrderColor2[EOrderColor2["Pink"] = 4] = "Pink";
+      return EOrderColor2;
+    })(EOrderColor || {});
+    EDirection = /* @__PURE__ */ ((EDirection2) => {
+      EDirection2[EDirection2["DOWN"] = 0] = "DOWN";
+      EDirection2[EDirection2["LEFT"] = 1] = "LEFT";
+      EDirection2[EDirection2["RIGHT"] = 2] = "RIGHT";
+      EDirection2[EDirection2["UP"] = 3] = "UP";
+      return EDirection2;
+    })(EDirection || {});
+    ECellType = /* @__PURE__ */ ((ECellType2) => {
+      ECellType2[ECellType2["Empty"] = 0] = "Empty";
+      ECellType2[ECellType2["Entry"] = 1] = "Entry";
+      ECellType2[ECellType2["Exit"] = 2] = "Exit";
+      ECellType2[ECellType2["Item"] = 3] = "Item";
+      ECellType2[ECellType2["Stone"] = 4] = "Stone";
+      ECellType2[ECellType2["Bomb"] = 5] = "Bomb";
+      ECellType2[ECellType2["HBomb"] = 6] = "HBomb";
+      ECellType2[ECellType2["VBomb"] = 7] = "VBomb";
+      ECellType2[ECellType2["Fill"] = 8] = "Fill";
+      ECellType2[ECellType2["HFill"] = 9] = "HFill";
+      ECellType2[ECellType2["VFill"] = 10] = "VFill";
+      ECellType2[ECellType2["Ticker"] = 11] = "Ticker";
+      ECellType2[ECellType2["Counter"] = 12] = "Counter";
+      return ECellType2;
+    })(ECellType || {});
+    EGameGuideType = /* @__PURE__ */ ((EGameGuideType2) => {
+      EGameGuideType2[EGameGuideType2["BlockTips"] = 10] = "BlockTips";
+      return EGameGuideType2;
+    })(EGameGuideType || {});
+    EPlaygroundMode = /* @__PURE__ */ ((EPlaygroundMode2) => {
+      EPlaygroundMode2[EPlaygroundMode2["None"] = 0] = "None";
+      EPlaygroundMode2[EPlaygroundMode2["Bomb"] = 1] = "Bomb";
+      return EPlaygroundMode2;
+    })(EPlaygroundMode || {});
+    ECellEffectType = /* @__PURE__ */ ((ECellEffectType2) => {
+      ECellEffectType2[ECellEffectType2["PutIn"] = 0] = "PutIn";
+      ECellEffectType2[ECellEffectType2["Remove"] = 1] = "Remove";
+      ECellEffectType2[ECellEffectType2["Explode"] = 2] = "Explode";
+      ECellEffectType2[ECellEffectType2["CanPutInTips"] = 3] = "CanPutInTips";
+      ECellEffectType2[ECellEffectType2["CanExplodeTips"] = 4] = "CanExplodeTips";
+      ECellEffectType2[ECellEffectType2["BuffEffectTips"] = 5] = "BuffEffectTips";
+      ECellEffectType2[ECellEffectType2["ConnectTips"] = 6] = "ConnectTips";
+      return ECellEffectType2;
+    })(ECellEffectType || {});
+  }
+});
+
+// assets/scripts/game/config/ConfigExtension.ts
+var ConfigExtension_exports = {};
+__export(ConfigExtension_exports, {
+  LevelRandomData: () => LevelRandomData,
+  Order: () => Order,
+  RewardData: () => RewardData
+});
+var Order, LevelRandomData, RewardData;
+var init_ConfigExtension = __esm({
+  "assets/scripts/game/config/ConfigExtension.ts"() {
+    init_types2();
+    Order = class {
+      constructor() {
+        this.color = 0 /* Red */;
+        this.dir = 1 /* LEFT */;
+        this.exitGridIndex = 0;
+      }
+    };
+    LevelRandomData = class {
+      constructor() {
+        // 随机种子
+        this.seed = 0;
+        // 出口数量
+        this.exitCount = 0;
+        // 颜色数量
+        this.colorCount = 0;
+        // 预定数量
+        this.itemCount = 0;
+        // 障碍数量
+        this.stackCount = 0;
+      }
+      toString() {
+        return `${this.seed},${this.exitCount},${this.colorCount},${this.itemCount},${this.stackCount}`;
+      }
+      parse(str) {
+        let arr = str.split(",");
+        this.seed = parseInt(arr[0]);
+        this.exitCount = parseInt(arr[1]);
+        this.colorCount = parseInt(arr[2]);
+        this.itemCount = parseInt(arr[3]);
+        this.stackCount = parseInt(arr[4]);
+      }
+    };
+    RewardData = class _RewardData {
+      static create(type, id, count) {
+        let data = new _RewardData();
+        data.type = type;
+        data.id = id;
+        data.count = count;
+        return data;
+      }
+    };
+  }
+});
+
+// assets/scripts/game/const/ResConst.ts
+var ResConst_exports = {};
+__export(ResConst_exports, {
+  AnimalAnimation: () => AnimalAnimation,
+  ColorIconRES: () => ColorIconRES,
+  EffectNames: () => EffectNames,
+  ResConst: () => ResConst,
+  VFXNames: () => VFXNames
+});
+var ResConst, AnimalAnimation, VFXNames, EffectNames, ColorIconRES;
+var init_ResConst = __esm({
+  "assets/scripts/game/const/ResConst.ts"() {
+    init_types2();
+    ResConst = class {
+    };
+    // 资源包名
+    ResConst.AB_STAGE = "stage";
+    ResConst.AB_RESOURCES = "resources";
+    ResConst.AB_COMMON = "common";
+    ResConst.AB_CONFIG = "config";
+    ResConst.AB_MAP = "maps";
+    // ui资源包名
+    ResConst.FGUI_PKG_COMMON = "common";
+    ResConst.FGUI_PKG_LOADING = "loading";
+    ResConst.FGUI_PKG_GAME = "game";
+    ResConst.AB_EDITOR = "level-editor-pkg";
+    ResConst.FGUI_PKG_EDITOR = "level-editor";
+    ResConst.FGUI_PKG_BASE = "Basic";
+    AnimalAnimation = /* @__PURE__ */ ((AnimalAnimation2) => {
+      AnimalAnimation2[AnimalAnimation2["None"] = -1] = "None";
+      AnimalAnimation2[AnimalAnimation2["Idle"] = 0] = "Idle";
+      AnimalAnimation2[AnimalAnimation2["Walk"] = 1] = "Walk";
+      AnimalAnimation2[AnimalAnimation2["Jump"] = 2] = "Jump";
+      AnimalAnimation2[AnimalAnimation2["Damage"] = 3] = "Damage";
+      AnimalAnimation2[AnimalAnimation2["Eat"] = 4] = "Eat";
+      AnimalAnimation2[AnimalAnimation2["Attack"] = 5] = "Attack";
+      AnimalAnimation2[AnimalAnimation2["Run"] = 6] = "Run";
+      return AnimalAnimation2;
+    })(AnimalAnimation || {});
+    VFXNames = {
+      MergeEffect: "effects/vfx_merge",
+      AwardEffect: "effects/vfx_hecheng",
+      ShuffleEffect: "vfx/blackHole/vfx_blackhole",
+      TrailEffect: "vfx/trail_fx",
+      ExplodeEffect: "vfx/vfx_explode",
+      BigRocket: "items/big_rocket",
+      SmallRocket: "items/small_rocket_fx",
+      BigTimer: "items/big_hourglass",
+      SmallTimer: "items/small_hourglass"
+    };
+    EffectNames = {
+      PureColor: "worldRes/shader/pure-color",
+      Id2Texture: "worldRes/shader/id-2-texture",
+      MeshOnUI: "worldRes/shader/mesh-on-ui",
+      FloatBG: "worldRes/shader/float-bg"
+    };
+    ColorIconRES = {
+      [0 /* Red */]: [
+        "ui://x6189meml096em"
+      ],
+      [1 /* Yellow */]: [
+        "ui://x6189meml096eo"
+      ],
+      [2 /* Blue */]: [
+        "ui://x6189meml096en"
+      ],
+      [3 /* Green */]: [
+        "ui://x6189meml096eq"
+      ],
+      [4 /* Pink */]: [
+        "ui://x6189meml096ep"
+      ]
+    };
+  }
+});
+
+// assets/scripts/game/config/DataModel.ts
+var DataModel_exports = {};
+__export(DataModel_exports, {
+  DataConverter: () => DataConverter,
+  DataModel: () => DataModel,
+  GameConfig: () => GameConfig,
+  TableDefine: () => TableDefine
+});
+var import_protobufjs2, $Reader2, $Writer2, $util2, $root, DataConverter, DataModel, GameConfig, TableDefine;
+var init_DataModel = __esm({
+  "assets/scripts/game/config/DataModel.ts"() {
+    init_DataAccess();
+    import_protobufjs2 = __toESM(require_protobufjs());
+    $Reader2 = import_protobufjs2.default.Reader;
+    $Writer2 = import_protobufjs2.default.Writer;
+    $util2 = import_protobufjs2.default.util;
+    $root = import_protobufjs2.default.roots["default"] || (import_protobufjs2.default.roots["default"] = {});
+    DataConverter = class _DataConverter {
+      static getConvertData(target, fieldName, value, alias, cachable) {
+        target._converted = target._converted || {};
+        if (target._converted[fieldName]) {
+          return target._converted[fieldName];
+        }
+        if (_DataConverter.convertHandler == null) {
+          throw `convert field ${fieldName} value need a convetor`;
+        }
+        var data = _DataConverter.convertHandler(target, fieldName, value, alias);
+        if (cachable) {
+          target._converted[fieldName] = data;
+        }
+        return data;
+      }
+    };
+    DataModel = class {
+      constructor() {
+        this._converted = {};
+      }
+      getConvertData(fieldName, value, alias, cachable) {
+        if (this._converted[fieldName]) {
+          return this._converted[fieldName];
+        }
+        if (DataConverter.convertHandler == null) {
+          throw `convert field ${fieldName} value need a convetor`;
+        }
+        var data = DataConverter.convertHandler(this, fieldName, value, alias);
+        if (cachable) {
+          this._converted[fieldName] = data;
+        }
+        return data;
+      }
+    };
+    ((GameConfig2) => {
+      var ALLTYPES = {};
+      let EResType;
+      ((EResType2) => {
+        EResType2[EResType2["UNKNOWN"] = 0] = "UNKNOWN";
+        EResType2[EResType2["Icon"] = 1] = "Icon";
+        EResType2[EResType2["Scene"] = 2] = "Scene";
+        EResType2[EResType2["Particle"] = 4] = "Particle";
+        EResType2[EResType2["Effect"] = 5] = "Effect";
+        EResType2[EResType2["Sound"] = 6] = "Sound";
+        EResType2[EResType2["Prefab"] = 7] = "Prefab";
+      })(EResType = GameConfig2.EResType || (GameConfig2.EResType = {}));
+      let EItemType5;
+      ((EItemType6) => {
+        EItemType6[EItemType6["UNKNOWN"] = 0] = "UNKNOWN";
+        EItemType6[EItemType6["Big"] = 1] = "Big";
+        EItemType6[EItemType6["Middle"] = 2] = "Middle";
+        EItemType6[EItemType6["Small"] = 3] = "Small";
+        EItemType6[EItemType6["Tiny"] = 4] = "Tiny";
+      })(EItemType5 = GameConfig2.EItemType || (GameConfig2.EItemType = {}));
+      let ETaskType;
+      ((ETaskType2) => {
+        ETaskType2[ETaskType2["UNKNOWN"] = 0] = "UNKNOWN";
+        ETaskType2[ETaskType2["Login"] = 1] = "Login";
+        ETaskType2[ETaskType2["VideoCount"] = 2] = "VideoCount";
+        ETaskType2[ETaskType2["LevelSucess"] = 3] = "LevelSucess";
+        ETaskType2[ETaskType2["ChallengeSucess"] = 4] = "ChallengeSucess";
+        ETaskType2[ETaskType2["UseTool"] = 5] = "UseTool";
+        ETaskType2[ETaskType2["GetStar"] = 6] = "GetStar";
+        ETaskType2[ETaskType2["GetAnimal"] = 7] = "GetAnimal";
+        ETaskType2[ETaskType2["MaxCombo"] = 8] = "MaxCombo";
+        ETaskType2[ETaskType2["MergeCount"] = 9] = "MergeCount";
+        ETaskType2[ETaskType2["LevelBox"] = 10] = "LevelBox";
+        ETaskType2[ETaskType2["StarBox"] = 11] = "StarBox";
+        ETaskType2[ETaskType2["ContinueLevel"] = 12] = "ContinueLevel";
+      })(ETaskType = GameConfig2.ETaskType || (GameConfig2.ETaskType = {}));
+      let EPropType;
+      ((EPropType2) => {
+        EPropType2[EPropType2["UNKNOWN"] = 0] = "UNKNOWN";
+        EPropType2[EPropType2["Resource"] = 1] = "Resource";
+        EPropType2[EPropType2["ToolItem"] = 2] = "ToolItem";
+        EPropType2[EPropType2["Animal"] = 3] = "Animal";
+      })(EPropType = GameConfig2.EPropType || (GameConfig2.EPropType = {}));
+      let EPropResType;
+      ((EPropResType2) => {
+        EPropResType2[EPropResType2["UNKNOWN"] = 0] = "UNKNOWN";
+        EPropResType2[EPropResType2["Gold"] = 1] = "Gold";
+        EPropResType2[EPropResType2["Energy"] = 2] = "Energy";
+      })(EPropResType = GameConfig2.EPropResType || (GameConfig2.EPropResType = {}));
+      let EPropToolType;
+      ((EPropToolType2) => {
+        EPropToolType2[EPropToolType2["UNKNOWN"] = 0] = "UNKNOWN";
+        EPropToolType2[EPropToolType2["Remove"] = 1] = "Remove";
+        EPropToolType2[EPropToolType2["Collect"] = 2] = "Collect";
+        EPropToolType2[EPropToolType2["Shuffle"] = 3] = "Shuffle";
+        EPropToolType2[EPropToolType2["BigRocket"] = 4] = "BigRocket";
+        EPropToolType2[EPropToolType2["SmallRocket"] = 5] = "SmallRocket";
+        EPropToolType2[EPropToolType2["BigTimer"] = 6] = "BigTimer";
+        EPropToolType2[EPropToolType2["SmallTimer"] = 7] = "SmallTimer";
+      })(EPropToolType = GameConfig2.EPropToolType || (GameConfig2.EPropToolType = {}));
+      let EGoodItemType;
+      ((EGoodItemType2) => {
+        EGoodItemType2[EGoodItemType2["Normal"] = 0] = "Normal";
+        EGoodItemType2[EGoodItemType2["Animal"] = 1] = "Animal";
+        EGoodItemType2[EGoodItemType2["Prop"] = 2] = "Prop";
+      })(EGoodItemType = GameConfig2.EGoodItemType || (GameConfig2.EGoodItemType = {}));
+      let EStageType;
+      ((EStageType2) => {
+        EStageType2[EStageType2["UNKNOWN"] = 0] = "UNKNOWN";
+        EStageType2[EStageType2["Quad"] = 1] = "Quad";
+        EStageType2[EStageType2["Circle"] = 2] = "Circle";
+      })(EStageType = GameConfig2.EStageType || (GameConfig2.EStageType = {}));
+      const _Resources = class _Resources extends DataModel {
+        /**
+         * Constructs a new Resources.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** 资源ID */
+          this.ID = 0;
+          /** 资源名 */
+          this.ResName = "";
+          /** 包名 */
+          this.PackName = "";
+          /** 路径 */
+          this.Route = "";
+          /** 类型 */
+          this.Type = 0 /* UNKNOWN */;
+          /** 名称 */
+          this.Name = "";
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Resources.__array_type_name__];
+        }
+        static create(properties) {
+          return new _Resources(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Resources();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.ResName = reader.string();
+                break;
+              case 3:
+                message.PackName = reader.string();
+                break;
+              case 4:
+                message.Route = reader.string();
+                break;
+              case 5:
+                message.Type = reader.uint32();
+                break;
+              case 6:
+                message.Name = reader.string();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Resources.__id__ = 104;
+      _Resources.__type_name__ = "Resources";
+      _Resources.__array_type_name__ = "Resources_ARRAY";
+      let Resources = _Resources;
+      GameConfig2.Resources = _Resources;
+      ALLTYPES["Resources"] = Resources;
+      const _Resources_ARRAY = class _Resources_ARRAY extends DataModel {
+        /**
+         * Constructs a new Resources_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Resources_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Resources_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Resources.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Resources_ARRAY.__id__ = 0;
+      _Resources_ARRAY.__type_name__ = "Resources_ARRAY";
+      let Resources_ARRAY = _Resources_ARRAY;
+      GameConfig2.Resources_ARRAY = _Resources_ARRAY;
+      ALLTYPES["Resources_ARRAY"] = Resources_ARRAY;
+      const _Settings = class _Settings extends DataModel {
+        /**
+         * Constructs a new Settings.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 每日免费次数 */
+          this.FREE_PLAY_COUNT = 0;
+          /** 初始体力 */
+          this.INIT_ENERGY = 0;
+          /** 最大体力恢复值 */
+          this.MAX_RECOVER_ENERGY = 0;
+          /** 体力恢复时间s */
+          this.ENERGY_RECOVER_TIME = 0;
+          /** 嘲讽语句ID */
+          this.FAIL_TAUNT_STRING_IDS = $util2.emptyArray;
+          /** 结束进度词语ID */
+          this.FAIL_TAUNT_WORDS_IDS = $util2.emptyArray;
+          /** 加游戏圈奖励动物ID */
+          this.SUBSCRIBE_AWARD_ANIMAL = 0;
+          /** 加游戏圈奖励（type,id,num） */
+          this.SUBSCRIBE_AWARD = "";
+          /** 连消倒计时长s */
+          this.COMBO_TIME = 0;
+          /** 复活金币 */
+          this.RELIVE_GOLD_COST = 0;
+          /** 每日最大分享获取体力次数 */
+          this.DAILY_SHARE_ENERGY_COUNT = 0;
+          /** 每日最大视频获取体力次数 */
+          this.DAILY_VIDEO_ENERGY_COUNT = 0;
+          /** 每日礼包礼品 */
+          this.DAILY_LUCKY_GIFTS = "";
+          /** 每日礼包礼品 */
+          this.DAILY_LUCKY_GIFTS_FIRST = "";
+          /** 七日签到奖励-1 */
+          this.SEVEN_SIGN_AWARED_1 = "";
+          /** 七日签到奖励-2 */
+          this.SEVEN_SIGN_AWARED_2 = "";
+          /** 七日签到奖励-3 */
+          this.SEVEN_SIGN_AWARED_3 = "";
+          /** 七日签到奖励-4 */
+          this.SEVEN_SIGN_AWARED_4 = "";
+          /** 七日签到奖励-5 */
+          this.SEVEN_SIGN_AWARED_5 = "";
+          /** 七日签到奖励-6 */
+          this.SEVEN_SIGN_AWARED_6 = "";
+          /** 七日签到奖励-7 */
+          this.SEVEN_SIGN_AWARED_7 = "";
+          /** 七日签到奖励-7-特殊 */
+          this.SEVEN_SIGN_AWARED_8 = "";
+          /** 刷新动物通关次数 */
+          this.DAILY_REFRESH_LEVEL_COUNT = 0;
+          /** 每局炸弹最大使用次数 */
+          this.MAX_BOMB_COUNT = 0;
+          /** 每局刷新最大使用次数 */
+          this.MAX_REFRESH_COUNT = 0;
+          /** 每局提示最大使用次数 */
+          this.MAX_TIPS_COUNT = 0;
+          /** 每局撤回最大使用次数 */
+          this.MAX_UNDO_COUNT = 0;
+          this.FAIL_TAUNT_STRING_IDS = [];
+          this.FAIL_TAUNT_WORDS_IDS = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Settings.__array_type_name__];
+        }
+        getSUBSCRIBE_AWARD() {
+          return this.getConvertData("SUBSCRIBE_AWARD", this.SUBSCRIBE_AWARD, "RewardData[]", true);
+        }
+        getDAILY_LUCKY_GIFTS() {
+          return this.getConvertData("DAILY_LUCKY_GIFTS", this.DAILY_LUCKY_GIFTS, "RewardData[]", true);
+        }
+        getDAILY_LUCKY_GIFTS_FIRST() {
+          return this.getConvertData("DAILY_LUCKY_GIFTS_FIRST", this.DAILY_LUCKY_GIFTS_FIRST, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_1() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_1", this.SEVEN_SIGN_AWARED_1, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_2() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_2", this.SEVEN_SIGN_AWARED_2, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_3() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_3", this.SEVEN_SIGN_AWARED_3, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_4() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_4", this.SEVEN_SIGN_AWARED_4, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_5() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_5", this.SEVEN_SIGN_AWARED_5, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_6() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_6", this.SEVEN_SIGN_AWARED_6, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_7() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_7", this.SEVEN_SIGN_AWARED_7, "RewardData[]", true);
+        }
+        getSEVEN_SIGN_AWARED_8() {
+          return this.getConvertData("SEVEN_SIGN_AWARED_8", this.SEVEN_SIGN_AWARED_8, "RewardData[]", true);
+        }
+        static create(properties) {
+          return new _Settings(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Settings();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.FREE_PLAY_COUNT = reader.uint32();
+                break;
+              case 3:
+                message.INIT_ENERGY = reader.uint32();
+                break;
+              case 4:
+                message.MAX_RECOVER_ENERGY = reader.uint32();
+                break;
+              case 5:
+                message.ENERGY_RECOVER_TIME = reader.uint32();
+                break;
+              case 6:
+                if (!(message.FAIL_TAUNT_STRING_IDS && message.FAIL_TAUNT_STRING_IDS.length))
+                  message.FAIL_TAUNT_STRING_IDS = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.FAIL_TAUNT_STRING_IDS.push(reader.uint32());
+                } else
+                  message.FAIL_TAUNT_STRING_IDS.push(reader.uint32());
+                break;
+              case 7:
+                if (!(message.FAIL_TAUNT_WORDS_IDS && message.FAIL_TAUNT_WORDS_IDS.length))
+                  message.FAIL_TAUNT_WORDS_IDS = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.FAIL_TAUNT_WORDS_IDS.push(reader.uint32());
+                } else
+                  message.FAIL_TAUNT_WORDS_IDS.push(reader.uint32());
+                break;
+              case 8:
+                message.SUBSCRIBE_AWARD_ANIMAL = reader.uint32();
+                break;
+              case 9:
+                message.SUBSCRIBE_AWARD = reader.string();
+                break;
+              case 10:
+                message.COMBO_TIME = reader.uint32();
+                break;
+              case 11:
+                message.RELIVE_GOLD_COST = reader.uint32();
+                break;
+              case 12:
+                message.DAILY_SHARE_ENERGY_COUNT = reader.uint32();
+                break;
+              case 13:
+                message.DAILY_VIDEO_ENERGY_COUNT = reader.uint32();
+                break;
+              case 14:
+                message.DAILY_LUCKY_GIFTS = reader.string();
+                break;
+              case 15:
+                message.DAILY_LUCKY_GIFTS_FIRST = reader.string();
+                break;
+              case 16:
+                message.SEVEN_SIGN_AWARED_1 = reader.string();
+                break;
+              case 17:
+                message.SEVEN_SIGN_AWARED_2 = reader.string();
+                break;
+              case 18:
+                message.SEVEN_SIGN_AWARED_3 = reader.string();
+                break;
+              case 19:
+                message.SEVEN_SIGN_AWARED_4 = reader.string();
+                break;
+              case 20:
+                message.SEVEN_SIGN_AWARED_5 = reader.string();
+                break;
+              case 21:
+                message.SEVEN_SIGN_AWARED_6 = reader.string();
+                break;
+              case 22:
+                message.SEVEN_SIGN_AWARED_7 = reader.string();
+                break;
+              case 23:
+                message.SEVEN_SIGN_AWARED_8 = reader.string();
+                break;
+              case 24:
+                message.DAILY_REFRESH_LEVEL_COUNT = reader.uint32();
+                break;
+              case 25:
+                message.MAX_BOMB_COUNT = reader.uint32();
+                break;
+              case 26:
+                message.MAX_REFRESH_COUNT = reader.uint32();
+                break;
+              case 27:
+                message.MAX_TIPS_COUNT = reader.uint32();
+                break;
+              case 28:
+                message.MAX_UNDO_COUNT = reader.uint32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Settings.__id__ = 110;
+      _Settings.__type_name__ = "Settings";
+      _Settings.__array_type_name__ = "Settings_ARRAY";
+      let Settings = _Settings;
+      GameConfig2.Settings = _Settings;
+      ALLTYPES["Settings"] = Settings;
+      const _Settings_ARRAY = class _Settings_ARRAY extends DataModel {
+        /**
+         * Constructs a new Settings_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Settings_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Settings_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Settings.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Settings_ARRAY.__id__ = 0;
+      _Settings_ARRAY.__type_name__ = "Settings_ARRAY";
+      let Settings_ARRAY = _Settings_ARRAY;
+      GameConfig2.Settings_ARRAY = _Settings_ARRAY;
+      ALLTYPES["Settings_ARRAY"] = Settings_ARRAY;
+      const _Item = class _Item extends DataModel {
+        /**
+         * Constructs a new Item.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 资源名 */
+          this.ResID = 0;
+          /** 场景类型 */
+          this.Scene = 0;
+          /** 组ID,同一个组只能出现一次,0-不管 */
+          this.GroupID = 0;
+          /** 类型 */
+          this.Type = 0 /* UNKNOWN */;
+          /** 物品类型 */
+          this.ItemType = 0 /* Normal */;
+          /** 开始触摸声音 */
+          this.TouchBeginSoundID = 0;
+          /** 结束触摸声音 */
+          this.TouchEndSoundID = 0;
+          /** 选中声音 */
+          this.SelectSoundID = 0;
+          /** 合成声音 */
+          this.CombineSoundID = 0;
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Item.__array_type_name__];
+        }
+        static create(properties) {
+          return new _Item(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Item();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.ResID = reader.uint32();
+                break;
+              case 3:
+                message.Scene = reader.uint32();
+                break;
+              case 4:
+                message.GroupID = reader.uint32();
+                break;
+              case 5:
+                message.Type = reader.uint32();
+                break;
+              case 6:
+                message.ItemType = reader.uint32();
+                break;
+              case 7:
+                message.TouchBeginSoundID = reader.uint32();
+                break;
+              case 8:
+                message.TouchEndSoundID = reader.uint32();
+                break;
+              case 9:
+                message.SelectSoundID = reader.uint32();
+                break;
+              case 10:
+                message.CombineSoundID = reader.uint32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Item.__id__ = 200;
+      _Item.__type_name__ = "Item";
+      _Item.__array_type_name__ = "Item_ARRAY";
+      let Item2 = _Item;
+      GameConfig2.Item = _Item;
+      ALLTYPES["Item"] = Item2;
+      const _Item_ARRAY = class _Item_ARRAY extends DataModel {
+        /**
+         * Constructs a new Item_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Item_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Item_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Item2.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Item_ARRAY.__id__ = 0;
+      _Item_ARRAY.__type_name__ = "Item_ARRAY";
+      let Item_ARRAY = _Item_ARRAY;
+      GameConfig2.Item_ARRAY = _Item_ARRAY;
+      ALLTYPES["Item_ARRAY"] = Item_ARRAY;
+      const _Level = class _Level extends DataModel {
+        /**
+         * Constructs a new Level.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 关卡资源 */
+          this.MapID = 0;
+          /** 场景资源 */
+          this.StageID = 0;
+          /** 可在普通关显示 */
+          this.CanShowInNormal = false;
+          /** 通关奖励 */
+          this.Awards = "";
+          /** 订单数(范围值) */
+          this.OrderCount = $util2.emptyArray;
+          /** 初始定单(出口的索引，从上到下，从左到右) */
+          this.InitOrders = $util2.emptyArray;
+          /** 初始块 */
+          this.InitBlocks = $util2.emptyArray;
+          /** 底部块限制数量（0-不限制） */
+          this.BlockCount = 0;
+          /** 动态配置 */
+          this.Dynamic = "";
+          /** 可出现的特殊block(#对应特殊block的id) */
+          this.SpBlock = $util2.emptyArray;
+          /** 特殊block出现概率(#特殊block的出现概率百分比) */
+          this.SpShow = 0;
+          /** 特殊block权重1(#顺序与SpBlock字段对应,#不是block刷新的权重，是确定刷新后刷哪个block的权重) */
+          this.SpWeight1 = $util2.emptyArray;
+          /** 特殊block权重2(顺序与SpBlock字段对应,#不是block刷新的权重，是确定刷新后刷哪个block的权重) */
+          this.SpWeight2 = $util2.emptyArray;
+          this.OrderCount = [];
+          this.InitOrders = [];
+          this.InitBlocks = [];
+          this.SpBlock = [];
+          this.SpWeight1 = [];
+          this.SpWeight2 = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Level.__array_type_name__];
+        }
+        getAwards() {
+          return this.getConvertData("Awards", this.Awards, "RewardData[]", true);
+        }
+        getDynamic() {
+          return this.getConvertData("Dynamic", this.Dynamic, "LevelRandomData", true);
+        }
+        static create(properties) {
+          return new _Level(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Level();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.MapID = reader.uint32();
+                break;
+              case 3:
+                message.StageID = reader.uint32();
+                break;
+              case 4:
+                message.CanShowInNormal = reader.bool();
+                break;
+              case 5:
+                message.Awards = reader.string();
+                break;
+              case 6:
+                if (!(message.OrderCount && message.OrderCount.length))
+                  message.OrderCount = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.OrderCount.push(reader.int32());
+                } else
+                  message.OrderCount.push(reader.int32());
+                break;
+              case 7:
+                if (!(message.InitOrders && message.InitOrders.length))
+                  message.InitOrders = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.InitOrders.push(reader.int32());
+                } else
+                  message.InitOrders.push(reader.int32());
+                break;
+              case 8:
+                if (!(message.InitBlocks && message.InitBlocks.length))
+                  message.InitBlocks = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.InitBlocks.push(reader.int32());
+                } else
+                  message.InitBlocks.push(reader.int32());
+                break;
+              case 9:
+                message.BlockCount = reader.int32();
+                break;
+              case 10:
+                message.Dynamic = reader.string();
+                break;
+              case 11:
+                if (!(message.SpBlock && message.SpBlock.length))
+                  message.SpBlock = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.SpBlock.push(reader.int32());
+                } else
+                  message.SpBlock.push(reader.int32());
+                break;
+              case 12:
+                message.SpShow = reader.int32();
+                break;
+              case 13:
+                if (!(message.SpWeight1 && message.SpWeight1.length))
+                  message.SpWeight1 = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.SpWeight1.push(reader.int32());
+                } else
+                  message.SpWeight1.push(reader.int32());
+                break;
+              case 14:
+                if (!(message.SpWeight2 && message.SpWeight2.length))
+                  message.SpWeight2 = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.SpWeight2.push(reader.int32());
+                } else
+                  message.SpWeight2.push(reader.int32());
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Level.__id__ = 201;
+      _Level.__type_name__ = "Level";
+      _Level.__array_type_name__ = "Level_ARRAY";
+      let Level = _Level;
+      GameConfig2.Level = _Level;
+      ALLTYPES["Level"] = Level;
+      const _Level_ARRAY = class _Level_ARRAY extends DataModel {
+        /**
+         * Constructs a new Level_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Level_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Level_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Level.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Level_ARRAY.__id__ = 0;
+      _Level_ARRAY.__type_name__ = "Level_ARRAY";
+      let Level_ARRAY = _Level_ARRAY;
+      GameConfig2.Level_ARRAY = _Level_ARRAY;
+      ALLTYPES["Level_ARRAY"] = Level_ARRAY;
+      const _Block = class _Block extends DataModel {
+        /**
+         * Constructs a new Block.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 预设（宽,高,数据） */
+          this.Prefab = $util2.emptyArray;
+          /** 难度 */
+          this.Difficulty = 0;
+          /** 最小地图大小，默认不限制 */
+          this.MinSize = 0;
+          /** 最大地图大小(大于此值就不出现) */
+          this.MaxSize = 0;
+          /** 出现权重1 */
+          this.Rate1 = 0;
+          /** 出现权重2 */
+          this.Rate2 = 0;
+          /** 出现权重3 */
+          this.Rate3 = 0;
+          this.Prefab = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Block.__array_type_name__];
+        }
+        static create(properties) {
+          return new _Block(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Block();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                if (!(message.Prefab && message.Prefab.length))
+                  message.Prefab = [];
+                if ((tag & 7) === 2) {
+                  var end2 = reader.uint32() + reader.pos;
+                  while (reader.pos < end2)
+                    message.Prefab.push(reader.int32());
+                } else
+                  message.Prefab.push(reader.int32());
+                break;
+              case 3:
+                message.Difficulty = reader.int32();
+                break;
+              case 4:
+                message.MinSize = reader.int32();
+                break;
+              case 5:
+                message.MaxSize = reader.int32();
+                break;
+              case 6:
+                message.Rate1 = reader.int32();
+                break;
+              case 7:
+                message.Rate2 = reader.int32();
+                break;
+              case 8:
+                message.Rate3 = reader.int32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Block.__id__ = 202;
+      _Block.__type_name__ = "Block";
+      _Block.__array_type_name__ = "Block_ARRAY";
+      let Block = _Block;
+      GameConfig2.Block = _Block;
+      ALLTYPES["Block"] = Block;
+      const _Block_ARRAY = class _Block_ARRAY extends DataModel {
+        /**
+         * Constructs a new Block_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Block_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Block_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Block.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Block_ARRAY.__id__ = 0;
+      _Block_ARRAY.__type_name__ = "Block_ARRAY";
+      let Block_ARRAY = _Block_ARRAY;
+      GameConfig2.Block_ARRAY = _Block_ARRAY;
+      ALLTYPES["Block_ARRAY"] = Block_ARRAY;
+      const _Stage = class _Stage extends DataModel {
+        /**
+         * Constructs a new Stage.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 场景资源 */
+          this.ResID = 0;
+          /** 场景类型 */
+          this.StageType = 0 /* UNKNOWN */;
+          /** 物品场景类型 */
+          this.ItemSceneType = 0;
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Stage.__array_type_name__];
+        }
+        static create(properties) {
+          return new _Stage(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Stage();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.ResID = reader.uint32();
+                break;
+              case 3:
+                message.StageType = reader.uint32();
+                break;
+              case 4:
+                message.ItemSceneType = reader.int32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Stage.__id__ = 203;
+      _Stage.__type_name__ = "Stage";
+      _Stage.__array_type_name__ = "Stage_ARRAY";
+      let Stage2 = _Stage;
+      GameConfig2.Stage = _Stage;
+      ALLTYPES["Stage"] = Stage2;
+      const _Stage_ARRAY = class _Stage_ARRAY extends DataModel {
+        /**
+         * Constructs a new Stage_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Stage_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Stage_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Stage2.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Stage_ARRAY.__id__ = 0;
+      _Stage_ARRAY.__type_name__ = "Stage_ARRAY";
+      let Stage_ARRAY = _Stage_ARRAY;
+      GameConfig2.Stage_ARRAY = _Stage_ARRAY;
+      ALLTYPES["Stage_ARRAY"] = Stage_ARRAY;
+      const _ChallengeLevel = class _ChallengeLevel extends DataModel {
+        /**
+         * Constructs a new ChallengeLevel.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 关卡ID */
+          this.LevelID = 0;
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_ChallengeLevel.__array_type_name__];
+        }
+        static create(properties) {
+          return new _ChallengeLevel(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _ChallengeLevel();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.LevelID = reader.uint32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _ChallengeLevel.__id__ = 204;
+      _ChallengeLevel.__type_name__ = "ChallengeLevel";
+      _ChallengeLevel.__array_type_name__ = "ChallengeLevel_ARRAY";
+      let ChallengeLevel = _ChallengeLevel;
+      GameConfig2.ChallengeLevel = _ChallengeLevel;
+      ALLTYPES["ChallengeLevel"] = ChallengeLevel;
+      const _ChallengeLevel_ARRAY = class _ChallengeLevel_ARRAY extends DataModel {
+        /**
+         * Constructs a new ChallengeLevel_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _ChallengeLevel_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _ChallengeLevel_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(ChallengeLevel.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _ChallengeLevel_ARRAY.__id__ = 0;
+      _ChallengeLevel_ARRAY.__type_name__ = "ChallengeLevel_ARRAY";
+      let ChallengeLevel_ARRAY = _ChallengeLevel_ARRAY;
+      GameConfig2.ChallengeLevel_ARRAY = _ChallengeLevel_ARRAY;
+      ALLTYPES["ChallengeLevel_ARRAY"] = ChallengeLevel_ARRAY;
+      const _Goods = class _Goods extends DataModel {
+        /**
+         * Constructs a new Goods.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 是否在商店显示 */
+          this.Show = false;
+          /** 显示名字 */
+          this.Name = "";
+          /** 场景资源 */
+          this.Item = "";
+          /** 金币购买价格 */
+          this.GoldPrice = 0;
+          /** 是否能看广告获得 */
+          this.ByAD = false;
+          /** 限制次数 */
+          this.Limit = 0;
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Goods.__array_type_name__];
+        }
+        getItem() {
+          return this.getConvertData("Item", this.Item, "RewardData", true);
+        }
+        static create(properties) {
+          return new _Goods(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Goods();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.Show = reader.bool();
+                break;
+              case 3:
+                message.Name = reader.string();
+                break;
+              case 4:
+                message.Item = reader.string();
+                break;
+              case 5:
+                message.GoldPrice = reader.uint32();
+                break;
+              case 6:
+                message.ByAD = reader.bool();
+                break;
+              case 7:
+                message.Limit = reader.uint32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Goods.__id__ = 205;
+      _Goods.__type_name__ = "Goods";
+      _Goods.__array_type_name__ = "Goods_ARRAY";
+      let Goods = _Goods;
+      GameConfig2.Goods = _Goods;
+      ALLTYPES["Goods"] = Goods;
+      const _Goods_ARRAY = class _Goods_ARRAY extends DataModel {
+        /**
+         * Constructs a new Goods_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Goods_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Goods_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Goods.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Goods_ARRAY.__id__ = 0;
+      _Goods_ARRAY.__type_name__ = "Goods_ARRAY";
+      let Goods_ARRAY = _Goods_ARRAY;
+      GameConfig2.Goods_ARRAY = _Goods_ARRAY;
+      ALLTYPES["Goods_ARRAY"] = Goods_ARRAY;
+      const _DailyTask = class _DailyTask extends DataModel {
+        /**
+         * Constructs a new DailyTask.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** ID */
+          this.ID = 0;
+          /** 任务类型 */
+          this.TaskType = 0 /* UNKNOWN */;
+          /** 参数 */
+          this.Value = 0;
+          /** 是否每日任务 */
+          this.IsDaily = false;
+          /** 下一个任务,-1自己循环 */
+          this.NextTask = 0;
+          /** 条件数值 */
+          this.Num = 0;
+          /** 最大值 */
+          this.MaxValue = 0;
+          /** 是否在上一个目标达成后减去Num */
+          this.Clear = false;
+          /** 奖励 */
+          this.Reward = "";
+          /** 描述 */
+          this.Desc = 0;
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_DailyTask.__array_type_name__];
+        }
+        getReward() {
+          return this.getConvertData("Reward", this.Reward, "RewardData[]", true);
+        }
+        static create(properties) {
+          return new _DailyTask(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _DailyTask();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.TaskType = reader.uint32();
+                break;
+              case 3:
+                message.Value = reader.int32();
+                break;
+              case 4:
+                message.IsDaily = reader.bool();
+                break;
+              case 5:
+                message.NextTask = reader.int32();
+                break;
+              case 6:
+                message.Num = reader.uint32();
+                break;
+              case 7:
+                message.MaxValue = reader.uint32();
+                break;
+              case 8:
+                message.Clear = reader.bool();
+                break;
+              case 9:
+                message.Reward = reader.string();
+                break;
+              case 10:
+                message.Desc = reader.uint32();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _DailyTask.__id__ = 206;
+      _DailyTask.__type_name__ = "DailyTask";
+      _DailyTask.__array_type_name__ = "DailyTask_ARRAY";
+      let DailyTask = _DailyTask;
+      GameConfig2.DailyTask = _DailyTask;
+      ALLTYPES["DailyTask"] = DailyTask;
+      const _DailyTask_ARRAY = class _DailyTask_ARRAY extends DataModel {
+        /**
+         * Constructs a new DailyTask_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _DailyTask_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _DailyTask_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(DailyTask.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _DailyTask_ARRAY.__id__ = 0;
+      _DailyTask_ARRAY.__type_name__ = "DailyTask_ARRAY";
+      let DailyTask_ARRAY = _DailyTask_ARRAY;
+      GameConfig2.DailyTask_ARRAY = _DailyTask_ARRAY;
+      ALLTYPES["DailyTask_ARRAY"] = DailyTask_ARRAY;
+      const _Guide = class _Guide extends DataModel {
+        /**
+         * Constructs a new Guide.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          /** id */
+          this.ID = 0;
+          /** 引导描述 */
+          this.Desc = "";
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static getArrayType() {
+          return ALLTYPES[_Guide.__array_type_name__];
+        }
+        static create(properties) {
+          return new _Guide(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Guide();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                message.ID = reader.uint32();
+                break;
+              case 2:
+                message.Desc = reader.string();
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Guide.__id__ = 207;
+      _Guide.__type_name__ = "Guide";
+      _Guide.__array_type_name__ = "Guide_ARRAY";
+      let Guide = _Guide;
+      GameConfig2.Guide = _Guide;
+      ALLTYPES["Guide"] = Guide;
+      const _Guide_ARRAY = class _Guide_ARRAY extends DataModel {
+        /**
+         * Constructs a new Guide_ARRAY.
+         * @param [properties] Properties to set
+         */
+        constructor(properties) {
+          super();
+          this.Items = $util2.emptyArray;
+          this.Items = [];
+          if (properties) {
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+              if (properties[keys[i]] != null)
+                this[keys[i]] = properties[keys[i]];
+          }
+        }
+        static create(properties) {
+          return new _Guide_ARRAY(properties);
+        }
+        static decode(reader, length) {
+          if (!(reader instanceof $Reader2))
+            reader = $Reader2.create(reader);
+          var end = length === void 0 ? reader.len : reader.pos + length;
+          var message = new _Guide_ARRAY();
+          while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+              case 1:
+                if (!(message.Items && message.Items.length))
+                  message.Items = [];
+                message.Items.push(Guide.decode(reader, reader.uint32()));
+                break;
+              default:
+                reader.skipType(tag & 7);
+                break;
+            }
+          }
+          return message;
+        }
+      };
+      _Guide_ARRAY.__id__ = 0;
+      _Guide_ARRAY.__type_name__ = "Guide_ARRAY";
+      let Guide_ARRAY = _Guide_ARRAY;
+      GameConfig2.Guide_ARRAY = _Guide_ARRAY;
+      ALLTYPES["Guide_ARRAY"] = Guide_ARRAY;
+    })(GameConfig || (GameConfig = {}));
+    TableDefine = class {
+    };
+    TableDefine.ResourcesTable = new DataTable(GameConfig.Resources);
+    TableDefine.SettingsTable = new DataTable(GameConfig.Settings);
+    TableDefine.ItemTable = new DataTable(GameConfig.Item);
+    TableDefine.LevelTable = new DataTable(GameConfig.Level);
+    TableDefine.BlockTable = new DataTable(GameConfig.Block);
+    TableDefine.StageTable = new DataTable(GameConfig.Stage);
+    TableDefine.ChallengeLevelTable = new DataTable(GameConfig.ChallengeLevel);
+    TableDefine.GoodsTable = new DataTable(GameConfig.Goods);
+    TableDefine.DailyTaskTable = new DataTable(GameConfig.DailyTask);
+    TableDefine.GuideTable = new DataTable(GameConfig.Guide);
+  }
+});
+
+// assets/scripts/game/manager/ResManager.ts
+var ResManager_exports = {};
+__export(ResManager_exports, {
+  ResManager: () => ResManager2
+});
+var ResManager2;
+var init_ResManager = __esm({
+  "assets/scripts/game/manager/ResManager.ts"() {
+    init_ConfigManager();
+    init_ResManager2();
+    ResManager2 = class extends ResManager {
+      static getPath(resCfg) {
+        let path4 = "";
+        if (resCfg.Route) {
+          path4 = resCfg.Route + (resCfg.Route.endsWith("/") ? "" : "/") + resCfg.ResName;
+        } else {
+          path4 = resCfg.ResName;
+        }
+        return path4;
+      }
+      static getById(id, type) {
+        let resCfg = ConfigManager.ResourcesTable.getItem(id);
+        if (!resCfg) {
+          console.error(`no resource id=${id}`);
+          return null;
+        }
+        let path4 = this.getPath(resCfg);
+        return this.get(resCfg.PackName, path4, type);
+      }
+      static async getByIdAsync(id, type) {
+        let resCfg = ConfigManager.ResourcesTable.getItem(id);
+        if (!resCfg) {
+          console.error(`no resource id=${id}`);
+          return null;
+        }
+        let path4 = this.getPath(resCfg);
+        return await this.getAsync(resCfg.PackName, path4, type);
+      }
+    };
+    ResManager.getById = ResManager2.getById;
+    ResManager.getByIdAsync = ResManager2.getByIdAsync;
+  }
+});
+
+// assets/scripts/game/config/ConfigManager.ts
+var ConfigManager_exports = {};
+__export(ConfigManager_exports, {
+  ConfigManager: () => ConfigManager
+});
+var import_cc31, ConfigManager;
+var init_ConfigManager = __esm({
+  "assets/scripts/game/config/ConfigManager.ts"() {
+    import_cc31 = require("cc");
+    init_DataAccess();
+    init_ResConst();
+    init_DataModel();
+    init_ResManager();
+    init_ConfigExtension();
+    init_types2();
+    ConfigManager = class extends TableDefine {
+      static get ItemTypeMap() {
+        if (!this._itemTypeMap) {
+          this._initItemTypeMap();
+        }
+        return this._itemTypeMap;
+      }
+      /**
+       * 道具转工具
+       * @param type 
+       * @returns 
+       */
+      static getToolType(type) {
+        return this._toolItemMap[type];
+      }
+      /**
+       * 工具转道具
+       * @param item 
+       * @returns 
+       */
+      static getToolItem(item) {
+        return this._itemToolMap[item];
+      }
+      static loadConfig() {
+        for (let key in this._toolItemMap) {
+          this._itemToolMap[this._toolItemMap[key]] = parseInt(key);
+        }
+        DataConverter.convertHandler = this.modelConvert.bind(this);
+        let loadHandler = (datafile) => {
+          let asset = ResManager2.get(ResConst.AB_CONFIG, datafile, import_cc31.BufferAsset);
+          return new Uint8Array(asset.buffer());
+        };
+        DataAccess.initial("data/", loadHandler);
+        this._modelConverter["RewardData"] = this._parseRewardData.bind(this);
+        this._modelConverter["RewardData[]"] = this._parseRewardDataList.bind(this);
+        this._modelConverter["Order"] = this._parseOrder.bind(this);
+        this._modelConverter["Order[]"] = this._parseOrderList.bind(this);
+        this._modelConverter["LevelRandomData"] = this._parseLevelRandomData.bind(this);
+        this._modelConverter["LevelRandomData[]"] = this._parseLevelRandomDataList.bind(this);
+      }
+      static modelConvert(data, fieldName, value, alias) {
+        let convert = this._modelConverter[alias];
+        if (!convert) {
+          console.error(`can not find alias named ${alias} in field=${fieldName}`);
+          return;
+        }
+        return convert(data, fieldName, value);
+      }
+      static get settings() {
+        return this.SettingsTable.getItem(1);
+      }
+      static _initItemTypeMap() {
+        this._itemTypeMap = {};
+        for (let item of this.ItemTable.items) {
+          let type = item.Type;
+          if (item.ItemType == GameConfig.EGoodItemType.Prop) {
+            continue;
+          }
+          if (item.ItemType == GameConfig.EGoodItemType.Animal) {
+            type = 0;
+          }
+          let list = this._itemTypeMap[type];
+          if (!list) {
+            list = [];
+            this._itemTypeMap[type] = list;
+          }
+          list.push(item);
+        }
+      }
+      static _parseRewardData(data, fieldName, value) {
+        let reward = new RewardData();
+        let [type, id, count] = value.split(",");
+        reward.id = parseInt(id);
+        reward.count = parseInt(count);
+        reward.type = parseInt(type);
+        return reward;
+      }
+      static _parseRewardDataList(data, fieldName, value) {
+        let list = [];
+        let arr = value.split("|");
+        for (let str of arr) {
+          let reward = this._parseRewardData(data, fieldName, str);
+          list.push(reward);
+        }
+        return list;
+      }
+      static _parseOrder(data, fieldName, value) {
+        let order = new Order();
+        let [color, dir] = value.split(",");
+        order.color = parseInt(color);
+        order.dir = parseInt(dir);
+        return order;
+      }
+      static _parseOrderList(data, fieldName, value) {
+        let list = [];
+        let arr = value.split("|");
+        for (let str of arr) {
+          let order = this._parseOrder(data, fieldName, str);
+          list.push(order);
+        }
+        return list;
+      }
+      static getLevel(level) {
+        if (this.LevelTable.contains(level)) {
+          return this.LevelTable.getItem(level);
+        }
+        let levelItem = this.LevelTable.items[0];
+        for (var i = 0; i < this.LevelTable.items.length; i++) {
+          let item = this.LevelTable.items[i];
+          if (item.ID > level) {
+            break;
+          }
+          if (item.CanShowInNormal) {
+            levelItem = item;
+          }
+        }
+        return levelItem;
+      }
+      static _parseLevelRandomData(data, fieldName, value) {
+        let randomData = new LevelRandomData();
+        randomData.parse(value);
+        return randomData;
+      }
+      static _parseLevelRandomDataList(data, fieldName, value) {
+        let list = [];
+        let arr = value.split("|");
+        for (let str of arr) {
+          let randomData = this._parseLevelRandomData(data, fieldName, str);
+          list.push(randomData);
+        }
+        return list;
+      }
+    };
+    ConfigManager._toolItemMap = {
+      9e3: 5 /* SmallRocket */,
+      9001: 7 /* SmallTimer */
+    };
+    ConfigManager._itemToolMap = {};
+    ConfigManager._itemTypeMap = null;
+    ConfigManager._modelConverter = {};
+  }
+});
+
+// assets/scripts/game/const/GameEvent.ts
+var GameEvent_exports = {};
+__export(GameEvent_exports, {
+  GameEvent: () => GameEvent
+});
+var GameEvent;
+var init_GameEvent = __esm({
+  "assets/scripts/game/const/GameEvent.ts"() {
+    GameEvent = {
+      GAME_LOADING_ENDED: "GAME_LOADING_ENDED",
+      GAME_ON_SHOW: "GAME_ON_SHOW",
+      GAME_ON_HIDE: "GAME_ON_HIDE",
+      USER_LEVEL_CHANGED: "USER_LEVEL_CHANGED",
+      USER_GOLD_CHANGED: "USER_GOLD_CHANGED",
+      USER_STAR_CHANGED: "USER_STAR_CHANGED",
+      USER_ENERGY_CHANGED: "USER_ENERGY_CHANGED",
+      USER_TASK_CHANGED: "USER_TASK_CHANGED",
+      // 跨天事件
+      SYSTEM_CROSS_DAY: "SYSTEM_CROSS_DAY",
+      // 整点报时
+      SYSTEM_CROSS_HOUR: "SYSTEM_CROSS_HOUR",
+      GAMEWORLD_ENABLE_CHANGED: "GAMEWORLD_ENABLE_CHANGED",
+      USER_DAILY_ANIMAL_CHANGED: "USER_DAILY_ANIMAL_CHANGED",
+      USER_PLAY_COUNT_CHANGE: "USER_PLAY_COUNT_CHANGE",
+      GAME_START: "GAME_START",
+      GAME_LEVEL_LOADED: "GAME_LEVEL_LOADED",
+      GAME_INIT_RESET_BLOCK: "GAME_INIT_RESET_BLOCK",
+      GAME_RESET_BLOCK: "GAME_RESET_BLOCK",
+      GAME_OVER: "GAME_OVER",
+      GAME_LEVEL_BEFORE_LOAD: "GAME_LEVEL_BEFORE_LOAD",
+      GAME_LEVEL_START: "GAME_LEVEL_START",
+      GAME_LEVEL_OVER: "GAME_LEVEL_OVER",
+      GAME_NEXT_LEVEL: "GAME_NEXT_LEVEL",
+      GAME_LEVEL_SUCCESS: "GAME_LEVEL_SUCCESS",
+      GAME_MOVE_BLOCK_IN: "GAME_MOVE_BLOCK_IN",
+      GAME_MOVE_BLOCK_OUT: "GAME_MOVE_BLOCK_OUT",
+      GAME_MOVE_BLOCK_CANCLE: "GAME_MOVE_BLOCK_CACLE",
+      GAME_MOVE_BLOCK_PUTIN: "GAME_MOVE_BLOCK_PUTIN",
+      GAME_ENTER_BOMB_MODE: "GAME_ENTER_BOMB_MODE",
+      GAME_EXIT_BOMB_MODE: "GAME_EXIT_BOMB_MODE",
+      // 生成了特殊方块
+      GAME_SPECIAL_BLOCK_SHOW: "GAME_SPECIAL_BLOCK_SHOW",
+      GAME_ORDER_COMPLETE: "GAME_ORDER_COMPLETE",
+      // 时间提醒
+      GAME_TIMER_NOTICE: "GAME_TIMER_NOTICE",
+      // 复活
+      GAME_RELIVE: "GAME_RELIVE",
+      GAME_ADD_TIME: "GAME_ADD_TIME"
+    };
+  }
+});
+
+// assets/scripts/game/const/UILocations.ts
+var UILocations_exports = {};
+__export(UILocations_exports, {
+  GetLocationByReward: () => GetLocationByReward,
+  UILocations: () => UILocations
+});
+function GetLocationByReward(reward) {
+  let locType = -1;
+  if (reward.type == 1 /* Resource */) {
+    locType = ResLocMap[reward.id];
+  }
+  return locType;
+}
+var UILocations, ResLocMap;
+var init_UILocations = __esm({
+  "assets/scripts/game/const/UILocations.ts"() {
+    init_types2();
+    UILocations = /* @__PURE__ */ ((UILocations3) => {
+      UILocations3[UILocations3["ResEnergy"] = 0] = "ResEnergy";
+      UILocations3[UILocations3["ResGold"] = 1] = "ResGold";
+      return UILocations3;
+    })(UILocations || {});
+    ResLocMap = {
+      [1 /* Resource */]: 1 /* ResGold */
+    };
+  }
+});
+
+// assets/scripts/game/manager/EffectManager.ts
+var EffectManager_exports = {};
+__export(EffectManager_exports, {
+  EffectManager: () => EffectManager,
+  SpEffectEntity: () => SpEffectEntity
+});
+var import_cc32, SpEffectEntity, SpEffectPool, EffectManager;
+var init_EffectManager = __esm({
+  "assets/scripts/game/manager/EffectManager.ts"() {
+    import_cc32 = require("cc");
+    init_PoolManager();
+    init_ResConst();
+    init_ResManager();
+    init_Pool();
+    init_fairygui();
+    init_StringUtils();
+    init_SpaceUtils();
+    init_CoroutineUtils();
+    SpEffectEntity = class {
+      get skeleton() {
+        return this._skeleton;
+      }
+      set skeleton(value) {
+        this._skeleton = value;
+      }
+      get node() {
+        return this._node;
+      }
+      async createFromPool(data) {
+        let prefab = null;
+        if (typeof data === "string") {
+          const resInfo = StringUtils.splitResPath(data, ResConst.AB_COMMON);
+          prefab = await ResManager2.getAsync(resInfo.pkg, resInfo.res, import_cc32.Prefab);
+        } else {
+          prefab = await ResManager2.getByIdAsync(data, import_cc32.Prefab);
+        }
+        if (!prefab) {
+          console.error("\u52A0\u8F7Dspine\u5931\u8D25:", data);
+          return;
+        }
+        const node = (0, import_cc32.instantiate)(prefab);
+        this._node = node;
+        this.skeleton = node.getComponent(import_cc32.sp.Skeleton);
+        if (!this.skeleton) {
+          const effect = node.getChildByName("effect");
+          if (effect) {
+            this.skeleton = effect.getComponent(import_cc32.sp.Skeleton);
+          }
+        }
+      }
+      toPool() {
+        if (this._skeleton) {
+          if (this._skeleton.node) {
+            this._skeleton.node.active = false;
+          }
+        }
+      }
+      fromPool() {
+        if (this._skeleton) {
+          if (this._skeleton.node) {
+            this._skeleton.node.active = true;
+          }
+        }
+      }
+      setVisible(value) {
+        if (this._skeleton) {
+          if (this._skeleton.node) {
+            this._skeleton.node.active = value;
+          }
+        }
+      }
+    };
+    SpEffectPool = new PoolManager(SpEffectEntity);
+    EffectManager = class _EffectManager {
+      static get inst() {
+        if (!this._inst) {
+          this._inst = new _EffectManager();
+        }
+        return this._inst;
+      }
+      async playOneShot(info) {
+        if (!info.res || !info.parent) {
+          return;
+        }
+        if (info.pos) {
+          info.pos = Vec3Pool.get().set(info.pos.x, info.pos.y, info.pos.z);
+        }
+        return new Promise((resolve) => {
+          this.loadEffect(info.res).then(async (ske) => {
+            if (!ske) {
+              return;
+            }
+            const { parent, pos, anim = "animation", delay, inUIPos } = info;
+            if (delay) {
+              await CoroutineUtils.wait(delay);
+            }
+            ske.node.parent = parent;
+            const oldPos = ske.node.position;
+            if (pos) {
+              oldPos.set(pos.x, pos.y, pos.z);
+              Vec3Pool.put(pos);
+            }
+            if (inUIPos) {
+              const vec2 = Vec2Pool.get();
+              vec2.set(oldPos.x, oldPos.y);
+              SpaceUtils.groot2cnode(vec2, GRoot.inst.node, vec2);
+              oldPos.set(vec2.x, vec2.y, 0);
+              Vec2Pool.put(vec2);
+            }
+            ske.node.setPosition(oldPos);
+            ske.skeleton.setAnimation(0, anim, false);
+            let skeAnim = ske.skeleton.findAnimation(anim);
+            if (!skeAnim) {
+              console.error("\u627E\u4E0D\u5230\u52A8\u753B\uFF0C\u8D44\u6E90:", info.res, "\u52A8\u753B:", anim);
+              this.removeEffect(ske);
+              resolve(null);
+              return;
+            }
+            let done = false;
+            ske.skeleton.setCompleteListener(() => {
+              if (!done) {
+                this.removeEffect(ske);
+                resolve(null);
+                done = true;
+              }
+            });
+            let duration = skeAnim.duration;
+            await CoroutineUtils.wait(duration).then(() => {
+              if (!done) {
+                this.removeEffect(ske);
+                resolve(null);
+                done = true;
+                console.log("\u52A8\u753B\u64AD\u653E\u8D85\u65F6\uFF0C\u5F3A\u5236\u5B8C\u6210");
+              }
+            });
+          });
+        });
+      }
+      removeEffect(ske) {
+        if (!ske) {
+          return;
+        }
+        ske.node.removeFromParent();
+        SpEffectPool.put(ske);
+      }
+      async loadEffect(res) {
+        let ske = await SpEffectPool.getByKeyAsync(res);
+        return ske;
+      }
+    };
+  }
+});
+
+// assets/scripts/game/manager/GameObjectPool.ts
+var GameObjectPool_exports = {};
+__export(GameObjectPool_exports, {
+  GameObjectEntity: () => GameObjectEntity,
+  GameObjectManager: () => GameObjectManager
+});
+var import_cc33, _tempVec, GameObjectEntity, GameObjectPool, GameObjectManager;
+var init_GameObjectPool = __esm({
+  "assets/scripts/game/manager/GameObjectPool.ts"() {
+    import_cc33 = require("cc");
+    init_PoolManager();
+    init_ResConst();
+    init_ResManager();
+    init_Pool();
+    init_fairygui();
+    init_StringUtils();
+    init_SpaceUtils();
+    init_CoroutineUtils();
+    _tempVec = new import_cc33.Vec3();
+    GameObjectEntity = class {
+      get node() {
+        return this._node;
+      }
+      async createFromPool(data) {
+        let prefab = null;
+        if (typeof data === "string") {
+          const resInfo = StringUtils.splitResPath(data, ResConst.AB_COMMON);
+          prefab = await ResManager2.getAsync(resInfo.pkg, resInfo.res, import_cc33.Prefab);
+        } else {
+          prefab = await ResManager2.getByIdAsync(data, import_cc33.Prefab);
+        }
+        if (!prefab) {
+          console.error("\u52A0\u8F7Dspine\u5931\u8D25:", data);
+          return;
+        }
+        const node = (0, import_cc33.instantiate)(prefab);
+        this._node = node;
+      }
+      toPool() {
+        if (this._node) {
+          this._node.active = false;
+        }
+      }
+      fromPool() {
+        if (this._node) {
+          this._node.active = true;
+        }
+      }
+      setVisible(value) {
+        if (this._node) {
+          this._node.active = value;
+        }
+      }
+    };
+    GameObjectPool = new PoolManager(GameObjectEntity);
+    GameObjectManager = class _GameObjectManager {
+      static get inst() {
+        if (!this._inst) {
+          this._inst = new _GameObjectManager();
+        }
+        return this._inst;
+      }
+      async playOneShot(info) {
+        if (!info.res || !info.parent) {
+          return;
+        }
+        if (info.pos) {
+          info.pos = Vec3Pool.get().set(info.pos.x, info.pos.y, info.pos.z);
+        }
+        return new Promise((resolve) => {
+          this.loadGameObject(info.res).then(async (ske) => {
+            if (!ske) {
+              return;
+            }
+            const { parent, pos, delay, inUIPos } = info;
+            if (delay) {
+              await CoroutineUtils.wait(delay);
+            }
+            ske.node.parent = parent;
+            const oldPos = _tempVec.set(ske.node.position);
+            if (pos) {
+              oldPos.set(pos.x, pos.y, pos.z);
+              Vec3Pool.put(pos);
+            }
+            if (inUIPos) {
+              const vec2 = Vec2Pool.get();
+              vec2.set(oldPos.x, oldPos.y);
+              SpaceUtils.groot2cnode(vec2, GRoot.inst.node, vec2);
+              oldPos.set(vec2.x, vec2.y, 0);
+              Vec2Pool.put(vec2);
+            }
+            ske.node.setPosition(oldPos);
+            if (info.duration) {
+              await CoroutineUtils.wait(info.duration);
+              this.removeGameObject(ske);
+            }
+          });
+        });
+      }
+      removeGameObject(entity) {
+        if (!entity) {
+          return;
+        }
+        entity.node.removeFromParent();
+        GameObjectPool.put(entity);
+      }
+      async loadGameObject(res) {
+        let ske = await GameObjectPool.getByKeyAsync(res);
+        return ske;
+      }
+    };
+  }
+});
+
+// assets/scripts/game/modules/user/UserModel.ts
+var UserModel_exports = {};
+__export(UserModel_exports, {
+  AnimalInfo: () => AnimalInfo,
+  UserModel: () => UserModel
+});
+var UserModel, AnimalInfo;
+var init_UserModel = __esm({
+  "assets/scripts/game/modules/user/UserModel.ts"() {
+    init_BaseModel();
+    UserModel = class extends BaseModel {
+      constructor() {
+        super(...arguments);
+        this.refreshTime = 0;
+        this.saveTime = 0;
+        // 上次存储时间
+        this.version = "";
+        this.nickName = "";
+        // 移除道具数量
+        this.removeCount = 0;
+        // 凑齐道具数量
+        this.collectCount = 0;
+        // 洗牌道具数量
+        this.shuffleCount = 0;
+        // 大火箭数量
+        this.bigRocketCount = 0;
+        // 大沙漏数量
+        this.bigTImerCount = 0;
+        // 成功次数
+        this.successCount = 0;
+        // 今日成功次数
+        this.todaySuccessCount = 0;
+        // 今日关卡成功次数
+        this.todayCSuccessCount = 0;
+        // 总成功次数
+        this.totalSuccessCount = 0;
+        // 获取的动物id
+        this.animals = [];
+        // 今日挑战关卡ID
+        this.todayChallengeID = 0;
+        // 今日游戏次数
+        this.todayPlayCount = 0;
+        this.totalPlayCount = 0;
+        // 今日普通关卡次数
+        this.todayNormalPlayCount = 0;
+        // 今日挑战次数
+        this.todayChallengeCount = 0;
+        // 连续通关次数
+        this.continuePassCount = 0;
+        // 今日分享能量次数
+        this.todayShareForEnergyCount = 0;
+        // 今日看视频能量次数
+        this.todayVideoForEnergyCount = 0;
+        // 每日礼包状态
+        this.dailyGiftState = 0;
+        // 七日签到进度
+        this.sevenSignProgress = 0;
+        // 七日签到状态
+        this.sevenSignTodayState = 0;
+        // 刷新动物ID，0-表示未使用刷新
+        this.refreshAnimalId = 0;
+        // 当日动物ID
+        this.todayAnimalId = 0;
+        // 当前关卡最大进度
+        this.levelMaxProgress = 0;
+        this.guideId = 0;
+        // 订阅游戏圈状态
+        this.subscribeStae = 0;
+        // 收藏游戏状态
+        this.favoriteState = 0;
+        // 添加到桌面状态
+        this.addToDesktopState = 0;
+        // 给好评状态
+        this.commentState = 0;
+        // 关卡
+        this.level = 1;
+        // 体力
+        this.energy = 0;
+        // 体力回复时间戳s
+        this.energyTimer = 0;
+        // 金币
+        this.gold = 0;
+        // 星星
+        this.star = 0;
+        // 总购买次数
+        this.totalGoodBuyCounts = {};
+        // 今日购买次数
+        this.todayGoodBuyCounts = {};
+        // 首周奖励获取状态
+        this.firstSevenAwardGot = 0;
+        // 首日奖励获取状态
+        this.firstDayAwardGot = 0;
+        // 连胜分数
+        this.continueWinScore = 0;
+      }
+    };
+    AnimalInfo = class {
+      constructor() {
+        this.id = 0;
+        this.getTime = 0;
+      }
+    };
+  }
+});
+
+// assets/scripts/game/modules/user/UserDAO.ts
+var UserDAO_exports = {};
+__export(UserDAO_exports, {
+  userDAO: () => userDAO
+});
+var UserDAO, userDAO;
+var init_UserDAO = __esm({
+  "assets/scripts/game/modules/user/UserDAO.ts"() {
+    init_GameSettings();
+    init_BaseDAO();
+    init_SystemController();
+    init_ConfigManager();
+    init_UserModel();
+    UserDAO = class extends BaseDAO {
+      constructor() {
+        super(...arguments);
+        this._isNewUser = false;
+      }
+      get isNewUser() {
+        return this._isNewUser;
+      }
+      get storageKey() {
+        return "user";
+      }
+      get modelName() {
+        return "UserModel";
+      }
+      setData(data, replace) {
+        super.setData(data, replace);
+        this.setValidKey("level", "gold", "energy", "star");
+      }
+      afterLoad() {
+        if (this.model.saveTime == null) {
+          this.model.saveTime = systemController.getTimeMS();
+        }
+      }
+      beforeInitial() {
+        this._isNewUser = this._isNewer;
+        if (this._isNewer) {
+          this.model.energy = ConfigManager.settings.INIT_ENERGY;
+          this.model.energyTimer = systemController.getTime();
+        }
+        this.model.level = this.model.level || 1;
+        this.model.version = GameSettings.version;
+        this.easySave();
+      }
+      /**
+       * 更新存储时间，并强制保存，不会设置为脏数据
+       */
+      updateTime() {
+        this.model.saveTime = systemController.getTimeMS();
+        this.save(true, true, false);
+      }
+      setLevel(val) {
+        return this.checkAndUpdateValue("level", val);
+      }
+      addLevel(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`addLevel\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        val = this.model.level + val;
+        return this.checkAndUpdateValue("level", val);
+      }
+      subLevel(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`subLevel\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        if (this.model.level < val) {
+          console.warn(`subLevel\uFF1A\u7B49\u7EA7\u4E0D\u8DB3:${this.model.level}-${val}`);
+          return false;
+        }
+        val = this.model.level - val;
+        return this.checkAndUpdateValue("level", val);
+      }
+      isValidNumber(val) {
+        if (typeof val != "number" || Number.isNaN(val)) {
+          return false;
+        }
+        return true;
+      }
+      addGold(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`addGold\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        val = this.model.gold + val;
+        return this.checkAndUpdateValue("gold", val);
+      }
+      subGold(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`subGold\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        if (this.model.gold < val) {
+          console.warn(`subGold\uFF1A\u8D44\u6E90\u4E0D\u8DB3:${this.model.gold}-${val}`);
+          return false;
+        }
+        val = this.model.gold - val;
+        return this.checkAndUpdateValue("gold", val);
+      }
+      addStar(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`addStar\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        val = this.model.star + val;
+        return this.checkAndUpdateValue("star", val);
+      }
+      subStar(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`subGem\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        if (this.model.star < val) {
+          console.warn(`subGem\uFF1A\u8D44\u6E90\u4E0D\u8DB3:${this.model.star}-${val}`);
+          return false;
+        }
+        val = this.model.star - val;
+        return this.checkAndUpdateValue("star", val);
+      }
+      addEnergy(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`addEnergy\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        val = this.model.energy + val;
+        return this.checkAndUpdateValue("energy", val);
+      }
+      subEnergy(val) {
+        if (!this.isValidNumber(val) || val <= 0) {
+          console.warn(`subEnergy\uFF1A\u9519\u8BEF\u7684\u6570\u636E:${val}`);
+          return false;
+        }
+        if (this.model.energy < val) {
+          console.warn(`subEnergy\uFF1A\u8D44\u6E90\u4E0D\u8DB3:${this.model.energy}-${val}`);
+          return false;
+        }
+        if (this.model.energy == ConfigManager.settings.MAX_RECOVER_ENERGY) {
+          this.model.energyTimer = systemController.getTime();
+        }
+        val = this.model.energy - val;
+        return this.checkAndUpdateValue("energy", val);
+      }
+    };
+    userDAO = new UserDAO(UserModel);
+  }
+});
+
+// assets/scripts/game/modules/user/UserController.ts
+var UserController_exports = {};
+__export(UserController_exports, {
+  userController: () => userController
+});
+var UserController, userController;
+var init_UserController = __esm({
+  "assets/scripts/game/modules/user/UserController.ts"() {
+    init_EventCenter();
+    init_GameSettings();
+    init_BaseController();
+    init_SecretController();
+    init_SystemController();
+    init_MathUtils();
+    init_TimeUtils();
+    init_ConfigManager();
+    init_GameConst();
+    init_GameEvent();
+    init_types2();
+    init_UserDAO();
+    init_UserModel();
+    UserController = class extends BaseController {
+      constructor() {
+        super(...arguments);
+        this._lastAnimalID = 0;
+      }
+      get lastAnimalID() {
+        return this._lastAnimalID;
+      }
+      get dao() {
+        return userDAO;
+      }
+      get model() {
+        return this.dao.model;
+      }
+      get dataKey() {
+        return "user";
+      }
+      get isNewUser() {
+        return this.dao.isNewUser;
+      }
+      get saveTime() {
+        return this.model.saveTime;
+      }
+      get nickName() {
+        return this.model.nickName;
+      }
+      set nickName(value) {
+        if (this.model.nickName != value) {
+          this.model.nickName = value;
+          this.dao.easySave();
+        }
+      }
+      onInitial() {
+        if (this.isNewUser || !TimeUtils.isToday(this.model.saveTime)) {
+          this.refreshDaily();
+        }
+        EventCenter.I.on(GameEvent.SYSTEM_CROSS_DAY, this.refreshDaily, this);
+        EventCenter.I.on(GameEvent.SYSTEM_CROSS_HOUR, this._onCrossHour, this);
+        secretController.on(SecretController.SECRET_DAO_ON_SAVED, this.dao.updateTime, this.dao);
+      }
+      onUpdate(dt) {
+        this._checkEnergy();
+      }
+      refreshDaily() {
+        this.resetOnNewDay();
+        this.dao.saveNow();
+      }
+      _onCrossHour(h) {
+        if (h == GameConst.ANIMAL_REFRESH_TIME) {
+          this._lastAnimalID = this.model.todayAnimalId;
+          this.model.refreshAnimalId = 0;
+          this.model.todayAnimalId = 0;
+          this.dao.easySave();
+          EventCenter.I.emit(GameEvent.USER_DAILY_ANIMAL_CHANGED);
+        }
+      }
+      get removeCount() {
+        return this.model.removeCount;
+      }
+      addItem(type, count = 1) {
+        switch (type) {
+          case 1 /* Remove */:
+            this.addRemove(count);
+            break;
+          case 2 /* Collect */:
+            this.addCollect(count);
+            break;
+          case 3 /* Shuffle */:
+            this.addShuffle(count);
+            break;
+          case 4 /* BigRocket */:
+            this.addBigRocket(count);
+            break;
+          case 6 /* BigTimer */:
+            this.addBigTimer(count);
+            break;
+          default:
+            break;
+        }
+      }
+      /**
+       * 随机添加一个道具
+       */
+      addRandomItem() {
+        let list = [1 /* Remove */, 2 /* Collect */, 3 /* Shuffle */];
+        let type = list[MathUtils.randomInt(0, list.length)];
+        this.addItem(type);
+        return type;
+      }
+      /**
+       * 添加所有道具
+       */
+      addAllItems() {
+        this.addRemove(1);
+        this.addCollect(1);
+        this.addShuffle(1);
+      }
+      addRemove(value) {
+        if (value > 0) {
+          this.model.removeCount += value;
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_REMOVE_COUNT_CHANGE, value);
+        } else {
+          console.error("addRemove value must be greater than 0");
+        }
+      }
+      subRemove(value) {
+        if (value > 0) {
+          this.model.removeCount = Math.max(0, this.model.removeCount - value);
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_REMOVE_COUNT_CHANGE, -value);
+        } else {
+          console.error("subRemove value must be greater than 0");
+        }
+      }
+      get collectCount() {
+        return this.model.collectCount;
+      }
+      addCollect(value) {
+        if (value > 0) {
+          this.model.collectCount += value;
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_COLLECT_COUNT_CHANGE, value);
+        } else {
+          console.error("addCollect value must be greater than 0");
+        }
+      }
+      subCollect(value) {
+        if (value > 0) {
+          this.model.collectCount = Math.max(0, this.model.collectCount - value);
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_COLLECT_COUNT_CHANGE, -value);
+        } else {
+          console.error("subCollect value must be greater than 0");
+        }
+      }
+      get shuffleCount() {
+        return this.model.shuffleCount;
+      }
+      addShuffle(value) {
+        if (value > 0) {
+          this.model.shuffleCount += value;
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_SHUFFLE_COUNT_CHANGE, value);
+        } else {
+          console.error("addShuffle value must be greater than 0");
+        }
+      }
+      subShuffle(value) {
+        if (value > 0) {
+          this.model.shuffleCount = Math.max(0, this.model.shuffleCount - value);
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_SHUFFLE_COUNT_CHANGE, -value);
+        } else {
+          console.error("subShuffle value must be greater than 0");
+        }
+      }
+      get bigRocketCount() {
+        return this.model.bigRocketCount;
+      }
+      addBigRocket(value) {
+        if (value > 0) {
+          this.model.bigRocketCount += value;
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_TOOL_COUNT_CHANGE, 4 /* BigRocket */);
+        } else {
+          console.error("addBigRocket value must be greater than 0");
+        }
+      }
+      subBigRocket(value) {
+        if (value > 0) {
+          this.model.bigRocketCount = Math.max(0, this.model.bigRocketCount - value);
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_TOOL_COUNT_CHANGE, 4 /* BigRocket */);
+        } else {
+          console.error("subBigRocket value must be greater than 0");
+        }
+      }
+      get bigTimerCount() {
+        return this.model.bigTImerCount;
+      }
+      addBigTimer(value) {
+        if (value > 0) {
+          this.model.bigTImerCount += value;
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_TOOL_COUNT_CHANGE, 6 /* BigTimer */);
+        } else {
+          console.error("addBigTimer value must be greater than 0");
+        }
+      }
+      subBigTimer(value) {
+        if (value > 0) {
+          this.model.bigTImerCount = Math.max(0, this.model.bigTImerCount - value);
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_TOOL_COUNT_CHANGE, 6 /* BigTimer */);
+        } else {
+          console.error("subBigTimer value must be greater than 0");
+        }
+      }
+      get animalCount() {
+        return this.model.animals.length;
+      }
+      get animals() {
+        return this.model.animals;
+      }
+      addAnimal(id) {
+        if (!this.hasAnimal(id)) {
+          const info = new AnimalInfo();
+          info.id = id;
+          info.getTime = systemController.getTime();
+          this.model.animals.push(info);
+          this.dao.saveNow();
+          EventCenter.I.emit(GameEvent.USER_ANIMAL_CHANGE, id);
+        }
+      }
+      getAnimalInfo(id) {
+        return this.model.animals.find((i) => i.id == id);
+      }
+      hasAnimal(id) {
+        return this.model.animals.findIndex((i) => i.id == id) >= 0;
+      }
+      /**
+       * 今日挑战模式免费次数
+       */
+      get challengeFreeCount() {
+        if (!GameConst.ENABLE_AD) {
+          return 3;
+        }
+        return Math.max(0, ConfigManager.settings.FREE_PLAY_COUNT - this.model.todayChallengeCount);
+      }
+      get levelMaxProgress() {
+        return this.model.levelMaxProgress;
+      }
+      get todayChallengeID() {
+        if (this.model.todayChallengeID == 0 || ConfigManager.ChallengeLevelTable.getItem(this.model.todayChallengeID) == null) {
+          this.refrshTodayChallengeID();
+        }
+        return this.model.todayChallengeID;
+      }
+      getTodayChallengeIndex() {
+        let day = TimeUtils.getDayTime(0) / 1e3;
+        let idx = day % ConfigManager.StageTable.items.length;
+        return ConfigManager.StageTable.items[idx].ID;
+      }
+      refrshTodayChallengeID() {
+        this.model.todayChallengeID = this.getTodayChallengeIndex();
+        this.dao.saveNow();
+      }
+      get totalPlayCount() {
+        return this.model.totalPlayCount;
+      }
+      get todayPlayCount() {
+        return this.model.todayPlayCount;
+      }
+      set todayPlayCount(value) {
+        this.model.todayPlayCount = value;
+        this.dao.saveNow();
+        EventCenter.I.emit(GameEvent.USER_PLAY_COUNT_CHANGE);
+      }
+      get todayNormalPlayCount() {
+        return this.model.todayNormalPlayCount;
+      }
+      set todayNormalPlayCount(value) {
+        this.model.todayNormalPlayCount = value;
+        this.dao.saveNow();
+      }
+      get todayChallengeCount() {
+        return this.model.todayChallengeCount;
+      }
+      set todayChallengeCount(value) {
+        this.model.todayChallengeCount = value;
+        this.dao.saveNow();
+      }
+      get todaySuccessCount() {
+        return this.model.todaySuccessCount;
+      }
+      get todayCSuccessCount() {
+        return this.model.todayCSuccessCount;
+      }
+      get totalSuccessCount() {
+        return this.model.totalSuccessCount;
+      }
+      get todayShareForEnergyCount() {
+        return this.model.todayShareForEnergyCount;
+      }
+      addShareForEnergyCount() {
+        this.model.todayShareForEnergyCount++;
+        this.dao.saveNow();
+      }
+      get todayVideoForEnergyCount() {
+        return this.model.todayVideoForEnergyCount;
+      }
+      addVideoForEnergyCount() {
+        this.model.todayVideoForEnergyCount++;
+        this.dao.saveNow();
+      }
+      get dailyGiftGetted() {
+        return this.model.dailyGiftState == 1;
+      }
+      set dailyGiftGetted(value) {
+        this.model.dailyGiftState = value ? 1 : 0;
+        this.dao.saveNow();
+      }
+      get sevenSignProgress() {
+        return this.model.sevenSignProgress;
+      }
+      get sevenSignDay() {
+        return this.model.sevenSignProgress + 1;
+      }
+      get isSignToday() {
+        return this.model.sevenSignTodayState == 1;
+      }
+      canRefreshTodayAnimal() {
+        if (this.todaySuccessCount < ConfigManager.settings.DAILY_REFRESH_LEVEL_COUNT) {
+          return false;
+        }
+        return this.model.refreshAnimalId == 0;
+      }
+      get refreshAnimalId() {
+        return this.model.refreshAnimalId;
+      }
+      set refreshAnimalId(value) {
+        this.model.refreshAnimalId = value;
+        this.dao.saveNow();
+      }
+      get todayAnimalId() {
+        return this.model.todayAnimalId;
+      }
+      set todayAnimalId(value) {
+        this.model.todayAnimalId = value;
+        this.dao.saveNow();
+      }
+      /**
+       * 七日签到
+       */
+      signTodayInSevenDay() {
+        this.model.sevenSignTodayState = 1;
+        this.model.sevenSignProgress++;
+        this.dao.saveNow();
+      }
+      /**
+       * 是否已经签到
+       * @param day 
+       * @returns 
+       */
+      isSignedInSevenDay(day) {
+        return this.model.sevenSignProgress >= day;
+      }
+      resetOnNewDay() {
+        this.model.todaySuccessCount = 0;
+        this.model.todayCSuccessCount = 0;
+        this.model.todayPlayCount = 0;
+        this.model.todayNormalPlayCount = 0;
+        this.model.todayChallengeCount = 0;
+        this.model.todayShareForEnergyCount = 0;
+        this.model.todayVideoForEnergyCount = 0;
+        this.model.dailyGiftState = 0;
+        this.model.sevenSignTodayState = 0;
+        this.model.todayGoodBuyCounts = {};
+        if (this.model.sevenSignProgress >= 7) {
+          this.model.sevenSignProgress = 0;
+        }
+        this.refrshTodayChallengeID();
+        this.dao.saveNow();
+        EventCenter.I.emit(GameEvent.USER_PLAY_COUNT_CHANGE);
+      }
+      /**
+       * 成功进入游戏
+       */
+      onEnterGame(mode) {
+        this.todayChallengeCount++;
+        this.model.totalPlayCount++;
+        this.todayPlayCount++;
+        this.dao.saveNow();
+        EventCenter.I.emit(GameEvent.USER_PLAY_COUNT_CHANGE);
+      }
+      get continuePassCount() {
+        return this.model.continuePassCount;
+      }
+      get continueWinScore() {
+        return this.model.continueWinScore;
+      }
+      set continueWinScore(value) {
+        this.model.continueWinScore = value;
+        this.dao.easySave();
+      }
+      /**
+       * 游戏成功
+       */
+      onGameSuccess(mode) {
+        this.model.successCount++;
+        this.model.totalSuccessCount++;
+        if (mode == 0 /* Normal */) {
+          this.model.todaySuccessCount++;
+          this.model.continuePassCount++;
+        } else {
+          this.model.todayCSuccessCount++;
+        }
+        this.model.levelMaxProgress = 0;
+        this.dao.saveNow();
+      }
+      onGameFail(mode, progress) {
+        if (mode == 0 /* Normal */) {
+          this.model.levelMaxProgress = Math.max(this.model.levelMaxProgress, progress);
+          this.model.continuePassCount = 0;
+          this.model.continueWinScore = 0;
+          this.dao.saveNow();
+        }
+      }
+      /**
+       * 获取今日关卡ID
+       * @returns 
+       */
+      getTodayStageID() {
+        let id = this.todayChallengeID;
+        let cfg = ConfigManager.ChallengeLevelTable.getItem(id);
+        let lvID = cfg.LevelID;
+        let lvCfg = ConfigManager.getLevel(lvID);
+        return lvCfg.StageID;
+      }
+      get guideId() {
+        return this.model.guideId;
+      }
+      set guideId(value) {
+        this.model.guideId = value;
+        this.dao.saveNow();
+      }
+      get subscribeState() {
+        return this.model.subscribeStae;
+      }
+      set subscribeState(value) {
+        this.model.subscribeStae = value;
+        this.dao.saveNow();
+      }
+      get favoriteState() {
+        return this.model.favoriteState;
+      }
+      set favoriteState(value) {
+        this.model.favoriteState = value;
+        this.dao.saveNow();
+      }
+      get addToDesktopState() {
+        return this.model.addToDesktopState;
+      }
+      set addToDesktopState(value) {
+        this.model.addToDesktopState = value;
+        this.dao.saveNow();
+      }
+      get commentState() {
+        return this.model.commentState;
+      }
+      get level() {
+        return this.model.level;
+      }
+      get energy() {
+        return this.model.energy;
+      }
+      get gold() {
+        return this.model.gold;
+      }
+      get star() {
+        return this.model.star;
+      }
+      /**
+       * 恢复体力的倒计时
+       */
+      get eneryCDLeftTime() {
+        let cd = ConfigManager.settings.ENERGY_RECOVER_TIME * GameSettings.mergeTimeScale;
+        let dt = (systemController.getTime() - this.model.energyTimer) % cd;
+        return cd - dt;
+      }
+      get maxEnergy() {
+        return ConfigManager.settings.MAX_RECOVER_ENERGY;
+      }
+      /**
+       * 恢复体力
+       */
+      _checkEnergy() {
+        let dt = systemController.getTime() - this.model.energyTimer;
+        let cd = ConfigManager.settings.ENERGY_RECOVER_TIME * GameSettings.mergeTimeScale;
+        let count = Math.floor(dt / cd);
+        let max = this.maxEnergy;
+        count = Math.min(max - this.energy, count);
+        if (count > 0) {
+          this.addEnergy(count);
+          this.model.energyTimer = systemController.getTime();
+          this.dao.easySave();
+        }
+      }
+      setLevel(val) {
+        this.dao.setLevel(val);
+      }
+      // 增加关卡等级
+      addLevel(val, delay) {
+        let ret = this.dao.addLevel(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_LEVEL_CHANGED, this.level);
+        }
+        return ret;
+      }
+      // 增加金币
+      addGold(val, delay) {
+        let ret = this.dao.addGold(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_GOLD_CHANGED, this.gold, delay);
+        }
+        return ret;
+      }
+      // 减少金币
+      subGold(val) {
+        let ret = this.dao.subGold(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_GOLD_CHANGED, this.gold);
+        }
+        return ret;
+      }
+      // 增加星星
+      addStar(val, delay) {
+        let ret = this.dao.addStar(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_STAR_CHANGED, this.star, delay);
+        }
+        return ret;
+      }
+      // 减少星星
+      subStar(val) {
+        let ret = this.dao.subStar(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_STAR_CHANGED, this.star);
+        }
+        return ret;
+      }
+      // 增加体力
+      addEnergy(val, delay) {
+        let ret = this.dao.addEnergy(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_ENERGY_CHANGED, this.energy, delay);
+        }
+        return ret;
+      }
+      // 减少体力
+      subEnergy(val) {
+        let ret = this.dao.subEnergy(val);
+        if (ret) {
+          EventCenter.I.emit(GameEvent.USER_ENERGY_CHANGED, this.energy);
+        }
+        return ret;
+      }
+      addRewards(awards) {
+        awards.forEach((award) => {
+          this.addReward(award);
+        });
+      }
+      addReward(award) {
+        if (award.type == 1 /* Resource */) {
+          this.addResource(award.id, award.count);
+        } else if (award.type == 2 /* Tool */) {
+          this.addItem(award.id, award.count);
+        }
+      }
+      addTool(type, val) {
+        switch (type) {
+          case 1 /* Remove */:
+            this.addRemove(val);
+            break;
+          case 2 /* Collect */:
+            this.addCollect(val);
+            break;
+          case 3 /* Shuffle */:
+            this.addShuffle(val);
+            break;
+          default:
+            break;
+        }
+      }
+      addResource(type, val) {
+        switch (type) {
+          case 1 /* Gold */:
+            this.addGold(val);
+            break;
+          case 3 /* Star */:
+            this.addStar(val);
+            break;
+          case 2 /* Energy */:
+            this.addEnergy(val);
+            break;
+          default:
+            break;
+        }
+      }
+      getTodayGoodBuyCount(type) {
+        return this.model.todayGoodBuyCounts[type] || 0;
+      }
+      onShopVideoBuy(type) {
+        this.model.todayGoodBuyCounts[type] = (this.model.todayGoodBuyCounts[type] || 0) + 1;
+        this.model.totalGoodBuyCounts[type] = (this.model.totalGoodBuyCounts[type] || 0) + 1;
+        this.dao.saveNow();
+      }
+      get isFirstSevenAwardGot() {
+        return !!this.model.firstSevenAwardGot;
+      }
+      get isFirstSevenAwardGotToday() {
+        return TimeUtils.isToday(this.model.firstSevenAwardGot * 1e3);
+      }
+      onGetSevenDayAwards() {
+        if (this.model.firstSevenAwardGot == 0) {
+          this.model.firstSevenAwardGot = systemController.getTime();
+          this.dao.easySave();
+        }
+      }
+      get isFirstDayAwardGot() {
+        return !!this.model.firstDayAwardGot;
+      }
+      get isFirstDayAwardGotToday() {
+        return TimeUtils.isToday(this.model.firstDayAwardGot * 1e3);
+      }
+      onGetDailyGift() {
+        this.dailyGiftGetted = true;
+        if (this.model.firstDayAwardGot == 0) {
+          this.model.firstDayAwardGot = systemController.getTime();
+          this.dao.easySave();
+        }
+      }
+    };
+    userController = new UserController();
+  }
+});
+
+// assets/scripts/game/manager/RewardHelper.ts
+var RewardHelper_exports = {};
+__export(RewardHelper_exports, {
+  RewardHelper: () => RewardHelper
+});
+var RewardHelper;
+var init_RewardHelper = __esm({
+  "assets/scripts/game/manager/RewardHelper.ts"() {
+    init_types2();
+    init_UserController();
+    RewardHelper = class {
+      static addResByReward(rewardData) {
+        switch (rewardData.type) {
+          case 1 /* Resource */:
+            userController.addResource(rewardData.id, rewardData.count);
+            break;
+          case ERewardType.Animal:
+            userController.addAnimal(rewardData.id);
+            break;
+          case 2 /* Tool */:
+            userController.addItem(rewardData.id, rewardData.count);
+            break;
+        }
+      }
+      static addResByRewardList(rewardList) {
+        for (let reward of rewardList) {
+          this.addResByReward(reward);
+        }
+      }
+    };
+  }
+});
+
+// assets/scripts/game/manager/UIHelper.ts
+var UIHelper_exports = {};
+__export(UIHelper_exports, {
+  UIHelper: () => UIHelper
+});
+var import_cc34, RES_CONTAINER_NAME, TempVec2, UIHelper;
+var init_UIHelper = __esm({
+  "assets/scripts/game/manager/UIHelper.ts"() {
+    import_cc34 = require("cc");
+    init_fairygui();
+    init_Pool();
+    init_ResConst();
+    init_Pools();
+    init_CoroutineUtils();
+    init_MathUtils();
+    init_types2();
+    init_LocationManager();
+    init_UILocations();
+    init_DataModel();
+    init_SoundManager();
+    RES_CONTAINER_NAME = "ResContainer";
+    TempVec2 = new import_cc34.Vec2();
+    UIHelper = class {
+      static async curveAnimTo(comp, from, to, duration = 1, fromScale = 1, toScale = 0.5, isScale, delay = 0, ctrl, waitTime, callback) {
+        if (!ctrl) {
+          let dist = import_cc34.Vec2.distance(from, to) * 0.2;
+          let dir = new import_cc34.Vec2(to).subtract(from).normalize();
+          let cross = dir.cross(V2_UP);
+          let offset = -dist * Math.sign(cross) * 0.5;
+          dir.multiplyScalar(dist);
+          ctrl = new import_cc34.Vec2(V2_RIGHT).multiplyScalar(offset).add(dir).add(from);
+        }
+        let cpt1 = GPathPointPool.get();
+        cpt1.x = from.x;
+        cpt1.y = from.y;
+        cpt1.control1_x = ctrl.x;
+        cpt1.control1_y = ctrl.y;
+        let cpt2 = GPathPointPool.get();
+        cpt2.x = to.x;
+        cpt2.y = to.y;
+        cpt2.control1_x = ctrl.x;
+        cpt2.control1_y = ctrl.y;
+        let path4 = new GPath();
+        path4.create2(cpt1, cpt2);
+        let next = false;
+        comp.setPosition(from.x, from.y);
+        if (isScale) {
+          GTween.to2(fromScale * 0.8, fromScale * 0.8, fromScale * 1.2, fromScale * 1.2, 0.2).setTarget(comp, comp.setScale).onComplete(() => {
+            next = true;
+          }, this);
+          await CoroutineUtils.until(() => next);
+          duration -= 0.2;
+          next = false;
+          if (delay > 0) {
+            await CoroutineUtils.wait(delay);
+            duration -= delay;
+          }
+        }
+        if (waitTime) {
+          await CoroutineUtils.wait(waitTime);
+        }
+        GTween.to2(from.x, from.y, to.x, to.y, duration).setPath(path4).setTarget(comp, comp.setPosition).onUpdate((twenner) => {
+          let t = twenner.normalizedTime;
+          let scale = (toScale - fromScale) * t + fromScale;
+          comp.setScale(scale, scale);
+        }).onComplete(() => {
+          next = true;
+        }, this);
+        await CoroutineUtils.until(() => next);
+        GPathPointPool.put(cpt1);
+        GPathPointPool.put(cpt2);
+        if (callback) {
+          callback();
+        }
+      }
+      static async rewardAnimTo(reward, from, duration = 1, options) {
+        let resUrl = this.getAwardIcon(reward, 0, true);
+        let locType = GetLocationByReward(reward);
+        let loc = LocationManager.inst.getLocation(locType);
+        if (!loc) {
+          SoundManager.instance.playSound(60106);
+          return;
+        }
+        options = options || {};
+        let oldComplete = options.batchCompleteCallback;
+        options.batchCompleteCallback = () => {
+          oldComplete && oldComplete(options);
+          if (reward.type == 1 /* Resource */) {
+            if (reward.id == 1 /* Gold */) {
+              SoundManager.instance.playSound(61002);
+            } else if (reward.id == 2 /* Energy */) {
+              SoundManager.instance.playSound(61003);
+            } else if (reward.id == 3 /* Star */) {
+              SoundManager.instance.playSound(61001);
+            }
+          }
+        };
+        let to = loc.target.localToGlobal(0, 0, TempVec2);
+        await this.resAnimTo(resUrl, reward.count, from, to, duration, options);
+      }
+      static async resAnimToByResType(type, num, from, to, duration = 1, options) {
+        let resUrl = this.getResouceIcon(type, true);
+        await this.resAnimTo(resUrl, num, from, to, duration, options);
+      }
+      /**
+       * 
+       * @param resUrl 
+       * @param num 
+       * @param from 
+       * @param to 
+       * @param duration s
+       */
+      static async resAnimTo(resUrl, num, from, to, duration = 1, options) {
+        options = options || {};
+        num = num > 5 ? 5 : num;
+        if (num == 0) {
+          return;
+        }
+        from = GRoot.inst.globalToLocal(from.x, from.y);
+        to = GRoot.inst.globalToLocal(to.x, to.y);
+        if (options.delay) {
+          await CoroutineUtils.wait(options.delay);
+        }
+        let comps = [];
+        let poses = [];
+        let isScale = !!options.isScale;
+        for (let i = 0; i < num; i++) {
+          let containerUrl = UIPackage.getItemURL(ResConst.FGUI_PKG_COMMON, RES_CONTAINER_NAME);
+          let container = GComponentPool.getByKey(containerUrl);
+          GRoot.inst.addChild(container.component);
+          container.component.setPivot(0.5, 0.5, true);
+          container.component.icon = resUrl;
+          comps.push(container);
+          let pos = Vec2Pool.get(from);
+          if (num != 1 || options.randomAnyway) {
+            pos.x += MathUtils.randomInt(-80, 80);
+            pos.y += MathUtils.randomInt(-80, 80);
+          }
+          container.component.setPosition(pos.x, pos.y);
+          poses.push(pos);
+        }
+        let fromScale = 1;
+        let toScale = 0.5;
+        let curve = true;
+        if (options && (options.fromScale || options.sourceComp)) {
+          fromScale = 1;
+          if (options.fromScale != null) {
+            fromScale = options.fromScale;
+          } else {
+            fromScale = options.sourceComp.width / comps[0].component.width;
+          }
+          toScale = options.toScale != null ? options.toScale : 0.5;
+          curve = options.curve != null ? options.curve : true;
+        }
+        if ((options == null ? void 0 : options.waitTime) > 0) {
+          if (options.waitStartScale) {
+            let next = false;
+            GTween.to(0, 1, options.waitTime).onUpdate((twenner) => {
+              let t = twenner.value.x;
+              let scale = (fromScale - options.waitStartScale) * t + options.waitStartScale;
+              for (let i = 0; i < num; i++) {
+                let container = comps[i];
+                container.component.setScale(scale, scale);
+              }
+            }).onComplete(() => {
+              next = true;
+            });
+            await CoroutineUtils.until(() => next);
+          } else {
+            await CoroutineUtils.wait(options.waitTime);
+          }
+        }
+        if (curve) {
+          let anims = [];
+          for (let i = 0; i < num; i++) {
+            let container = comps[i];
+            let pos = poses[i];
+            anims.push(this.curveAnimTo(container.component, pos, to, duration, fromScale, toScale, isScale, 0, null, isScale ? 0.1 * i : 0, options.batchCompleteCallback));
+          }
+          await Promise.all(anims);
+        } else {
+          let next = false;
+          GTween.to(0, 1, duration).onUpdate((twenner) => {
+            let t = twenner.value.x;
+            let scale = (toScale - fromScale) * t + fromScale;
+            for (let i = 0; i < num; i++) {
+              let container = comps[i];
+              let pos = poses[i];
+              container.component.setPosition((to.x - pos.x) * t + pos.x, (to.y - pos.y) * t + pos.y);
+              container.component.setScale(scale, scale);
+            }
+          }).onComplete(() => {
+            options.batchCompleteCallback && options.batchCompleteCallback(options);
+            next = true;
+          });
+          await CoroutineUtils.until(() => next);
+        }
+        for (let i = 0; i < num; i++) {
+          GComponentPool.put(comps[i]);
+        }
+        Vec2Pool.puts(...poses);
+        options.completeCallback && options.completeCallback(options);
+      }
+      static getResouceIcon(type, forFly = false) {
+        if (forFly) {
+          return this.RES_FLY_ICONS[type - 1];
+        }
+        return this.RES_ICONS[type - 1];
+      }
+      static getToolIcon(type) {
+        return this.ITEM_ICONS[type - 1];
+      }
+      static getTaskIcon(type, id = 0) {
+        switch (type) {
+          case GameConfig.ETaskType.Login: {
+            return "ui://x6189memhvmj6v";
+          }
+          case GameConfig.ETaskType.VideoCount: {
+            return "ui://x6189memn08t1l";
+          }
+          case GameConfig.ETaskType.MergeCount:
+          case GameConfig.ETaskType.LevelSucess:
+          case GameConfig.ETaskType.ChallengeSucess:
+            {
+              return "ui://x6189memphmf6m";
+            }
+            ;
+          case GameConfig.ETaskType.UseTool: {
+            return this.getToolIcon(id);
+          }
+          case GameConfig.ETaskType.MaxCombo: {
+            return "ui://x6189memhvmj6w";
+          }
+          case GameConfig.ETaskType.GetStar: {
+            return "ui://x6189memn1lh4h";
+          }
+        }
+        return "";
+      }
+      static getAwardIcon(reward, todayAnimalID = 0, forFly = false) {
+        switch (reward.type) {
+          case 1 /* Resource */: {
+            return this.getResouceIcon(reward.id, forFly);
+          }
+          case 2 /* Tool */: {
+            return this.ITEM_ICONS[reward.id - 1];
+          }
+        }
+        return "";
+      }
+      static getAwardName(reward, todayAnimalID = 0, forFly = false) {
+        switch (reward.type) {
+          case 1 /* Resource */: {
+            return this.RES_NAMES[reward.id - 1];
+          }
+          case 2 /* Tool */: {
+            return this.ITEM_NAMES[reward.id - 1];
+          }
+        }
+        return "";
+      }
+    };
+    UIHelper.ITEM_ICONS = [
+      "ui://x6189memm1pqa",
+      "ui://x6189memm1pqb",
+      "ui://x6189memm1pqc",
+      "ui://x6189memepvp7q",
+      "ui://x6189memepvp7s",
+      "ui://x6189memepvp7p",
+      "ui://x6189memepvp7r"
+    ];
+    UIHelper.RES_ICONS = ["ui://x6189memphmf6m", "ui://x6189memn1lh4g", "ui://x6189memn1lh4h"];
+    UIHelper.RES_FLY_ICONS = ["ui://x6189memn1lh4k", "ui://x6189memn1lh4g", "ui://x6189memn1lh4h"];
+    UIHelper.ITEM_NAMES = [
+      "\u79FB\u9664",
+      "\u51D1\u9F50",
+      "\u6253\u4E71",
+      "\u5927\u706B\u7BAD",
+      "\u5C0F\u706B\u7BAD",
+      "\u5927\u6C99\u6F0F",
+      "\u5C0F\u6C99\u6F0F"
+    ];
+    UIHelper.RES_NAMES = ["\u91D1\u5E01", "\u4F53\u529B", "\u661F\u661F"];
+  }
+});
+
+// assets/scripts/game/modules/server/ServerController.ts
+var ServerController_exports = {};
+__export(ServerController_exports, {
+  serverController: () => serverController
+});
+var import_env13, ServerController, serverController;
+var init_ServerController = __esm({
+  "assets/scripts/game/modules/server/ServerController.ts"() {
+    import_env13 = require("cc/env");
+    init_EventCenter();
+    init_StorageManager();
+    init_GameConst();
+    init_GameEvent();
+    init_BaseController();
+    init_ControllerManager2();
+    ServerController = class extends BaseController {
+      constructor() {
+        super(...arguments);
+        this._beatheartTime = 0;
+        this._dataSaveTime = 0;
+      }
+      onInitial() {
+        EventCenter.I.on(GameEvent.GAME_ON_HIDE, this.onGameHide, this);
+        EventCenter.I.on(GameEvent.GAME_ON_SHOW, this.onGameShow, this);
+      }
+      onGameShow() {
+        this.beatheart();
+      }
+      onGameHide() {
+        ControllerManager2.forceSave();
+        this.saveToServer();
+      }
+      onUpdate(dt) {
+        this._beatheartTime += dt;
+        if (this._beatheartTime >= GameConst.BEAT_HEART_TIME) {
+          this._beatheartTime = 0;
+          this.beatheart();
+        }
+        this._dataSaveTime += dt;
+        if (this._dataSaveTime >= GameConst.DATA_SAVE_TIME) {
+          this._dataSaveTime = 0;
+          this.saveToServer();
+        }
+      }
+      /**
+       * 上传用户数据档
+       */
+      async saveToServer() {
+        if (import_env13.DEBUG || !StorageManager.enableSave) {
+          return Promise.resolve(0);
+        }
+      }
+      /**
+       * 下载用户数据档，需要在登录成功后且本地数据档已经加载完成后调用
+       */
+      async loadFromServer() {
+        if (import_env13.DEBUG) {
+          return true;
+        }
+        return true;
+      }
+      /**
+       * 清除用户数据档
+       */
+      async clearServerData() {
+        if (import_env13.DEBUG) {
+          ControllerManager2.clearData();
+          return true;
+        }
+      }
+      /**
+       * 心跳
+       * @returns 
+       */
+      async beatheart() {
+        if (import_env13.DEBUG) {
+          return;
+        }
+        console.log("\u5FC3\u8DF3...");
+        return;
+      }
+    };
+    serverController = new ServerController();
+  }
+});
+
+// assets/scripts/game/modules/settings/SetttingsModel.ts
+var SetttingsModel_exports = {};
+__export(SetttingsModel_exports, {
+  SettingsModel: () => SettingsModel
+});
+var SettingsModel;
+var init_SetttingsModel = __esm({
+  "assets/scripts/game/modules/settings/SetttingsModel.ts"() {
+    init_BaseModel();
+    SettingsModel = class extends BaseModel {
+      constructor() {
+        super(...arguments);
+        // 每日刷新时间
+        this.daliyTime = 0;
+        this.soundEnable = true;
+        this.musicEnable = true;
+        this.vibrateEnable = true;
+        // 视频观看计数
+        this.videoCount = 0;
+      }
+    };
+  }
+});
+
+// assets/scripts/game/modules/settings/SettingsDAO.ts
+var SettingsDAO_exports = {};
+__export(SettingsDAO_exports, {
+  settingsDAO: () => settingsDAO
+});
+var SettingDAO, settingsDAO;
+var init_SettingsDAO = __esm({
+  "assets/scripts/game/modules/settings/SettingsDAO.ts"() {
+    init_BaseDAO();
+    init_SetttingsModel();
+    SettingDAO = class extends BaseDAO {
+      get storageKey() {
+        return "settings";
+      }
+    };
+    settingsDAO = new SettingDAO(SettingsModel);
+  }
+});
+
+// assets/scripts/game/modules/settings/SettingsController.ts
+var SettingsController_exports = {};
+__export(SettingsController_exports, {
+  settingsController: () => settingsController
+});
+var SettingsController, settingsController;
+var init_SettingsController = __esm({
+  "assets/scripts/game/modules/settings/SettingsController.ts"() {
+    init_EventCenter();
+    init_SoundManager();
+    init_GameEvent();
+    init_BaseController();
+    init_SettingsDAO();
+    init_TimeUtils();
+    SettingsController = class extends BaseController {
+      get dao() {
+        return settingsDAO;
+      }
+      get model() {
+        return this.dao.model;
+      }
+      onInitial() {
+        this._updateSound();
+        this._refreshDaily();
+        EventCenter.I.on(GameEvent.SYSTEM_CROSS_DAY, this._refreshDaily, this);
+      }
+      _updateSound() {
+        SoundManager.instance.setSoundVolume(this.soundEnable ? 1 : 0);
+        SoundManager.instance.setMusicVolume(this.musicEnable ? 1 : 0);
+      }
+      get musicEnable() {
+        return this.model.musicEnable;
+      }
+      set musicEnable(value) {
+        if (value != this.model.musicEnable) {
+          this.model.musicEnable = value;
+          this.dao.easySave();
+          if (value) {
+            SoundManager.instance.setMusicVolume(1);
+          } else {
+            SoundManager.instance.setMusicVolume(0);
+          }
+        }
+      }
+      get soundEnable() {
+        return this.model.soundEnable;
+      }
+      set soundEnable(value) {
+        if (value != this.model.soundEnable) {
+          this.model.soundEnable = value;
+          this.dao.easySave();
+          if (value) {
+            SoundManager.instance.setSoundVolume(1);
+          } else {
+            SoundManager.instance.setSoundVolume(0);
+          }
+        }
+      }
+      get vibrateEnable() {
+        return this.model.vibrateEnable;
+      }
+      set vibrateEnable(value) {
+        this.model.vibrateEnable = value;
+        this.dao.easySave();
+      }
+      checkRefreshDaily() {
+        if (!this.model.daliyTime) {
+          return false;
+        }
+        return this.model.daliyTime == TimeUtils.getDayTime(0);
+      }
+      /**
+       * 重置每日数据
+       */
+      _refreshDaily() {
+        if (!this.checkRefreshDaily()) {
+          this.model.daliyTime = TimeUtils.getDayTime(0);
+          this.dao.easySave();
+        }
+      }
+      /**
+       * 广告计数
+       */
+      get videoCount() {
+        return this.model.videoCount;
+      }
+      set videoCount(v) {
+        this.model.videoCount = v;
+        this.dao.easySave();
+      }
+    };
+    settingsController = new SettingsController();
+  }
+});
+
+// assets/scripts/game/modules/reddot/Reddot.ts
+var Reddot_exports = {};
+__export(Reddot_exports, {
+  Reddot: () => Reddot
+});
+var _Reddot, Reddot;
+var init_Reddot = __esm({
+  "assets/scripts/game/modules/reddot/Reddot.ts"() {
+    init_RedDotManager();
+    _Reddot = class _Reddot {
+      static get inst() {
+        if (!this._inst) {
+          this._inst = new _Reddot();
+        }
+        return this._inst;
+      }
+      init() {
+        RedDotManager.inst.initial();
+        RedDotManager.inst.create(_Reddot.HOME_TASK);
+        RedDotManager.inst.create(_Reddot.HOME_DAILY_GIFT);
+        RedDotManager.inst.create(_Reddot.HOME_SEVEN_DAY);
+      }
+    };
+    _Reddot.HOME_TASK = "home_task";
+    _Reddot.HOME_DAILY_GIFT = "home_daily_gift";
+    _Reddot.HOME_SEVEN_DAY = "home_seven_day";
+    Reddot = _Reddot;
+  }
+});
+
+// assets/scripts/game/modules/task/TaskModel.ts
+var TaskModel_exports = {};
+__export(TaskModel_exports, {
+  ETaskState: () => ETaskState,
+  TaskModel: () => TaskModel
+});
+var ETaskState, TaskModel;
+var init_TaskModel = __esm({
+  "assets/scripts/game/modules/task/TaskModel.ts"() {
+    init_BaseModel();
+    ETaskState = /* @__PURE__ */ ((ETaskState2) => {
+      ETaskState2[ETaskState2["None"] = 0] = "None";
+      ETaskState2[ETaskState2["Completed"] = 1] = "Completed";
+      ETaskState2[ETaskState2["Received"] = 2] = "Received";
+      return ETaskState2;
+    })(ETaskState || {});
+    TaskModel = class extends BaseModel {
+      constructor() {
+        super(...arguments);
+        this.savetime = 0;
+        this.tasks = {};
+      }
+    };
+  }
+});
+
+// assets/scripts/game/modules/task/TaskDAO.ts
+var TaskDAO_exports = {};
+__export(TaskDAO_exports, {
+  TaskDAO: () => TaskDAO,
+  taskDAO: () => taskDAO
+});
+var TaskDAO, taskDAO;
+var init_TaskDAO = __esm({
+  "assets/scripts/game/modules/task/TaskDAO.ts"() {
+    init_BaseDAO();
+    init_TaskModel();
+    TaskDAO = class extends BaseDAO {
+      get storageKey() {
+        return "task";
+      }
+      get modelName() {
+        return "TaskModel";
+      }
+      addTaskGroup(groupID, taskID) {
+        this.model.tasks[groupID] = { current: taskID, progress: 0, state: 0 };
+        this.save();
+      }
+      getTaskGroup(groupID) {
+        return this.model.tasks[groupID];
+      }
+      isTaskCompleted(taskID) {
+        let task = this.model.tasks[taskID];
+        if (!task) {
+          return true;
+        }
+        return task.state == 2 /* Received */;
+      }
+      isTaskGroupCompleted(groupID) {
+        let task = this.model.tasks[groupID];
+        if (!task) {
+          return true;
+        }
+        return !!task.done;
+      }
+      achiveTaskGroup(groupID) {
+        let group = this.model.tasks[groupID];
+        if (group) {
+          group.done = 1;
+          this.save();
+        }
+      }
+    };
+    taskDAO = new TaskDAO(TaskModel);
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/BaseTask.ts
+var BaseTask_exports = {};
+__export(BaseTask_exports, {
+  BaseTask: () => BaseTask
+});
+var BaseTask;
+var init_BaseTask = __esm({
+  "assets/scripts/game/modules/task/tasks/BaseTask.ts"() {
+    BaseTask = class {
+      constructor(id = 0) {
+        this._taskType = 0;
+        this.taskCfg = null;
+        this.taskID = 0;
+        this.controller = null;
+        this._registed = false;
+        this._id = 0;
+        this._id = id;
+      }
+      get taskType() {
+        return this._taskType;
+      }
+      get id() {
+        return this._id;
+      }
+      get groupID() {
+        return this._taskType * 100 + this._id;
+      }
+      get group() {
+        return this.controller.getGroupData(this.groupID);
+      }
+      regist(controller) {
+        this.controller = controller;
+        if (this._registed) {
+          return;
+        }
+        this._registed = true;
+        this.onRegist();
+      }
+      unregist() {
+        if (!this._registed) {
+          return;
+        }
+        this.onUnregist();
+      }
+      update() {
+      }
+      onRegist() {
+      }
+      onUnregist() {
+      }
+      isTaskGroupCompleted() {
+        return false;
+      }
+      getTaskValue() {
+        return this.controller.getTaskValue(this.taskID);
+      }
+    };
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/ADVideoTask.ts
+var ADVideoTask_exports = {};
+__export(ADVideoTask_exports, {
+  adVideoTask: () => adVideoTask
+});
+var ADVideoTask, adVideoTask;
+var init_ADVideoTask = __esm({
+  "assets/scripts/game/modules/task/tasks/ADVideoTask.ts"() {
+    init_EventCenter();
+    init_AdConfig();
+    init_AdManager();
+    init_DataModel();
+    init_BaseTask();
+    ADVideoTask = class extends BaseTask {
+      constructor(id = 0) {
+        super(id);
+        this._taskType = GameConfig.ETaskType.VideoCount;
+      }
+      onRegist() {
+        EventCenter.I.on(AdManager.SHARE_OR_VIDEO_DONE, this.onVideoOrShareDone, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(AdManager.SHARE_OR_VIDEO_DONE, this.onVideoOrShareDone, this);
+      }
+      onVideoOrShareDone(type, success) {
+        if (type != 2 /* Video */ || !success) {
+          return;
+        }
+        this.controller.addTaskValue(this.taskID, 1);
+      }
+    };
+    adVideoTask = new ADVideoTask();
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/ChallengeLevelTask.ts
+var ChallengeLevelTask_exports = {};
+__export(ChallengeLevelTask_exports, {
+  challengeLevelTask: () => challengeLevelTask
+});
+var ChallengeLevelTask, challengeLevelTask;
+var init_ChallengeLevelTask = __esm({
+  "assets/scripts/game/modules/task/tasks/ChallengeLevelTask.ts"() {
+    init_EventCenter();
+    init_DataModel();
+    init_GameEvent();
+    init_types2();
+    init_BaseTask();
+    ChallengeLevelTask = class extends BaseTask {
+      constructor(id = 0) {
+        super(id);
+        this._taskType = GameConfig.ETaskType.ChallengeSucess;
+      }
+      onRegist() {
+        EventCenter.I.on(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+      }
+      onLevelSuccess(model) {
+        if (model != 1 /* Challenge */) {
+          return;
+        }
+        this.controller.addTaskValue(this.taskID, 1);
+      }
+    };
+    challengeLevelTask = new ChallengeLevelTask();
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/ContinueLevelTask.ts
+var ContinueLevelTask_exports = {};
+__export(ContinueLevelTask_exports, {
+  continueLevelTask: () => continueLevelTask
+});
+var ContinueLevelTask, continueLevelTask;
+var init_ContinueLevelTask = __esm({
+  "assets/scripts/game/modules/task/tasks/ContinueLevelTask.ts"() {
+    init_EventCenter();
+    init_DataModel();
+    init_GameEvent();
+    init_types2();
+    init_BaseTask();
+    ContinueLevelTask = class extends BaseTask {
+      constructor(id = 0) {
+        super(id);
+        this._inGameValue = 0;
+        this._taskType = GameConfig.ETaskType.ContinueLevel;
+      }
+      get inGameValue() {
+        return this._inGameValue;
+      }
+      onRegist() {
+        EventCenter.I.on(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+        EventCenter.I.on(GameEvent.GAME_START, this.onGameStar, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+        EventCenter.I.off(GameEvent.GAME_START, this.onGameStar, this);
+      }
+      onLevelSuccess(model) {
+        if (model != 0 /* Normal */) {
+          return;
+        }
+        this._inGameValue = this.controller.setTaskValue(this.taskID, this._inGameValue + 1);
+      }
+      onGameStar(data) {
+        if (data.mode != 0 /* Normal */) {
+          return;
+        }
+        this._inGameValue = this.controller.getTaskValue(this.taskID);
+        this.controller.setTaskValue(this.taskID, 0);
+      }
+    };
+    continueLevelTask = new ContinueLevelTask();
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/LoginTask.ts
+var LoginTask_exports = {};
+__export(LoginTask_exports, {
+  loginTask: () => loginTask
+});
+var LoginTask, loginTask;
+var init_LoginTask = __esm({
+  "assets/scripts/game/modules/task/tasks/LoginTask.ts"() {
+    init_EventCenter();
+    init_DataModel();
+    init_GameEvent();
+    init_BaseTask();
+    LoginTask = class extends BaseTask {
+      constructor(id = 0) {
+        super(id);
+        this._taskType = GameConfig.ETaskType.Login;
+      }
+      onRegist() {
+        EventCenter.I.on(GameEvent.GAME_LOADING_ENDED, this.onGameLoadingEnded, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(GameEvent.GAME_LOADING_ENDED, this.onGameLoadingEnded, this);
+      }
+      onGameLoadingEnded() {
+        this.controller.addTaskValue(this.taskID, 1);
+      }
+    };
+    loginTask = new LoginTask();
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/NormalLevelBoxTask.ts
+var NormalLevelBoxTask_exports = {};
+__export(NormalLevelBoxTask_exports, {
+  normalLevelBoxTask: () => normalLevelBoxTask
+});
+var NormalLevelBoxTask, normalLevelBoxTask;
+var init_NormalLevelBoxTask = __esm({
+  "assets/scripts/game/modules/task/tasks/NormalLevelBoxTask.ts"() {
+    init_EventCenter();
+    init_DataModel();
+    init_GameEvent();
+    init_types2();
+    init_BaseTask();
+    NormalLevelBoxTask = class extends BaseTask {
+      constructor(id = 0) {
+        super(id);
+        this._taskType = GameConfig.ETaskType.LevelBox;
+      }
+      onRegist() {
+        EventCenter.I.on(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+      }
+      onLevelSuccess(model) {
+        if (model != 0 /* Normal */) {
+          return;
+        }
+        this.controller.addTaskValue(this.taskID, 1);
+      }
+    };
+    normalLevelBoxTask = new NormalLevelBoxTask();
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/NormalLevelTask.ts
+var NormalLevelTask_exports = {};
+__export(NormalLevelTask_exports, {
+  normalLevelTask: () => normalLevelTask
+});
+var NormalLevelTask, normalLevelTask;
+var init_NormalLevelTask = __esm({
+  "assets/scripts/game/modules/task/tasks/NormalLevelTask.ts"() {
+    init_EventCenter();
+    init_DataModel();
+    init_GameEvent();
+    init_types2();
+    init_BaseTask();
+    NormalLevelTask = class extends BaseTask {
+      constructor(id = 0) {
+        super(id);
+        this._taskType = GameConfig.ETaskType.LevelSucess;
+      }
+      onRegist() {
+        EventCenter.I.on(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(GameEvent.GAME_LEVEL_SUCCESS, this.onLevelSuccess, this);
+      }
+      onLevelSuccess(model) {
+        if (model != 0 /* Normal */) {
+          return;
+        }
+        this.controller.addTaskValue(this.taskID, 1);
+      }
+    };
+    normalLevelTask = new NormalLevelTask();
+  }
+});
+
+// assets/scripts/game/modules/task/tasks/UseToolTask.ts
+var UseToolTask_exports = {};
+__export(UseToolTask_exports, {
+  useCollectTask: () => useCollectTask,
+  useRemoveTask: () => useRemoveTask,
+  useShuffleTask: () => useShuffleTask
+});
+var UseToolTask, useRemoveTask, useCollectTask, useShuffleTask;
+var init_UseToolTask = __esm({
+  "assets/scripts/game/modules/task/tasks/UseToolTask.ts"() {
+    init_EventCenter();
+    init_DataModel();
+    init_GameEvent();
+    init_BaseTask();
+    UseToolTask = class extends BaseTask {
+      constructor(id) {
+        super(id);
+        this._taskType = GameConfig.ETaskType.UseTool;
+      }
+      onRegist() {
+        EventCenter.I.on(GameEvent.USER_USE_TOOL, this.onUseTool, this);
+      }
+      onUnregist() {
+        EventCenter.I.off(GameEvent.USER_USE_TOOL, this.onUseTool, this);
+      }
+      onUseTool(type) {
+        if (type != this.id) {
+          return;
+        }
+        this.controller.addTaskValue(this.taskID, 1);
+      }
+    };
+    useRemoveTask = new UseToolTask(1);
+    useCollectTask = new UseToolTask(2);
+    useShuffleTask = new UseToolTask(3);
+  }
+});
+
+// assets/scripts/game/modules/task/TaskController.ts
+var TaskController_exports = {};
+__export(TaskController_exports, {
+  TaskController: () => TaskController,
+  taskController: () => taskController
+});
+var TaskController, taskController;
+var init_TaskController = __esm({
+  "assets/scripts/game/modules/task/TaskController.ts"() {
+    init_EventCenter();
+    init_BaseController();
+    init_SystemController();
+    init_RedDotManager();
+    init_TimeUtils();
+    init_ConfigManager();
+    init_GameEvent();
+    init_Reddot();
+    init_TaskDAO();
+    init_TaskModel();
+    init_ADVideoTask();
+    init_ChallengeLevelTask();
+    init_ContinueLevelTask();
+    init_LoginTask();
+    init_NormalLevelBoxTask();
+    init_NormalLevelTask();
+    init_UseToolTask();
+    TaskController = class extends BaseController {
+      constructor() {
+        super(...arguments);
+        this._tasks = [];
+        this._taskGroups = null;
+        this._tasksMap = {};
+      }
+      registTask(task) {
+        this._tasks.push(task);
+        for (var groupID in this.model.tasks) {
+          let groupData = this.model.tasks[groupID];
+          let current = groupData.current;
+          let item = ConfigManager.DailyTaskTable.getItem(current);
+          let gid = this.getGroupID(item);
+          if (item == null || gid != task.groupID) {
+            continue;
+          }
+          let taskProcess = this.model.tasks[groupID];
+          task.taskCfg = item;
+          task.taskID = taskProcess.current;
+          break;
+        }
+        this._tasksMap[task.groupID] = task;
+        if (!this.dao.isTaskGroupCompleted(task.groupID)) {
+          task.regist(this);
+        }
+      }
+      unregistTask(task) {
+        task.unregist();
+      }
+      get dao() {
+        return taskDAO;
+      }
+      get model() {
+        return this.dao.model;
+      }
+      get dataKey() {
+        return "task";
+      }
+      get dailyTasks() {
+        return this._tasks.filter((task) => {
+          return task.taskCfg.IsDaily;
+        });
+      }
+      get normalTasks() {
+        return this._tasks.filter((task) => {
+          return !task.taskCfg.IsDaily;
+        });
+      }
+      get dailyTaskData() {
+        return this.model.tasks;
+      }
+      get taskGroups() {
+        return this._taskGroups;
+      }
+      onInitial() {
+        super.onInitial();
+        EventCenter.I.on(GameEvent.SYSTEM_CROSS_DAY, this.refreshDaily, this);
+        this.refreshDaily();
+        this.initialTasks();
+        this.registTasks();
+      }
+      onUpdate(dt) {
+        super.onUpdate(dt);
+        for (let task of this._tasks) {
+          task.update();
+        }
+      }
+      getGroupDataByCfg(item) {
+        let groupID = this.getGroupID(item);
+        return this.dao.getTaskGroup(groupID);
+      }
+      getGroupData(groupID) {
+        return this.dao.getTaskGroup(groupID);
+      }
+      getGroupID(item) {
+        return item.TaskType * 100 + item.Value;
+      }
+      initialTasks() {
+        let items = ConfigManager.DailyTaskTable.items;
+        if (this._taskGroups == null) {
+          let groups = {};
+          for (let item of items) {
+            let groupID = this.getGroupID(item);
+            if (groups[groupID] == null) {
+              groups[groupID] = [];
+            }
+            groups[groupID].push(item);
+          }
+          this._taskGroups = groups;
+        }
+        for (let groupID in this._taskGroups) {
+          let group = this._taskGroups[groupID];
+          let index = 0;
+          let item = group[index];
+          let groupData = this.dao.getTaskGroup(parseInt(groupID));
+          if (groupData == null) {
+            this.dao.addTaskGroup(parseInt(groupID), item.ID);
+          } else if (groupData.state == 1 /* Completed */ && item.IsDaily) {
+            RedDotManager.inst.addMessage(Reddot.HOME_TASK);
+          }
+        }
+      }
+      registTasks() {
+        this._tasks = [];
+        this.registTask(loginTask);
+        this.registTask(adVideoTask);
+        this.registTask(normalLevelTask);
+        this.registTask(challengeLevelTask);
+        this.registTask(useRemoveTask);
+        this.registTask(useCollectTask);
+        this.registTask(useShuffleTask);
+        this.registTask(normalLevelBoxTask);
+        this.registTask(continueLevelTask);
+      }
+      getTaskValue(taskID) {
+        let item = ConfigManager.DailyTaskTable.getItem(taskID);
+        if (item == null) {
+          return 0;
+        }
+        let groupId = this.getGroupID(item);
+        let groupData = this.dao.getTaskGroup(groupId);
+        return groupData.progress;
+      }
+      setTaskValue(taskID, value) {
+        let item = ConfigManager.DailyTaskTable.getItem(taskID);
+        if (item == null) {
+          return;
+        }
+        let groupId = this.getGroupID(item);
+        let groupData = this.dao.getTaskGroup(groupId);
+        if (item.MaxValue > 0 && value > item.MaxValue) {
+          value = item.MaxValue;
+        }
+        groupData.progress = value;
+        if (groupData.progress >= item.Num && groupData.state == 0 /* None */) {
+          groupData.state = 1 /* Completed */;
+          if (item.IsDaily) {
+            RedDotManager.inst.addMessage(Reddot.HOME_TASK);
+          }
+        }
+        this.dao.saveNow();
+        let taskProcess = this._tasksMap[groupId];
+        EventCenter.I.emit(GameEvent.USER_TASK_CHANGED, taskProcess);
+        return groupData.progress;
+      }
+      addTaskValue(taskID, value) {
+        let item = ConfigManager.DailyTaskTable.getItem(taskID);
+        if (item == null) {
+          return;
+        }
+        let groupId = this.getGroupID(item);
+        let groupData = this.dao.getTaskGroup(groupId);
+        var val = groupData.progress + value;
+        if (item.MaxValue > 0 && groupData.progress > item.MaxValue) {
+          val = item.MaxValue;
+        }
+        groupData.progress = val;
+        if (groupData.progress >= item.Num && groupData.state == 0 /* None */) {
+          groupData.state = 1 /* Completed */;
+          if (item.IsDaily) {
+            RedDotManager.inst.addMessage(Reddot.HOME_TASK);
+          }
+        }
+        this.dao.saveNow();
+        let taskProcess = this._tasksMap[groupId];
+        EventCenter.I.emit(GameEvent.USER_TASK_CHANGED, taskProcess);
+        return groupData.progress;
+      }
+      hasNextTaskByCfg(item) {
+        if (item == null) {
+          return false;
+        }
+        if (item.NextTask == 0) {
+          return true;
+        }
+        let groupID = this.getGroupID(item);
+        return this.hasNextTask(groupID);
+      }
+      hasNextTask(groupID) {
+        let group = this._taskGroups[groupID];
+        if (group == null) {
+          return false;
+        }
+        let index = group.findIndex((item) => {
+          return item.ID == item.ID;
+        });
+        return index < group.length - 1;
+      }
+      receiveTaskByCfg(item) {
+        let groupId = this.getGroupID(item);
+        this.receiveTask(groupId);
+      }
+      receiveTask(groupID) {
+        let groupData = this.model.tasks[groupID];
+        if (groupData == null || groupData.state != 1 /* Completed */) {
+          return;
+        }
+        groupData.state = 2 /* Received */;
+        let item = ConfigManager.DailyTaskTable.getItem(groupData.current);
+        if (item == null) {
+          return;
+        }
+        let group = this._taskGroups[groupID];
+        let index = group.findIndex((item2) => {
+          return item2.ID == groupData.current;
+        });
+        let indexNext = 0;
+        if (item.NextTask != 0) {
+          if (item.NextTask == -1) {
+            indexNext = index;
+          } else {
+            indexNext = group.findIndex((item2) => {
+              return item2.ID == item2.NextTask;
+            });
+          }
+        } else {
+          indexNext = index + 1;
+        }
+        let taskProcess = this._tasksMap[groupID];
+        if (indexNext < group.length) {
+          let nextItem = group[indexNext];
+          groupData.done = 0;
+          groupData.current = nextItem.ID;
+          if (item.Clear || item.NextTask != 0) {
+            groupData.progress = groupData.progress - item.Num;
+          }
+          if (groupData.progress >= nextItem.Num) {
+            groupData.state = 1 /* Completed */;
+          } else {
+            groupData.state = 0 /* None */;
+          }
+          taskProcess.taskID = nextItem.ID;
+          taskProcess.taskCfg = nextItem;
+        } else {
+          this.achiveTask(taskProcess, groupID);
+        }
+        this.dao.saveNow();
+        RedDotManager.inst.subMessage(Reddot.HOME_TASK);
+        EventCenter.I.emit(GameEvent.USER_TASK_CHANGED, taskProcess);
+      }
+      achiveTask(task, completeTaskID) {
+        let groupID = this.getGroupID(task.taskCfg);
+        let group = this._taskGroups[groupID];
+        if (group) {
+          let completed = true;
+          for (let item of group) {
+            if (!this.dao.isTaskCompleted(item.ID)) {
+              completed = false;
+              break;
+            }
+          }
+          if (completed) {
+            this.unregistTask(task);
+            this.dao.achiveTaskGroup(groupID);
+          }
+        }
+      }
+      refreshDaily() {
+        if (TimeUtils.isToday(this.model.savetime * 1e3)) {
+          return;
+        }
+        this.model.savetime = systemController.getTime();
+        let keys = Object.keys(this.model.tasks);
+        for (let key of keys) {
+          let groupData = this.model.tasks[key];
+          let item = ConfigManager.DailyTaskTable.getItem(groupData.current);
+          if (item == null) {
+            continue;
+          }
+          if (item.IsDaily) {
+            groupData.progress = 0;
+            groupData.state = 0 /* None */;
+            groupData.done = 0;
+          }
+        }
+        this.initialTasks();
+        this.dao.saveNow();
+      }
+    };
+    taskController = new TaskController();
+  }
+});
+
+// assets/scripts/game/modules/reddot/ReddotMode.ts
+var ReddotMode_exports = {};
+__export(ReddotMode_exports, {
+  ReddotModel: () => ReddotModel
+});
+var ReddotModel;
+var init_ReddotMode = __esm({
+  "assets/scripts/game/modules/reddot/ReddotMode.ts"() {
+    init_BaseModel();
+    ReddotModel = class extends BaseModel {
+    };
+  }
+});
+
+// assets/scripts/game/modules/reddot/ReddotDAO.ts
+var ReddotDAO_exports = {};
+__export(ReddotDAO_exports, {
+  TaskDAO: () => TaskDAO2,
+  reddotDAO: () => reddotDAO
+});
+var TaskDAO2, reddotDAO;
+var init_ReddotDAO = __esm({
+  "assets/scripts/game/modules/reddot/ReddotDAO.ts"() {
+    init_BaseDAO();
+    init_ReddotMode();
+    TaskDAO2 = class extends BaseDAO {
+    };
+    reddotDAO = new TaskDAO2(ReddotModel);
+  }
+});
+
+// assets/scripts/game/modules/reddot/ReddotController.ts
+var ReddotController_exports = {};
+__export(ReddotController_exports, {
+  ReddotController: () => ReddotController,
+  reddotController: () => reddotController
+});
+var ReddotController, reddotController;
+var init_ReddotController = __esm({
+  "assets/scripts/game/modules/reddot/ReddotController.ts"() {
+    init_EventCenter();
+    init_BaseController();
+    init_RedDotManager();
+    init_GameEvent();
+    init_UserController();
+    init_Reddot();
+    init_ReddotDAO();
+    ReddotController = class extends BaseController {
+      get dao() {
+        return reddotDAO;
+      }
+      get model() {
+        return this.dao.model;
+      }
+      onInitial() {
+        Reddot.inst.init();
+        EventCenter.I.on(GameEvent.SYSTEM_CROSS_DAY, this.onNewDay, this);
+        this._checkReddot();
+      }
+      onNewDay() {
+        this._clearReddot();
+        this._checkReddot();
+      }
+      _clearReddot() {
+        RedDotManager.inst.clearMessage(Reddot.HOME_DAILY_GIFT);
+        RedDotManager.inst.clearMessage(Reddot.HOME_SEVEN_DAY);
+      }
+      _checkReddot() {
+        if (!userController.dailyGiftGetted) {
+          RedDotManager.inst.addMessage(Reddot.HOME_DAILY_GIFT);
+        }
+        if (!userController.isSignToday) {
+          RedDotManager.inst.addMessage(Reddot.HOME_SEVEN_DAY);
+        }
+      }
+    };
+    reddotController = new ReddotController();
+  }
+});
+
+// assets/scripts/game/modules/guide/GuideModel.ts
+var GuideModel_exports = {};
+__export(GuideModel_exports, {
+  GuideModel: () => GuideModel
+});
+var GuideModel;
+var init_GuideModel = __esm({
+  "assets/scripts/game/modules/guide/GuideModel.ts"() {
+    init_BaseModel();
+    GuideModel = class extends BaseModel {
+      constructor() {
+        super(...arguments);
+        // 已经完成的特殊块类型
+        this.blockTips = [];
+      }
+    };
+  }
+});
+
+// assets/scripts/game/modules/guide/GuideDAO.ts
+var GuideDAO_exports = {};
+__export(GuideDAO_exports, {
+  GuideDAO: () => GuideDAO,
+  guideDAO: () => guideDAO
+});
+var GuideDAO, guideDAO;
+var init_GuideDAO = __esm({
+  "assets/scripts/game/modules/guide/GuideDAO.ts"() {
+    init_BaseDAO();
+    init_GuideModel();
+    GuideDAO = class extends BaseDAO {
+      get storageKey() {
+        return "guide";
+      }
+      get modelName() {
+        return "GuideModel";
+      }
+    };
+    guideDAO = new GuideDAO(GuideModel);
+  }
+});
+
+// assets/scripts/game/modules/guide/GuideController.ts
+var GuideController_exports = {};
+__export(GuideController_exports, {
+  guideController: () => guideController
+});
+var GuideController, guideController;
+var init_GuideController = __esm({
+  "assets/scripts/game/modules/guide/GuideController.ts"() {
+    init_BaseController();
+    init_GuideDAO();
+    GuideController = class extends BaseController {
+      constructor() {
+        super(...arguments);
+        this._lastAnimalID = 0;
+      }
+      get lastAnimalID() {
+        return this._lastAnimalID;
+      }
+      get dao() {
+        return guideDAO;
+      }
+      get model() {
+        return this.dao.model;
+      }
+      get dataKey() {
+        return "guide";
+      }
+      isBlockTiped(blockID) {
+        return this.model.blockTips.indexOf(blockID) >= 0;
+      }
+      setBlockTiped(blockID) {
+        if (!this.isBlockTiped(blockID)) {
+          this.model.blockTips.push(blockID);
+          this.dao.easySave();
+        }
+      }
+    };
+    guideController = new GuideController();
+  }
+});
+
+// assets/scripts/game/modules/ControllerManager.ts
+var ControllerManager_exports2 = {};
+__export(ControllerManager_exports2, {
+  ControllerManager: () => ControllerManager2
+});
+var ControllerManager2;
+var init_ControllerManager2 = __esm({
+  "assets/scripts/game/modules/ControllerManager.ts"() {
+    init_ServerController();
+    init_SettingsController();
+    init_UserController();
+    init_ControllerManager();
+    init_TaskController();
+    init_ReddotController();
+    init_GuideController();
+    ControllerManager2 = class extends ControllerManager {
+      static onRegistControllers() {
+        this.registController(settingsController);
+        this.registController(serverController);
+        this.registController(guideController);
+        this.registController(userController);
+        this.registController(reddotController);
+        this.registController(taskController);
+      }
+      static onInitial() {
+        this.lastSaveTime = userController.saveTime;
+      }
+      static onUserStorageChanged() {
+        this.lastSaveTime = userController.saveTime;
+      }
+    };
+  }
+});
+
+// assets/scripts/game/patch/PhysicPatch.ts
+var PhysicPatch_exports = {};
+__export(PhysicPatch_exports, {
+  default: () => PhysicPatch_default
+});
+function cocos2BulletQuat(out, q) {
+  bt.Quat_set(out, q.x, q.y, q.z, q.w);
+  return out;
+}
+function patchPhysicsSystem() {
+  bt = globalThis.Bullet;
+  if (!bt) {
+    return;
+  }
+  Object.defineProperty(import_cc35.Collider.prototype, "_rotation", {
+    value: new import_cc35.Quat(),
+    writable: true
+  });
+  Object.defineProperty(import_cc35.Collider.prototype, "rotation", {
+    get() {
+      return this._rotation;
+    },
+    set(v) {
+      import_cc35.Quat.copy(this._rotation, v);
+      if (this._shape) {
+        this._shape.setRotate(v);
+      }
+    }
+  });
+  let selector = import_cc35.physics.selector.wrapper;
+  let bulletShape = selector.BoxShape.prototype.constructor.prototype.__proto__;
+  const onLoad = bulletShape.onLoad;
+  bulletShape.onLoad = function() {
+    onLoad.call(this);
+    this.updateRotate();
+  };
+  bulletShape.setRotate = function(q) {
+    bt.Transform_getRotation(this.transform, this.quat);
+    cocos2BulletQuat(this.quat, q);
+    this.updateCompoundTransform();
+  };
+  bulletShape.updateRotate = function() {
+    this.setRotate(this._collider.rotation);
+  };
+}
+var import_cc35, import_env14, bt, PhysicPatch_default;
+var init_PhysicPatch = __esm({
+  "assets/scripts/game/patch/PhysicPatch.ts"() {
+    import_cc35 = require("cc");
+    import_env14 = require("cc/env");
+    bt = null;
+    if (import_env14.EDITOR) {
+      import_cc35.game.once(import_cc35.Game.EVENT_POST_PROJECT_INIT, patchPhysicsSystem);
+    } else {
+      import_cc35.game.once(import_cc35.Game.EVENT_GAME_INITED, patchPhysicsSystem);
+    }
+    PhysicPatch_default = null;
+  }
+});
+
+// assets/scripts/game/utils/ImageAdapter.ts
+var ImageAdapter_exports = {};
+__export(ImageAdapter_exports, {
+  ImageAdapter: () => ImageAdapter
+});
+var import_cc36, ccclass3, property3, requireComponent, ImageAdapter;
+var init_ImageAdapter = __esm({
+  "assets/scripts/game/utils/ImageAdapter.ts"() {
+    import_cc36 = require("cc");
+    ({ ccclass: ccclass3, property: property3, requireComponent } = import_cc36._decorator);
+    ImageAdapter = class extends import_cc36.Component {
+      constructor() {
+        super(...arguments);
+        this.canvas = null;
+        this._sprite = null;
+      }
+      onLoad() {
+        this._sprite = this.getComponent(import_cc36.Sprite);
+        const constentSize = this.canvas.node._uiProps.uiTransformComp.contentSize;
+        const spriteSize = this._sprite.node._uiProps.uiTransformComp.contentSize;
+        const scale = Math.max(constentSize.width / spriteSize.width, constentSize.height / spriteSize.height);
+        this._sprite.node._uiProps.uiTransformComp.setContentSize(spriteSize.width * scale, spriteSize.height * scale);
+      }
+    };
+    __decorateClass([
+      property3(import_cc36.Canvas)
+    ], ImageAdapter.prototype, "canvas", 2);
+    ImageAdapter = __decorateClass([
+      ccclass3("ImageAdapter"),
+      requireComponent(import_cc36.Sprite)
+    ], ImageAdapter);
+  }
+});
+
+// assets/scripts/game/utils/UITimeline.ts
+var UITimeline_exports = {};
+__export(UITimeline_exports, {
+  UITimeline: () => UITimeline
+});
+var import_cc37, Command, CommandPool, CommandHandler, CommandHandlerPool, UITimeline, tempVec2;
+var init_UITimeline = __esm({
+  "assets/scripts/game/utils/UITimeline.ts"() {
+    import_cc37 = require("cc");
+    Command = class {
+      constructor() {
+        this.flag = 0;
+        this.startPos = new import_cc37.Vec2();
+        this.endPos = new import_cc37.Vec2();
+        this.timer = 0;
+        this.config = null;
+      }
+    };
+    CommandPool = new import_cc37.Pool(() => new Command(), 10);
+    CommandHandler = class {
+      constructor() {
+        this.target = null;
+        this.currentCommand = null;
+        this.commands = [];
+      }
+    };
+    CommandHandlerPool = new import_cc37.Pool(() => new CommandHandler(), 5);
+    UITimeline = class _UITimeline {
+      constructor() {
+        this._handlers = [];
+        this._flagCountMap = /* @__PURE__ */ new Map();
+        this._flagCounter = 0;
+        this._inGroup = false;
+        this._groupFlag = -1;
+      }
+      static get inst() {
+        if (!this._inst) {
+          this._inst = new _UITimeline();
+        }
+        return this._inst;
+      }
+      getFlag() {
+        return ++this._flagCounter;
+      }
+      /**
+       * 开始一个组
+       * @returns 
+       */
+      beginGroup() {
+        this._inGroup = true;
+        this._groupFlag = this.getFlag();
+        return this._groupFlag;
+      }
+      endGroup() {
+        this._inGroup = false;
+      }
+      moveTo(config) {
+        const command = CommandPool.alloc();
+        command.timer = 0;
+        command.config = config;
+        command.endPos.set(config.endPos.x, config.endPos.y);
+        config.enableX = config.enableX == null ? true : config.enableX;
+        config.enableY = config.enableY == null ? true : config.enableY;
+        let flag = -1;
+        if (this._inGroup) {
+          flag = this._groupFlag;
+        } else {
+          flag = this.getFlag();
+        }
+        command.flag = flag;
+        this._flagCountMap.set(flag, (this._flagCountMap.get(flag) || 0) + 1);
+        let handler = this._handlers.find((h) => h.target == config.target);
+        this.addHandler(handler, command, config, flag);
+        return flag;
+      }
+      addHandler(handler, command, config, flag = -1) {
+        if (!handler) {
+          handler = CommandHandlerPool.alloc();
+          handler.target = config.target;
+          this._handlers.push(handler);
+        }
+        handler.commands.push(command);
+      }
+      update(dt) {
+        for (let handler of this._handlers) {
+          if (handler.target.isDisposed) {
+            this.removeHandler(handler);
+            continue;
+          }
+          this.doMove(handler, dt);
+        }
+      }
+      doMove(handler, dt) {
+        let commands = handler.commands;
+        if (commands.length == 0 && handler.currentCommand == null) {
+          return;
+        }
+        let config = null;
+        let command = handler.currentCommand;
+        if (command == null) {
+          config = commands[0].config;
+          if (config.waitFlags) {
+            for (let flag of config.waitFlags) {
+              if (this._flagCountMap.has(flag) && this._flagCountMap.get(flag) > 0) {
+                handler.currentCommand = null;
+                return;
+              }
+            }
+          }
+          command = commands.shift();
+          handler.currentCommand = command;
+          if (config.onStarted) {
+            config.onStarted();
+          }
+          command.startPos.set(handler.target.x, handler.target.y);
+        } else {
+          config = command.config;
+        }
+        let t = command.timer / config.duration;
+        t = Math.min(1, t);
+        command.timer += dt;
+        const setValue = (t2) => {
+          if (config.enableX && config.enableY) {
+            import_cc37.Vec2.lerp(tempVec2, command.startPos, command.endPos, t2);
+          } else if (config.enableX) {
+            tempVec2.x = import_cc37.math.lerp(command.startPos.x, command.endPos.x, t2);
+            tempVec2.y = command.startPos.y;
+          } else {
+            tempVec2.y = import_cc37.math.lerp(command.startPos.y, command.endPos.y, t2);
+            tempVec2.x = command.startPos.x;
+          }
+          handler.target.setPosition(tempVec2.x, tempVec2.y);
+          if (config.onUpdated) {
+            config.onUpdated(t2);
+          }
+        };
+        if (t >= 1) {
+          t = 1;
+          setValue(t);
+          let flag = command.flag;
+          let count = 0;
+          if (flag != null && flag != -1) {
+            count = this._flagCountMap.get(flag) || 0;
+            count--;
+            this._flagCountMap.set(flag, count);
+          }
+          if (config.onComplete) {
+            config.onComplete(config);
+          }
+          if (count <= 0) {
+            this._flagCountMap.delete(flag);
+            if (config.onGroupComplete) {
+              config.onGroupComplete(config);
+            }
+          }
+          if (commands.length == 0) {
+            this.removeHandler(handler);
+          }
+          if (handler.currentCommand) {
+            handler.currentCommand.config = null;
+            CommandPool.free(handler.currentCommand);
+            handler.currentCommand = null;
+          }
+          return;
+        } else {
+          setValue(t);
+        }
+      }
+      removeHandler(handler) {
+        for (let i = 0; i < this._handlers.length; i++) {
+          if (this._handlers[i] == handler) {
+            let handlers = this._handlers.splice(i, 1);
+            let handler2 = handlers[0];
+            for (let command of handler2.commands) {
+              CommandPool.free(command);
+            }
+            handler2.commands.length = 0;
+            if (handler2.currentCommand) {
+              handler2.currentCommand.config = null;
+              CommandPool.free(handler2.currentCommand);
+              handler2.currentCommand = null;
+            }
+            CommandHandlerPool.free(handler2);
+            return;
+          }
+        }
+      }
+      clear() {
+        for (let handler of this._handlers) {
+          for (let command of handler.commands) {
+            CommandPool.free(command);
+          }
+          handler.commands.length = 0;
+          if (handler.currentCommand) {
+            handler.currentCommand.config = null;
+            CommandPool.free(handler.currentCommand);
+            handler.currentCommand = null;
+          }
+        }
+        this._handlers.length = 0;
+      }
+    };
+    tempVec2 = new import_cc37.Vec2();
+  }
+});
+
+// assets/scripts/game/view/GM/GMSettings.ts
+var GMSettings_exports = {};
+__export(GMSettings_exports, {
+  GMSettings: () => GMSettings
+});
+var import_cc38, GMSettings;
+var init_GMSettings = __esm({
+  "assets/scripts/game/view/GM/GMSettings.ts"() {
+    import_cc38 = require("cc");
+    init_GMMananger();
+    init_UserController();
+    init_Timer();
+    init_Logger();
+    init_EventCenter();
+    init_GameEvent();
+    init_TaskController();
+    init_NormalLevelBoxTask();
+    GMSettings = class {
+      static initial() {
+        import_cc38.profiler.hideStats();
+        GMMananger.inst.addSwitch("\u7CFB\u7EDF", "\u8C03\u8BD5\u4FE1\u606F", false, (evt) => {
+          if (evt.value) {
+            import_cc38.profiler.showStats();
+          } else {
+            import_cc38.profiler.hideStats();
+          }
+        }, this);
+        GMMananger.inst.addRangeF("\u7CFB\u7EDF", "\u65F6\u95F4\u7F29\u653E", 0, 10, 1, (evt) => {
+          Timer.inst.scale = evt.value;
+        }, this);
+        GMMananger.inst.addSelector("\u7CFB\u7EDF", "\u65E5\u5FD7\u7EA7\u522B", 1, ["PREVIEW", "INFO", "WARN", "ERROR", "OFF"], (evt) => {
+          LogSettings.logLevel = evt.value;
+        }, this);
+        GMMananger.inst.addButton("\u7CFB\u7EDF", "\u65B0\u7684\u4E00\u5929", () => {
+          EventCenter.I.emit(GameEvent.SYSTEM_CROSS_DAY);
+        }, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u8DF3\u8F6C\u5173\u5361", 10, this._setLevel, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u6DFB\u52A0\u91D1\u5E01", 100, this._addGold, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u6DFB\u52A0\u4F53\u529B", 10, this._addEnergy, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u6DFB\u52A0\u901A\u5173\u6570", 10, this._addLevelCount, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u6DFB\u52A0\u79FB\u9664\u6B21\u6570", 1, this._addRemoveCount, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u6DFB\u52A0\u5408\u6210\u6B21\u6570", 1, this._addMergeCount, this);
+        GMMananger.inst.addInt("\u8D44\u6E90", "\u6DFB\u52A0\u6D17\u724C\u6B21\u6570", 1, this._addShuffleCount, this);
+      }
+      static _addGold(evt) {
+        let count = parseInt(evt.value.toString());
+        if (count < 0) {
+          userController.subGold(-count);
+          return;
+        }
+        userController.addGold(count);
+      }
+      static _addEnergy(evt) {
+        let count = parseInt(evt.value.toString());
+        if (count < 0) {
+          userController.subEnergy(-count);
+          return;
+        }
+        userController.addEnergy(count);
+      }
+      static _addLevelCount(evt) {
+        let count = parseInt(evt.value.toString());
+        userController.addLevel(count);
+        taskController.addTaskValue(normalLevelBoxTask.taskID, count);
+      }
+      static _setLevel(evt) {
+        let level = parseInt(evt.value.toString());
+        userController.setLevel(level);
+      }
+      static _addRemoveCount(evt) {
+        let count = parseInt(evt.value.toString());
+        userController.addRemove(count);
+      }
+      static _addMergeCount(evt) {
+        let count = parseInt(evt.value.toString());
+        userController.addCollect(count);
+      }
+      static _addShuffleCount(evt) {
+        let count = parseInt(evt.value.toString());
+        userController.addShuffle(count);
+      }
+    };
+  }
+});
+
+// assets/scripts/game/view/common/CommonToast.ts
+var CommonToast_exports2 = {};
+__export(CommonToast_exports2, {
+  default: () => CommonToast2
+});
+var ToaslPool, _CommonToast2, CommonToast2;
+var init_CommonToast2 = __esm({
+  "assets/scripts/game/view/common/CommonToast.ts"() {
+    init_Decorators();
+    init_fairygui();
+    init_fairygui();
+    init_fairygui();
+    init_fairygui();
+    init_View();
+    ToaslPool = [];
+    _CommonToast2 = class _CommonToast2 extends View2 {
+      constructor() {
+        super(...arguments);
+        this.title = null;
+        this._animation = null;
+      }
+      static toast(tips, ...args) {
+        let instance = _CommonToast2.getPopup();
+        _CommonToast2.setTips(instance, tips, args);
+        _CommonToast2.showPopup(instance);
+        instance._animation.play(() => {
+          ToaslPool.push(instance);
+          GRoot.inst.removeChild(instance.gObject);
+        });
+      }
+      static getPopup() {
+        let instance = null;
+        if (ToaslPool.length > 0) {
+          instance = ToaslPool.pop();
+        } else {
+          instance = new _CommonToast2();
+          instance.inject(UIPackage.createObject("common", "CommonToast"));
+        }
+        instance.gObject.alpha = 1;
+        return instance;
+      }
+      static setTips(instance, tips, args) {
+        if (typeof tips == "number") {
+          instance.title.setText(tips, ...args);
+        } else {
+          instance.title.text = tips;
+        }
+      }
+      static showPopup(instance) {
+        GRoot.inst.addChild(instance.gObject);
+        let x = GRoot.inst.x + GRoot.inst.width / 2 - instance.gObject.width / 2;
+        let y = GRoot.inst.y + GRoot.inst.height / 2 - instance.gObject.height / 2;
+        instance.gObject.setPosition(
+          x,
+          y
+        );
+      }
+    };
+    __decorateClass([
+      inject(GLabel)
+    ], _CommonToast2.prototype, "title", 2);
+    __decorateClass([
+      inject(Transition, "show")
+    ], _CommonToast2.prototype, "_animation", 2);
+    CommonToast2 = _CommonToast2;
+  }
+});
+
+// assets/scripts/game/view/common/CommonView.ts
+var CommonView_exports = {};
+__export(CommonView_exports, {
+  CommonView: () => CommonView
+});
+var CommonView;
+var init_CommonView = __esm({
+  "assets/scripts/game/view/common/CommonView.ts"() {
+    init_View();
+    CommonView = class extends View2 {
+    };
   }
 });
 
@@ -33489,7 +39879,7 @@ var init_ = __esm({
       "../../framework/common/PoolManager.ts.meta": () => require("../../framework/common/PoolManager.ts.meta"),
       "../../framework/common/Pools.ts": () => (init_Pools(), __toCommonJS(Pools_exports)),
       "../../framework/common/Pools.ts.meta": () => require("../../framework/common/Pools.ts.meta"),
-      "../../framework/common/ResManager.ts": () => (init_ResManager(), __toCommonJS(ResManager_exports)),
+      "../../framework/common/ResManager.ts": () => (init_ResManager2(), __toCommonJS(ResManager_exports2)),
       "../../framework/common/ResManager.ts.meta": () => require("../../framework/common/ResManager.ts.meta"),
       "../../framework/common/SoundManager.ts": () => (init_SoundManager(), __toCommonJS(SoundManager_exports)),
       "../../framework/common/SoundManager.ts.meta": () => require("../../framework/common/SoundManager.ts.meta"),
@@ -33539,10 +39929,16 @@ var init_ = __esm({
       "../../framework/patch/ccc_pref_renderer.ts.meta": () => require("../../framework/patch/ccc_pref_renderer.ts.meta"),
       "../../framework/patch/fgui_patch.ts.meta": () => require("../../framework/patch/fgui_patch.ts.meta"),
       "../../framework/platform.meta": () => require("../../framework/platform.meta"),
-      "../../framework/platform/Platform.ts": () => (init_Platform(), __toCommonJS(Platform_exports)),
-      "../../framework/platform/Platform.ts.meta": () => require("../../framework/platform/Platform.ts.meta"),
+      "../../framework/platform/AlipayAdapter.ts": () => (init_AlipayAdapter(), __toCommonJS(AlipayAdapter_exports)),
+      "../../framework/platform/AlipayAdapter.ts.meta": () => require("../../framework/platform/AlipayAdapter.ts.meta"),
+      "../../framework/platform/PlatformHelper.ts": () => (init_PlatformHelper(), __toCommonJS(PlatformHelper_exports)),
+      "../../framework/platform/PlatformHelper.ts.meta": () => require("../../framework/platform/PlatformHelper.ts.meta"),
       "../../framework/platform/PlatformSDK.ts": () => (init_PlatformSDK(), __toCommonJS(PlatformSDK_exports)),
       "../../framework/platform/PlatformSDK.ts.meta": () => require("../../framework/platform/PlatformSDK.ts.meta"),
+      "../../framework/platform/PlatformUIHelper.ts": () => (init_PlatformUIHelper(), __toCommonJS(PlatformUIHelper_exports)),
+      "../../framework/platform/PlatformUIHelper.ts.meta": () => require("../../framework/platform/PlatformUIHelper.ts.meta"),
+      "../../framework/platform/ShareMonitor.ts": () => (init_ShareMonitor(), __toCommonJS(ShareMonitor_exports)),
+      "../../framework/platform/ShareMonitor.ts.meta": () => require("../../framework/platform/ShareMonitor.ts.meta"),
       "../../framework/plugins.meta": () => require("../../framework/plugins.meta"),
       "../../framework/plugins/capture.meta": () => require("../../framework/plugins/capture.meta"),
       "../../framework/plugins/capture/CanvasPool.ts": () => (init_CanvasPool(), __toCommonJS(CanvasPool_exports)),
@@ -33580,6 +39976,8 @@ var init_ = __esm({
       "../../framework/utils.meta": () => require("../../framework/utils.meta"),
       "../../framework/utils/CoroutineUtils.ts": () => (init_CoroutineUtils(), __toCommonJS(CoroutineUtils_exports)),
       "../../framework/utils/CoroutineUtils.ts.meta": () => require("../../framework/utils/CoroutineUtils.ts.meta"),
+      "../../framework/utils/CustomRandom.ts": () => (init_CustomRandom(), __toCommonJS(CustomRandom_exports)),
+      "../../framework/utils/CustomRandom.ts.meta": () => require("../../framework/utils/CustomRandom.ts.meta"),
       "../../framework/utils/MathUtils.ts": () => (init_MathUtils(), __toCommonJS(MathUtils_exports)),
       "../../framework/utils/MathUtils.ts.meta": () => require("../../framework/utils/MathUtils.ts.meta"),
       "../../framework/utils/SpaceUtils.ts": () => (init_SpaceUtils(), __toCommonJS(SpaceUtils_exports)),
@@ -33590,6 +39988,8 @@ var init_ = __esm({
       "../../framework/utils/TimeUtils.ts.meta": () => require("../../framework/utils/TimeUtils.ts.meta"),
       "../../framework/utils/UtilsHelper.ts": () => (init_UtilsHelper(), __toCommonJS(UtilsHelper_exports)),
       "../../framework/utils/UtilsHelper.ts.meta": () => require("../../framework/utils/UtilsHelper.ts.meta"),
+      "../../framework/utils/VectorUtils.ts": () => (init_VectorUtils(), __toCommonJS(VectorUtils_exports)),
+      "../../framework/utils/VectorUtils.ts.meta": () => require("../../framework/utils/VectorUtils.ts.meta"),
       "../../framework/view.meta": () => require("../../framework/view.meta"),
       "../../framework/view/Activity.ts": () => (init_Activity(), __toCommonJS(Activity_exports)),
       "../../framework/view/Activity.ts.meta": () => require("../../framework/view/Activity.ts.meta"),
@@ -33653,7 +40053,115 @@ var init_ = __esm({
       "../../framework/view/utils/FGUIExt.ts.meta": () => require("../../framework/view/utils/FGUIExt.ts.meta"),
       "../../framework/view/utils/fgui_patch.ts": () => (init_fgui_patch(), __toCommonJS(fgui_patch_exports)),
       "../../framework/view/utils/fgui_patch.ts.meta": () => require("../../framework/view/utils/fgui_patch.ts.meta"),
-      "../../framework/wxsdk.meta": () => require("../../framework/wxsdk.meta")
+      "../../framework/wxsdk.meta": () => require("../../framework/wxsdk.meta"),
+      "../../game.meta": () => require("../../game.meta"),
+      "../../game/EngineSetting.ts.meta": () => require("../../game/EngineSetting.ts.meta"),
+      "../../game/ad/AdConfig.ts": () => (init_AdConfig(), __toCommonJS(AdConfig_exports)),
+      "../../game/ad/AdConfig.ts.meta": () => require("../../game/ad/AdConfig.ts.meta"),
+      "../../game/ad/AdManager.ts": () => (init_AdManager(), __toCommonJS(AdManager_exports)),
+      "../../game/ad/AdManager.ts.meta": () => require("../../game/ad/AdManager.ts.meta"),
+      "../../game/config/ConfigExtension.ts": () => (init_ConfigExtension(), __toCommonJS(ConfigExtension_exports)),
+      "../../game/config/ConfigExtension.ts.meta": () => require("../../game/config/ConfigExtension.ts.meta"),
+      "../../game/config/ConfigManager.ts": () => (init_ConfigManager(), __toCommonJS(ConfigManager_exports)),
+      "../../game/config/ConfigManager.ts.meta": () => require("../../game/config/ConfigManager.ts.meta"),
+      "../../game/config/DataModel.ts": () => (init_DataModel(), __toCommonJS(DataModel_exports)),
+      "../../game/config/DataModel.ts.meta": () => require("../../game/config/DataModel.ts.meta"),
+      "../../game/const/GameConst.ts": () => (init_GameConst(), __toCommonJS(GameConst_exports)),
+      "../../game/const/GameConst.ts.meta": () => require("../../game/const/GameConst.ts.meta"),
+      "../../game/const/GameEvent.ts": () => (init_GameEvent(), __toCommonJS(GameEvent_exports)),
+      "../../game/const/GameEvent.ts.meta": () => require("../../game/const/GameEvent.ts.meta"),
+      "../../game/const/ResConst.ts": () => (init_ResConst(), __toCommonJS(ResConst_exports)),
+      "../../game/const/ResConst.ts.meta": () => require("../../game/const/ResConst.ts.meta"),
+      "../../game/const/UILocations.ts": () => (init_UILocations(), __toCommonJS(UILocations_exports)),
+      "../../game/const/UILocations.ts.meta": () => require("../../game/const/UILocations.ts.meta"),
+      "../../game/const/types.ts": () => (init_types2(), __toCommonJS(types_exports2)),
+      "../../game/const/types.ts.meta": () => require("../../game/const/types.ts.meta"),
+      "../../game/manager/EffectManager.ts": () => (init_EffectManager(), __toCommonJS(EffectManager_exports)),
+      "../../game/manager/EffectManager.ts.meta": () => require("../../game/manager/EffectManager.ts.meta"),
+      "../../game/manager/GameObjectPool.ts": () => (init_GameObjectPool(), __toCommonJS(GameObjectPool_exports)),
+      "../../game/manager/GameObjectPool.ts.meta": () => require("../../game/manager/GameObjectPool.ts.meta"),
+      "../../game/manager/ResManager.ts": () => (init_ResManager(), __toCommonJS(ResManager_exports)),
+      "../../game/manager/ResManager.ts.meta": () => require("../../game/manager/ResManager.ts.meta"),
+      "../../game/manager/RewardHelper.ts": () => (init_RewardHelper(), __toCommonJS(RewardHelper_exports)),
+      "../../game/manager/RewardHelper.ts.meta": () => require("../../game/manager/RewardHelper.ts.meta"),
+      "../../game/manager/UIHelper.ts": () => (init_UIHelper(), __toCommonJS(UIHelper_exports)),
+      "../../game/manager/UIHelper.ts.meta": () => require("../../game/manager/UIHelper.ts.meta"),
+      "../../game/modules/ControllerManager.ts": () => (init_ControllerManager2(), __toCommonJS(ControllerManager_exports2)),
+      "../../game/modules/ControllerManager.ts.meta": () => require("../../game/modules/ControllerManager.ts.meta"),
+      "../../game/modules/guide.meta": () => require("../../game/modules/guide.meta"),
+      "../../game/modules/guide/GuideController.ts": () => (init_GuideController(), __toCommonJS(GuideController_exports)),
+      "../../game/modules/guide/GuideController.ts.meta": () => require("../../game/modules/guide/GuideController.ts.meta"),
+      "../../game/modules/guide/GuideDAO.ts": () => (init_GuideDAO(), __toCommonJS(GuideDAO_exports)),
+      "../../game/modules/guide/GuideDAO.ts.meta": () => require("../../game/modules/guide/GuideDAO.ts.meta"),
+      "../../game/modules/guide/GuideModel.ts": () => (init_GuideModel(), __toCommonJS(GuideModel_exports)),
+      "../../game/modules/guide/GuideModel.ts.meta": () => require("../../game/modules/guide/GuideModel.ts.meta"),
+      "../../game/modules/reddot.meta": () => require("../../game/modules/reddot.meta"),
+      "../../game/modules/reddot/Reddot.ts": () => (init_Reddot(), __toCommonJS(Reddot_exports)),
+      "../../game/modules/reddot/Reddot.ts.meta": () => require("../../game/modules/reddot/Reddot.ts.meta"),
+      "../../game/modules/reddot/ReddotController.ts": () => (init_ReddotController(), __toCommonJS(ReddotController_exports)),
+      "../../game/modules/reddot/ReddotController.ts.meta": () => require("../../game/modules/reddot/ReddotController.ts.meta"),
+      "../../game/modules/reddot/ReddotDAO.ts": () => (init_ReddotDAO(), __toCommonJS(ReddotDAO_exports)),
+      "../../game/modules/reddot/ReddotDAO.ts.meta": () => require("../../game/modules/reddot/ReddotDAO.ts.meta"),
+      "../../game/modules/reddot/ReddotMode.ts": () => (init_ReddotMode(), __toCommonJS(ReddotMode_exports)),
+      "../../game/modules/reddot/ReddotMode.ts.meta": () => require("../../game/modules/reddot/ReddotMode.ts.meta"),
+      "../../game/modules/server.meta": () => require("../../game/modules/server.meta"),
+      "../../game/modules/server/ServerController.ts": () => (init_ServerController(), __toCommonJS(ServerController_exports)),
+      "../../game/modules/server/ServerController.ts.meta": () => require("../../game/modules/server/ServerController.ts.meta"),
+      "../../game/modules/settings.meta": () => require("../../game/modules/settings.meta"),
+      "../../game/modules/settings/SettingsController.ts": () => (init_SettingsController(), __toCommonJS(SettingsController_exports)),
+      "../../game/modules/settings/SettingsController.ts.meta": () => require("../../game/modules/settings/SettingsController.ts.meta"),
+      "../../game/modules/settings/SettingsDAO.ts": () => (init_SettingsDAO(), __toCommonJS(SettingsDAO_exports)),
+      "../../game/modules/settings/SettingsDAO.ts.meta": () => require("../../game/modules/settings/SettingsDAO.ts.meta"),
+      "../../game/modules/settings/SetttingsModel.ts": () => (init_SetttingsModel(), __toCommonJS(SetttingsModel_exports)),
+      "../../game/modules/settings/SetttingsModel.ts.meta": () => require("../../game/modules/settings/SetttingsModel.ts.meta"),
+      "../../game/modules/task.meta": () => require("../../game/modules/task.meta"),
+      "../../game/modules/task/TaskController.ts": () => (init_TaskController(), __toCommonJS(TaskController_exports)),
+      "../../game/modules/task/TaskController.ts.meta": () => require("../../game/modules/task/TaskController.ts.meta"),
+      "../../game/modules/task/TaskDAO.ts": () => (init_TaskDAO(), __toCommonJS(TaskDAO_exports)),
+      "../../game/modules/task/TaskDAO.ts.meta": () => require("../../game/modules/task/TaskDAO.ts.meta"),
+      "../../game/modules/task/TaskModel.ts": () => (init_TaskModel(), __toCommonJS(TaskModel_exports)),
+      "../../game/modules/task/TaskModel.ts.meta": () => require("../../game/modules/task/TaskModel.ts.meta"),
+      "../../game/modules/task/tasks.meta": () => require("../../game/modules/task/tasks.meta"),
+      "../../game/modules/task/tasks/ADVideoTask.ts": () => (init_ADVideoTask(), __toCommonJS(ADVideoTask_exports)),
+      "../../game/modules/task/tasks/ADVideoTask.ts.meta": () => require("../../game/modules/task/tasks/ADVideoTask.ts.meta"),
+      "../../game/modules/task/tasks/BaseTask.ts": () => (init_BaseTask(), __toCommonJS(BaseTask_exports)),
+      "../../game/modules/task/tasks/BaseTask.ts.meta": () => require("../../game/modules/task/tasks/BaseTask.ts.meta"),
+      "../../game/modules/task/tasks/ChallengeLevelTask.ts": () => (init_ChallengeLevelTask(), __toCommonJS(ChallengeLevelTask_exports)),
+      "../../game/modules/task/tasks/ChallengeLevelTask.ts.meta": () => require("../../game/modules/task/tasks/ChallengeLevelTask.ts.meta"),
+      "../../game/modules/task/tasks/ComboTask.ts.meta": () => require("../../game/modules/task/tasks/ComboTask.ts.meta"),
+      "../../game/modules/task/tasks/ContinueLevelTask.ts": () => (init_ContinueLevelTask(), __toCommonJS(ContinueLevelTask_exports)),
+      "../../game/modules/task/tasks/ContinueLevelTask.ts.meta": () => require("../../game/modules/task/tasks/ContinueLevelTask.ts.meta"),
+      "../../game/modules/task/tasks/LoginTask.ts": () => (init_LoginTask(), __toCommonJS(LoginTask_exports)),
+      "../../game/modules/task/tasks/LoginTask.ts.meta": () => require("../../game/modules/task/tasks/LoginTask.ts.meta"),
+      "../../game/modules/task/tasks/MergeTask.ts.meta": () => require("../../game/modules/task/tasks/MergeTask.ts.meta"),
+      "../../game/modules/task/tasks/NormalLevelBoxTask.ts": () => (init_NormalLevelBoxTask(), __toCommonJS(NormalLevelBoxTask_exports)),
+      "../../game/modules/task/tasks/NormalLevelBoxTask.ts.meta": () => require("../../game/modules/task/tasks/NormalLevelBoxTask.ts.meta"),
+      "../../game/modules/task/tasks/NormalLevelTask.ts": () => (init_NormalLevelTask(), __toCommonJS(NormalLevelTask_exports)),
+      "../../game/modules/task/tasks/NormalLevelTask.ts.meta": () => require("../../game/modules/task/tasks/NormalLevelTask.ts.meta"),
+      "../../game/modules/task/tasks/StarBoxTask.ts.meta": () => require("../../game/modules/task/tasks/StarBoxTask.ts.meta"),
+      "../../game/modules/task/tasks/StarTask.ts.meta": () => require("../../game/modules/task/tasks/StarTask.ts.meta"),
+      "../../game/modules/task/tasks/UseToolTask.ts": () => (init_UseToolTask(), __toCommonJS(UseToolTask_exports)),
+      "../../game/modules/task/tasks/UseToolTask.ts.meta": () => require("../../game/modules/task/tasks/UseToolTask.ts.meta"),
+      "../../game/modules/user.meta": () => require("../../game/modules/user.meta"),
+      "../../game/modules/user/UserController.ts": () => (init_UserController(), __toCommonJS(UserController_exports)),
+      "../../game/modules/user/UserController.ts.meta": () => require("../../game/modules/user/UserController.ts.meta"),
+      "../../game/modules/user/UserDAO.ts": () => (init_UserDAO(), __toCommonJS(UserDAO_exports)),
+      "../../game/modules/user/UserDAO.ts.meta": () => require("../../game/modules/user/UserDAO.ts.meta"),
+      "../../game/modules/user/UserModel.ts": () => (init_UserModel(), __toCommonJS(UserModel_exports)),
+      "../../game/modules/user/UserModel.ts.meta": () => require("../../game/modules/user/UserModel.ts.meta"),
+      "../../game/patch/PhysicPatch.ts": () => (init_PhysicPatch(), __toCommonJS(PhysicPatch_exports)),
+      "../../game/patch/PhysicPatch.ts.meta": () => require("../../game/patch/PhysicPatch.ts.meta"),
+      "../../game/utils/CCUtils.ts.meta": () => require("../../game/utils/CCUtils.ts.meta"),
+      "../../game/utils/ImageAdapter.ts": () => (init_ImageAdapter(), __toCommonJS(ImageAdapter_exports)),
+      "../../game/utils/ImageAdapter.ts.meta": () => require("../../game/utils/ImageAdapter.ts.meta"),
+      "../../game/utils/UITimeline.ts": () => (init_UITimeline(), __toCommonJS(UITimeline_exports)),
+      "../../game/utils/UITimeline.ts.meta": () => require("../../game/utils/UITimeline.ts.meta"),
+      "../../game/view/GM/GMSettings.ts": () => (init_GMSettings(), __toCommonJS(GMSettings_exports)),
+      "../../game/view/GM/GMSettings.ts.meta": () => require("../../game/view/GM/GMSettings.ts.meta"),
+      "../../game/view/common/CommonToast.ts": () => (init_CommonToast2(), __toCommonJS(CommonToast_exports2)),
+      "../../game/view/common/CommonToast.ts.meta": () => require("../../game/view/common/CommonToast.ts.meta"),
+      "../../game/view/common/CommonView.ts": () => (init_CommonView(), __toCommonJS(CommonView_exports)),
+      "../../game/view/common/CommonView.ts.meta": () => require("../../game/view/common/CommonView.ts.meta")
     });
   }
 });
@@ -33665,17 +40173,17 @@ __export(ccc_patch_exports, {
   clearUselessCache: () => clearUselessCache,
   default: () => ccc_patch_default
 });
-var import_cc28, import_env11, layer2D, setParent, PackageVersionMap, clearUselessCache, suffix, ccc_patch_default;
+var import_cc39, import_env15, layer2D, setParent, PackageVersionMap, clearUselessCache, suffix, ccc_patch_default;
 var init_ccc_patch = __esm({
   "assets/scripts/framework/patch/ccc_patch.ts"() {
-    import_cc28 = require("cc");
-    import_env11 = require("cc/env");
+    import_cc39 = require("cc");
+    import_env15 = require("cc/env");
     init_fairygui();
     init_();
-    if (!import_env11.EDITOR) {
+    if (!import_env15.EDITOR) {
       layer2D = UIConfig.defaultUILayer;
-      setParent = import_cc28.Node.prototype.setParent;
-      import_cc28.Node.prototype.setParent = function(value, keepWorldTransform) {
+      setParent = import_cc39.Node.prototype.setParent;
+      import_cc39.Node.prototype.setParent = function(value, keepWorldTransform) {
         let that = this;
         setParent.call(that, value, keepWorldTransform);
         if (value && value.$gobj && value.layer == layer2D) {
@@ -33686,7 +40194,7 @@ var init_ccc_patch = __esm({
     PackageVersionMap = {};
     clearUselessCache = function(version) {
     };
-    if (import_env11.MINIGAME) {
+    if (import_env15.MINIGAME) {
       let existsAsync = function(file) {
         try {
           fs.accessSync(file);
@@ -33697,8 +40205,8 @@ var init_ccc_patch = __esm({
       }, copyDirsSync = function(srcDir, destDir) {
         let files = fs.readdirSync(srcDir);
         files.forEach((filename) => {
-          let srcPath = import_cc28.path.join(srcDir, filename);
-          let destPath = import_cc28.path.join(destDir, filename);
+          let srcPath = import_cc39.path.join(srcDir, filename);
+          let destPath = import_cc39.path.join(destDir, filename);
           let stat = fs.statSync(srcPath);
           if (stat.isFile()) {
             fs.copyFileSync(srcPath, destPath);
@@ -33732,21 +40240,21 @@ var init_ccc_patch = __esm({
         if (!pkg || typeof pkg !== "object" || pkg.formats == null || pkg.formats.length === 0) {
           return defaultUrl;
         }
-        let device = import_cc28.director.root.device;
+        let device = import_cc39.director.root.device;
         let ext = "";
         if (device) {
           for (let i = 0; i < pkg.formats.length; i++) {
             let tmpExt = pkg.formats[i];
-            if (tmpExt === "astc" && device.getFormatFeatures(import_cc28.gfx.Format.ASTC_RGBA_4X4)) {
+            if (tmpExt === "astc" && device.getFormatFeatures(import_cc39.gfx.Format.ASTC_RGBA_4X4)) {
               ext = ".astc";
               break;
-            } else if (tmpExt === "pvr" && (device.getFormatFeatures(import_cc28.gfx.Format.PVRTC_RGB2) || device.getFormatFeatures(import_cc28.gfx.Format.PVRTC_RGBA2))) {
+            } else if (tmpExt === "pvr" && (device.getFormatFeatures(import_cc39.gfx.Format.PVRTC_RGB2) || device.getFormatFeatures(import_cc39.gfx.Format.PVRTC_RGBA2))) {
               ext = ".pvr";
               break;
-            } else if (tmpExt === "pkm" && device.getFormatFeatures(import_cc28.gfx.Format.ETC_RGB8)) {
+            } else if (tmpExt === "pkm" && device.getFormatFeatures(import_cc39.gfx.Format.ETC_RGB8)) {
               ext = ".pkm";
               break;
-            } else if (tmpExt === "webp" && import_cc28.sys.hasFeature(import_cc28.sys.Feature.WEBP)) {
+            } else if (tmpExt === "webp" && import_cc39.sys.hasFeature(import_cc39.sys.Feature.WEBP)) {
               ext = ".webp";
               break;
             }
@@ -33758,7 +40266,7 @@ var init_ccc_patch = __esm({
         return `${url}/res.${(zipVersion ? zipVersion : "") + ext + "."}zip`;
       }, clearUselessCacheF = function(version) {
         console.log("clearUselessCache", version);
-        let caches = import_cc28.assetManager.cacheManager.cachedFiles;
+        let caches = import_cc39.assetManager.cacheManager.cachedFiles;
         let curVersion = `/${version}/`;
         let versionRegex = /\/((debug\d?)|((\d.*?\.?){1,4}))\//gi;
         let regex = /https?:\/\/.*?\/remote\/(.*?)\/.*?/gi;
@@ -33774,7 +40282,7 @@ var init_ccc_patch = __esm({
               if (pkg == hashValue) {
                 exits = true;
               } else if (pkg.files) {
-                let fn = import_cc28.path.basename(key);
+                let fn = import_cc39.path.basename(key);
                 if (!!pkg.files[fn]) {
                   exits = true;
                 }
@@ -33784,15 +40292,15 @@ var init_ccc_patch = __esm({
             }
             if (!exits) {
               console.log("\u5220\u9664:", value.url, key);
-              import_cc28.assetManager.cacheManager.removeCache(key);
+              import_cc39.assetManager.cacheManager.removeCache(key);
             } else if (key.indexOf(curVersion) < 0) {
               console.log("\u66FF\u6362:", value.url, key);
-              import_cc28.assetManager.cacheManager.cachedFiles.remove(key);
-              import_cc28.assetManager.cacheManager.cachedFiles.add(key.replace(versionRegex, curVersion), value);
+              import_cc39.assetManager.cacheManager.cachedFiles.remove(key);
+              import_cc39.assetManager.cacheManager.cachedFiles.add(key.replace(versionRegex, curVersion), value);
             }
           }
         });
-        import_cc28.assetManager.cacheManager["writeCacheFile"]();
+        import_cc39.assetManager.cacheManager["writeCacheFile"]();
       };
       if (typeof wx != "undefined" && wx.onMemoryWarning) {
         wx.onMemoryWarning && wx.onMemoryWarning(() => {
@@ -33802,12 +40310,12 @@ var init_ccc_patch = __esm({
       }
       const { fs } = window.fsUtils;
       const ASSET_MGR_REGEX = /^https?:\/\/.*/;
-      const cacheManager = import_cc28.assetManager.cacheManager;
-      const downloader = import_cc28.assetManager.downloader;
+      const cacheManager = import_cc39.assetManager.cacheManager;
+      const downloader = import_cc39.assetManager.downloader;
       const downloadJson = downloader["_downloaders"][".json"];
       const downloadBundle = downloader["_downloaders"]["bundle"];
       const subpackages = {};
-      const subpacks = import_cc28.settings.querySettings("assets", "subpackages");
+      const subpacks = import_cc39.settings.querySettings("assets", "subpackages");
       subpacks && subpacks.forEach((x) => subpackages[x] = `subpackages/${x}`);
       const makeDirSync = window.fsUtils.makeDirSync = function(path4, recursive) {
         try {
@@ -33830,7 +40338,7 @@ var init_ccc_patch = __esm({
       };
       suffix = 0;
       cacheManager.unzipAndCacheBundle = function(id, zipFilePath, cacheBundleRoot, onComplete, targetPath = null) {
-        if (!import_env11.ALIPAY) {
+        if (!import_env15.ALIPAY) {
           unzipCacheBundle.call(this, id, zipFilePath, cacheBundleRoot, onComplete, targetPath);
           return;
         }
@@ -33868,27 +40376,27 @@ var init_ccc_patch = __esm({
           onComplete && onComplete(null, targetPath);
         });
       };
-      import_cc28.assetManager.downloader.register("bundle", (nameOrUrl, options, onComplete) => {
+      import_cc39.assetManager.downloader.register("bundle", (nameOrUrl, options, onComplete) => {
         console.log("bundle", nameOrUrl, options);
         let pkg = PackageVersionMap[nameOrUrl];
         if (!pkg) {
           downloadBundle(nameOrUrl, options, onComplete);
           return;
         }
-        let bundleName = import_cc28.path.basename(nameOrUrl);
-        let version = options.version || import_cc28.assetManager.downloader.bundleVers[bundleName];
+        let bundleName = import_cc39.path.basename(nameOrUrl);
+        let version = options.version || import_cc39.assetManager.downloader.bundleVers[bundleName];
         let suffix2 = version ? version + "." : "";
-        let localVersion = import_cc28.assetManager.downloader.bundleVers[bundleName];
+        let localVersion = import_cc39.assetManager.downloader.bundleVers[bundleName];
         let localSuffix = localVersion ? localVersion + "." : "";
         function getConfigPathForSubPackage() {
-          if (import_cc28.sys.platform === import_cc28.sys.Platform.TAOBAO_MINI_GAME) {
+          if (import_cc39.sys.platform === import_cc39.sys.Platform.TAOBAO_MINI_GAME) {
             return `${bundleName}/config.${suffix2}json`;
           }
           return `subpackages/${bundleName}/config.${localSuffix}json`;
         }
         function appendBaseToJsonData(data) {
           if (!data) return;
-          if (import_cc28.sys.platform === import_cc28.sys.Platform.TAOBAO_MINI_GAME) {
+          if (import_cc39.sys.platform === import_cc39.sys.Platform.TAOBAO_MINI_GAME) {
             data.base = `${bundleName}/`;
           } else {
             data.base = `subpackages/${bundleName}/`;
@@ -33922,9 +40430,9 @@ var init_ccc_patch = __esm({
             js = `assets/${bundleName}/index.${localSuffix}js`;
           }
           try {
-            if (import_cc28.sys.platform === import_cc28.sys.Platform.TAOBAO_MINI_GAME) {
+            if (import_cc39.sys.platform === import_cc39.sys.Platform.TAOBAO_MINI_GAME) {
               require(`/../../${js}`);
-            } else if (import_cc28.sys.platform !== import_cc28.sys.Platform.TAOBAO_CREATIVE_APP) {
+            } else if (import_cc39.sys.platform !== import_cc39.sys.Platform.TAOBAO_CREATIVE_APP) {
               globRequire(`../../${js}`);
             }
           } catch (e) {
@@ -33944,9 +40452,9 @@ var init_ccc_patch = __esm({
               handleZip(zipUrl, options, (err2, unzipPath) => {
                 if (!err2) {
                   data.base = unzipPath + "/res/";
-                  if (import_cc28.sys.platform === import_cc28.sys.Platform.ALIPAY_MINI_GAME && import_cc28.sys.os === import_cc28.sys.OS.ANDROID) {
+                  if (import_cc39.sys.platform === import_cc39.sys.Platform.ALIPAY_MINI_GAME && import_cc39.sys.os === import_cc39.sys.OS.ANDROID) {
                     let resPath = unzipPath + "res/";
-                    if (fs.accessSync({ path: resPath })) {
+                    if (fs.accessSync({ path: resPath }).success) {
                       data.base = resPath;
                     }
                   }
@@ -33973,14 +40481,14 @@ var init_ccc_patch = __esm({
 });
 
 // assets/scripts/framework/common/ResManager.ts
-var ResManager_exports = {};
-__export(ResManager_exports, {
+var ResManager_exports2 = {};
+__export(ResManager_exports2, {
   ResManager: () => ResManager
 });
-var import_cc29, RESOURCES, ResManager;
-var init_ResManager = __esm({
+var import_cc40, RESOURCES, ResManager;
+var init_ResManager2 = __esm({
   "assets/scripts/framework/common/ResManager.ts"() {
-    import_cc29 = require("cc");
+    import_cc40 = require("cc");
     init_ccc_patch();
     init_fairygui();
     init_FGUIExt();
@@ -33988,7 +40496,7 @@ var init_ResManager = __esm({
     ResManager = class {
       static async preload(uuid, progress) {
         return new Promise((resolve, reject) => {
-          import_cc29.assetManager.preloadAny(uuid, (p) => {
+          import_cc40.assetManager.preloadAny(uuid, (p) => {
             progress && progress(p);
           }, (err, res) => {
             resolve(res);
@@ -34006,7 +40514,7 @@ var init_ResManager = __esm({
         };
         try {
           let bundle = await new Promise((resolve, reject) => {
-            import_cc29.assetManager.loadBundle(abName, config, (err, bundle2) => {
+            import_cc40.assetManager.loadBundle(abName, config, (err, bundle2) => {
               if (err) {
                 reject(err);
               } else {
@@ -34020,15 +40528,15 @@ var init_ResManager = __esm({
           }
           return true;
         } catch (err) {
-          console.error("\u4E0B\u8F7D\u5931\u8D25", abName);
+          console.error("\u4E0B\u8F7D\u5931\u8D25", abName, err);
           return false;
         }
       }
       static getBundle(abName, check = true) {
         if (!abName || abName == RESOURCES) {
-          return import_cc29.resources;
+          return import_cc40.resources;
         }
-        let ab = import_cc29.assetManager.getBundle(abName);
+        let ab = import_cc40.assetManager.getBundle(abName);
         if (!ab && check) {
           console.error(`can not find asset bundle named ${abName}`);
         }
@@ -34093,7 +40601,7 @@ var init_ResManager = __esm({
         });
       }
       static destory(asset) {
-        asset.destroy();
+        import_cc40.assetManager.releaseAsset(asset);
       }
       static async loadFUIBundle(bundle, pkg, progress, delay) {
         if (!this.isValidBundleAndPackage(bundle, pkg)) {
@@ -34109,7 +40617,7 @@ var init_ResManager = __esm({
         UIPackage.removePackage(pkg);
         let b = this.getBundle(bundle);
         b.releaseAll();
-        import_cc29.assetManager.removeBundle(b);
+        import_cc40.assetManager.removeBundle(b);
       }
       static isValidBundleAndPackage(bundle, pkg) {
         if (!pkg || UIPackage.getByName(pkg)) {
@@ -34138,7 +40646,7 @@ __export(LoaderHelper_exports, {
 var _LoaderHelper, LoaderHelper;
 var init_LoaderHelper = __esm({
   "assets/scripts/framework/common/LoaderHelper.ts"() {
-    init_ResManager();
+    init_ResManager2();
     _LoaderHelper = class _LoaderHelper {
       constructor(abName, pkgName, callback, thisObj) {
         this._loaded = false;
@@ -34367,7 +40875,7 @@ init_Logger();
 init_Pool();
 init_PoolManager();
 init_Pools();
-init_ResManager();
+init_ResManager2();
 init_SoundManager();
 init_StorageManager();
 init_TaskManager();
@@ -34388,8 +40896,11 @@ init_ModelMapper();
 init_SystemController();
 init_ccc_patch();
 init_ccc_pref_renderer();
-init_Platform();
+init_AlipayAdapter();
+init_PlatformHelper();
 init_PlatformSDK();
+init_PlatformUIHelper();
+init_ShareMonitor();
 init_CanvasPool();
 init_CaptureHelper();
 init_DataAccess();
@@ -34405,11 +40916,13 @@ init_RedDotNode();
 init_RedDotTree();
 init_serialize();
 init_CoroutineUtils();
+init_CustomRandom();
 init_MathUtils();
 init_SpaceUtils();
 init_StringUtils();
 init_TimeUtils();
 init_UtilsHelper();
+init_VectorUtils();
 init_Activity();
 init_CommonToast();
 init_LocationManager();
@@ -34432,3 +40945,50 @@ init_ViewMap();
 init_ViewObject();
 init_Window();
 init_WindowPriorityMap();
+init_AdConfig();
+init_AdManager();
+init_ConfigExtension();
+init_ConfigManager();
+init_DataModel();
+init_GameConst();
+init_GameEvent();
+init_ResConst();
+init_types2();
+init_UILocations();
+init_EffectManager();
+init_GameObjectPool();
+init_ResManager();
+init_RewardHelper();
+init_UIHelper();
+init_ControllerManager2();
+init_GuideController();
+init_GuideDAO();
+init_GuideModel();
+init_Reddot();
+init_ReddotController();
+init_ReddotDAO();
+init_ReddotMode();
+init_ServerController();
+init_SettingsController();
+init_SettingsDAO();
+init_SetttingsModel();
+init_TaskController();
+init_TaskDAO();
+init_TaskModel();
+init_ADVideoTask();
+init_BaseTask();
+init_ChallengeLevelTask();
+init_ContinueLevelTask();
+init_LoginTask();
+init_NormalLevelBoxTask();
+init_NormalLevelTask();
+init_UseToolTask();
+init_UserController();
+init_UserDAO();
+init_UserModel();
+init_PhysicPatch();
+init_ImageAdapter();
+init_UITimeline();
+init_CommonToast2();
+init_CommonView();
+init_GMSettings();

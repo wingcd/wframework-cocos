@@ -4,7 +4,7 @@ const fs = require("fs");
 const { nodeExternalsPlugin } = require('esbuild-node-externals');
 
 (async () => {
-    let entryPoints = await glob("./assets/scripts/framework/**/*.ts");
+    let entryPoints = await glob("./assets/scripts/**/**/*.ts");
     let metas = await glob("./**/*.meta");
     let srcs = "";
     for (const entry of entryPoints) {

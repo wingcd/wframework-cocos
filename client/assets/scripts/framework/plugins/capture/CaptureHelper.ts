@@ -282,7 +282,7 @@ export class CaptureHelper {
         director.root.frameMove(0);
 
         let clear = ()=>{
-            node.destroy();
+            node.dispose();
             
             camera.targetTexture = null;
             if(flipY) {

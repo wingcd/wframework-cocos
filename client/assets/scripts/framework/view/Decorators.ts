@@ -12,12 +12,20 @@ export function inject(type: Function, path?: string, data?: any, optional?: boo
     }
 }
 
-export function registSkin(uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean, registNow = false) {
+export function registSkin(uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean, registNow = false, optional = false) {
     return function (target: new () => IContainer) {
         if(registNow) {
-            SkinHelper.bindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper);
+            SkinHelper.bindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
         }else{
-            SkinHelper.preBindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper);
+            SkinHelper.preBindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
         }
+    }
+}
+
+export function registSkinEx(target: any, uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean, registNow = false, optional = false) {
+    if(registNow) {
+        SkinHelper.bindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
+    }else{
+        SkinHelper.preBindingSkin(target, uiPackage, componentName, data, isWindow, autoWarpper, optional);
     }
 }

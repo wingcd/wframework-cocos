@@ -59,7 +59,7 @@ export class RedDotTree {
         }
     }
 
-    addMessage(key: number, count = 1) {
+    addMessage(key: number|string, count = 1) {
         let node = this.getNode(key);
         if(node == null) {
             throw `can not find node which key equal to ${key}`;
@@ -68,7 +68,7 @@ export class RedDotTree {
         node.addMessage(count);
     }
 
-    setMessage(key: number, count = 1) {
+    setMessage(key: number|string, count = 1) {
         let node = this.getNode(key);
         if(!node) {
             throw `can not find node which key equal to ${key}`;
@@ -77,7 +77,7 @@ export class RedDotTree {
         node.setMessage(count);
     }
 
-    clearMessage(key: number) {
+    clearMessage(key: number|string) {
         let node = this.getNode(key);
         if(node == null) {
             throw `can not find node which key equal to ${key}`;
@@ -86,7 +86,7 @@ export class RedDotTree {
         node.clearMessage();
     }
 
-    clearAllMessage(key: number) {
+    clearAllMessage(key: number|string) {
         let node = this.getNode(key);
         if(node == null) {
             throw `can not find node which key equal to ${key}`;
@@ -157,7 +157,10 @@ export class RedDotTree {
         this.removeNode(node);
     }
 
-    getNode(key: number): RedDotNode {
+    getNode(key: number | string): RedDotNode {
+        if(typeof key == "string") {
+            return this.getNodeByPath(key);
+        }
         return this._keyNodes[key];
     }
 

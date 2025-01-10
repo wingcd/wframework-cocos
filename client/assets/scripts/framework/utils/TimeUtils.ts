@@ -1,10 +1,23 @@
 import { systemController } from "../modules/system/SystemController";
 
-export class TimeUtils {
-    
+export class TimeUtils {    
+    /**
+     * 判断是否是同一天
+     * @param time 时间戳 (ms)
+     * @returns 
+     */
+    static isToday(time: number) {
+        return this.isSameDay(time, systemController.getTimeMS());
+    }
 
-    static isSameDay(time: number) {
-        let nextDay = new Date(systemController.getTimeMS());
+    /**
+     * 判断是否是同一天
+     * @param time 时间戳 (ms)
+     * @param now 当前时间戳 (ms)
+     * @returns 
+     */
+    static isSameDay(time: number, now: number) {
+        let nextDay = new Date(now);
         let createTime = new Date(time);
         if (nextDay.getFullYear() != createTime.getFullYear() ||
             nextDay.getMonth() != createTime.getMonth() ||
@@ -176,6 +189,12 @@ export class TimeUtils {
         return num < 10 ? '0' + num : num;
     }
 
+    /**
+     * 
+     * @param time ms
+     * @param fmt 
+     * @returns 
+     */
     static dateFormat(time: number, fmt: string = "yyyy-MM-dd hh:mm:ss") {
         let date = new Date(time);
         var o = {
@@ -190,6 +209,12 @@ export class TimeUtils {
         return this.formatDateOrTime(fmt, o, date.getFullYear());
     }
 
+    /**
+     * 
+     * @param t s
+     * @param format 
+     * @returns 
+     */
     static timeFormat(t: number, format: string = "hh:mm:ss") {
         const day = Math.floor(t / 86400);
         const hour = Math.floor((t % 86400) / 3600);

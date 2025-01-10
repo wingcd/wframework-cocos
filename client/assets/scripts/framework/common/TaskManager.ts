@@ -45,7 +45,14 @@ export class TaskManager {
 
     async runParallel(progress?: Progressor, thisObj?: any) {  
         let weight = 0; 
-        let tasks = this._tasks.map(task => this.runTask(task, weight, progress, thisObj));
+        let tasks: Promise<any>[] = [];
+        for (let task of this._tasks) {
+            tasks.push(this.runTask(task, 0, ()=>{
+                weight += task.weight;
+                let pp = weight / this._totalWeight;
+                progress?.call(thisObj, pp);
+            }, thisObj));
+        }
         let totalTime = Date.now();
         let results = await Promise.all(tasks);
         console.log(`TM:${this.name} total cost ${Date.now() - totalTime}ms`);

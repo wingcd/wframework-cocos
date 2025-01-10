@@ -87,7 +87,7 @@ export class BaseController{
 
     update(dt: number) {
         if(this.dao) {
-            this.dao.save();
+            this.dao.checkSave();
             this.dao.update(dt);
         }
         this.onUpdate(dt);

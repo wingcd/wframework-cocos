@@ -47,7 +47,7 @@ export class LocationManager {
 
     getLocation(loc: number, data?: any, result: LocationResult = result_t) {
         if (!this._locations[loc] || this._locations[loc].length == 0) {
-            console.error(`未注册点位：${loc}`);
+            console.warn(`未注册点位：${loc}`);
             return null;
         }
 

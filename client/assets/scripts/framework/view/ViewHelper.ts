@@ -9,6 +9,13 @@ export enum ELayer {
     Background,
     UI,
     Overlay,
+    Window = 3,
+    Topmost = 4,
+}
+
+export enum EWindowLayer {
+    Normal = 3,
+    Topmost = 4,
 }
 
 export class ViewHelper{
@@ -68,9 +75,9 @@ export class ViewHelper{
             this._scaleY = sheight / screen.height;
         }
 
-        this.addLayer();
-        this.addLayer();
-        this.addLayer();
+        for(let i=0;i<5;i++) {
+            this.addLayer();
+        }
     }
 
     private addLayer() {

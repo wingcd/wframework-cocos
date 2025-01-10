@@ -221,7 +221,7 @@ export class BaseDAO<T extends BaseModel> implements IBaseDAO {
                 Bridge.secertCtrl.setValidKey(this._model, this.storageValidKey);
             }
 
-            this._storage.setData(this._model);
+            this._storage.setData(this._model, fireEvent);
             if (now) {
                 this._storage.saveNow(fireEvent);
             }
@@ -256,6 +256,9 @@ export class BaseDAO<T extends BaseModel> implements IBaseDAO {
     }
 
     save(focus?: boolean, now = false, fireEvent = true) {
+        this.dirty = true;
+        this.serverDirty = true;
+
         if (this.storageKey) {
             this.saveData(focus, now, fireEvent);
         } else if (this._owner) {
@@ -263,6 +266,17 @@ export class BaseDAO<T extends BaseModel> implements IBaseDAO {
         }
 
         this.dirty = false;
+    }
+
+    checkSave(): void {
+        if (this.dirty) {
+            if (this.storageKey) {
+                this.saveData(false, false, true);
+            } else if (this._owner) {
+                this.saveTo(this._owner, this._keys);
+            }
+            this.dirty = false;
+        }
     }
 
     serialize(): any {

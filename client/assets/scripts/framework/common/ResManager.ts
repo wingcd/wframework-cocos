@@ -1,5 +1,4 @@
 import { _decorator, resources, __private, assetManager, Asset, AssetManager } from 'cc';
-import { UtilsHelper } from '../utils/UtilsHelper';
 import { PackageVersionMap } from '../patch/ccc_patch';
 import { UIPackage } from 'fairygui-cc';
 import FGUIExt from '../view/utils/FGUIExt';
@@ -45,7 +44,7 @@ export class ResManager {
 
             return true;
         } catch (err) {
-            console.error("下载失败", abName);
+            console.error("下载失败", abName, err);
             return false;
         }
     }
@@ -132,7 +131,7 @@ export class ResManager {
     }
 
     static destory(asset: Asset) {
-        asset.destroy();
+        assetManager.releaseAsset(asset);
     }
 
     static async loadFUIBundle(bundle: string, pkg: string,progress?: (p: number) => void, delay?: boolean) {

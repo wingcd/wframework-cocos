@@ -113,7 +113,7 @@ class SystemController extends BaseController {
         let h = this.getH();
         if (this._checkH != h) {
             this._checkH = h;
-            EventCenter.I.emit(SystemController.SYSTEM_CROSS_HOUR);
+            EventCenter.I.emit(SystemController.SYSTEM_CROSS_HOUR, h);
         }
     }
 

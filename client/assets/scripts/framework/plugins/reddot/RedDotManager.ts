@@ -19,6 +19,7 @@ export class RedDotItemInfo {
     // 相对位置(0-1)
     pos: Vec2 = v2();
     reddotResUrl: string;
+    autoCreateReddot: boolean = true;
 
     node: RedDotNode;
     reddot: GComponent;
@@ -27,13 +28,14 @@ export class RedDotItemInfo {
 }
 
 export type RedDotConfig = {
-    holder: GComponent;
-    pos: Vec2;
+    holder?: GComponent;
+    pos?: Vec2;
     index?: number;
     controllerName?: string;
     ctrlIdx?: number;
     onRender?: (node: RedDotNode, info: RedDotItemInfo) => void;  
     realDocker?: GComponent; 
+    autoCreateReddot?: boolean;
 }
 
 const compPool: Map<string, GComponent[]> = new Map();
@@ -55,7 +57,7 @@ export class RedDotManager {
         return this._tree;
     }
 
-    initial(defaultResUrl: string, onRedDotShown?: (node: RedDotNode, info: RedDotItemInfo) => void) {
+    initial(defaultResUrl?: string, onRedDotShown?: (node: RedDotNode, info: RedDotItemInfo) => void) {
         this._defaultRedDotResUrl = defaultResUrl;
         this._onReddotShown = onRedDotShown;
         if (!onRedDotShown) {
@@ -63,6 +65,12 @@ export class RedDotManager {
         }
     }
 
+    /**
+     * 创建一个节点
+     * @param path 
+     * @param childNum 
+     * @returns 
+     */
     create(path: string, childNum = 0) {
         let node = this._tree.addNode(path);
         for (let i = 0; i < childNum; i++) {
@@ -72,7 +80,13 @@ export class RedDotManager {
         return node;
     }
 
-    regist(path: string, config: RedDotConfig) {
+    /**
+     * 注册一个节点
+     * @param path 
+     * @param config 
+     * @returns 
+     */
+    regist(path: string, config?: RedDotConfig) {
         let index = config.index ?? -1;
         let info: RedDotItemInfo = null;
 
@@ -90,10 +104,39 @@ export class RedDotManager {
         info.selectedIndex = config.ctrlIdx ?? -1;
         info.onRender = config.onRender;
         info.realDocker = config.realDocker;
+        info.autoCreateReddot = config.autoCreateReddot;
 
         node = this.bind(path, info, index);
         this._regist(path);
         return node;
+    }
+
+    public addMessage(key: string|number, count: number = 1) {
+        if(count === 0) {
+            return;
+        }
+        if(count < 0) {
+            console.warn(`RedDotManager: addMessage count is less than 0, key: ${key}, count: ${count}`);
+            return;
+        }
+
+        this._tree.addMessage(key, count);
+    }
+
+    public subMessage(key: string|number, count: number = 1) {
+        if(count === 0) {
+            return;
+        }
+        if(count < 0) {
+            console.warn(`RedDotManager: subMessage count is less than 0, key: ${key}, count: ${count}`);
+            return;
+        }
+
+        this._tree.addMessage(key, -count);
+    }
+
+    public clearMessage(key: string|number) {
+        this._tree.clearMessage(key);
     }
 
     private bind(path: string, info: RedDotItemInfo, index = -1) {
@@ -121,23 +164,31 @@ export class RedDotManager {
         }
     }
 
-    unRegist(node: RedDotNode, destory = false) {
+    unRegist(node: RedDotNode|string|number, destory = false) {
+        if (typeof node === "string") {
+            node = this._tree.getNodeByPath(node);
+        } else if (typeof node === "number") {
+            node = this._tree.getNode(node);
+        }
+
         if (node) {
             let data = node.userData as RedDotItemInfo;
             if (data && data.reddot) {
                 if (destory) {
                     data.reddot.dispose();
                     data.reddot = null;
-                } else {
+                } else if(data.autoCreateReddot){
                     let url = data.reddotResUrl ?? this._defaultRedDotResUrl;
-                    let pool = compPool.get(url);
-                    if (!pool) {
-                        pool = [];
-                        compPool.set(url, pool);
+                    if(url) {
+                        let pool = compPool.get(url);
+                        if (!pool) {
+                            pool = [];
+                            compPool.set(url, pool);
+                        }
+                        pool.push(data.reddot);
+                        data.reddot.removeFromParent();
+                        data.reddot = null;
                     }
-                    pool.push(data.reddot);
-                    data.reddot.removeFromParent();
-                    data.reddot = null;
                 }
             }
             node.onChanged.remove(this._internalHandleNodeChanged, this);
@@ -233,31 +284,35 @@ export class RedDotManager {
         let info = node.userData as RedDotItemInfo;
         let reddot = info.reddot as GComponent;
         if (node.messageCount > 0) {
-            if (reddot == null) {
+            if (reddot == null && info.autoCreateReddot) {
                 const url = info.reddotResUrl ?? this._defaultRedDotResUrl;
-                let reddotPool = compPool.get(url);
-                while ((reddot == null || reddot.isDisposed) && reddotPool && reddotPool.length > 0) {
-                    reddot = reddotPool.pop();
-                }
-
-                if (!reddot) {
-                    reddot = UIPackage.createObjectFromURL(url) as GComponent;
-                }
-
-                if (reddot) {
-                    info.holder.addChild(reddot);
-                    this.setPosition(reddot, info, true);
-                    info.reddot = reddot;
+                if(url) {
+                    let reddotPool = compPool.get(url);
+                    while ((reddot == null || reddot.isDisposed) && reddotPool && reddotPool.length > 0) {
+                        reddot = reddotPool.pop();
+                    }
+    
+                    if (!reddot) {
+                        reddot = UIPackage.createObjectFromURL(url) as GComponent;
+                    }
+    
+                    if (reddot) {
+                        info.holder.addChild(reddot);
+                        this.setPosition(reddot, info, true);
+                        info.reddot = reddot;
+                    }
                 }
             }
 
             if (reddot) {
                 reddot.visible = true;
                 reddot.text = node.messageCount.toString();
-                this._onReddotShown(node, info);
             }
         } else if (reddot) {
             reddot.visible = false;
         }
+        this._onReddotShown(node, info);
+
+        console.log(`RedDotManager: ${node.path} changed, count: ${node.messageCount}`);
     }
 }

@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "noLib": false,
     //是否移除注释
-    "removeComments": false,
+    "removeComments": true,
     "types": [
       "minigame-api-typings"
     ],

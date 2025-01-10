@@ -73,6 +73,10 @@ GObject.prototype["setClick"] = function (callback: Function, target?: any) {
     this.onClick(callback, target);
 };
 
+GObject.prototype["setClickCD"] = function (cd: number) {
+    setClickCD(this, cd);
+};
+
 GObject.prototype["setTitle"] = function (data: number | string, ...args: string[]) {
     if (typeof data == "number") {
         let text = I18N.inst.getItem(data)?.Text || `[lang${data}]`;
@@ -107,6 +111,7 @@ Object.defineProperty(ScrollPane.prototype, "_touchEffect", {
 declare module "fairygui-cc" {
     export interface GObject {
         setClick(callback: Function, target?: any): void;
+        setClickCD(cd: number);
 
         setTitle(tid: number | string, ...args: string[]);
         setText(tid: number | string, ...args: string[]);

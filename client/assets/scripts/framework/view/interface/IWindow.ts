@@ -2,11 +2,13 @@ import Skin from "../Skin";
 import IContainer from "./IContainer";
 import { GComponent, Window } from "fairygui-cc";
 import { Color } from "cc";
+import { EWindowLayer } from "../ViewHelper";
 
 export default interface IWindow extends IContainer {
     _special: boolean;
     _index: number;
     
+    layer: EWindowLayer;
     skin: Skin;
     window: Window;
     visible: boolean;
@@ -18,7 +20,10 @@ export default interface IWindow extends IContainer {
     enableClose: boolean;
     canAutoDestory: boolean;
     enableUpdate: boolean;
-    exitCode: number;
+    exitData: {
+        code: number,
+        data: any
+    };
     modalLayerColor: Color;
     hideOnOverlay: boolean;
     canShowBanner: boolean;

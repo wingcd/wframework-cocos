@@ -14,6 +14,7 @@ type BindingInfo = {
     data?: any,
     isWindow?: boolean,
     autoWarpper?: boolean,
+    optional?: boolean,
 };
 
 export default class SkinHelper{         
@@ -47,12 +48,12 @@ export default class SkinHelper{
 
     static initial() {
         for (let info of this._bindingInfos) {
-            this.bindingSkin(info.type, info.uiPackage, info.componentName, info.data, info.isWindow, info.autoWarpper);
+            this.bindingSkin(info.type, info.uiPackage, info.componentName, info.data, info.isWindow, info.autoWarpper, info.optional);
         }
         this._bindingInfos.length = 0;
     }
 
-    static preBindingSkin(type: new () => IContainer, uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean) {
+    static preBindingSkin(type: new () => IContainer, uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean, optional?: boolean) {
         let bindingInfo = {
             type,
             uiPackage,
@@ -60,14 +61,17 @@ export default class SkinHelper{
             data,
             isWindow,
             autoWarpper,
+            optional,
         };
         this._bindingInfos.push(bindingInfo);
     }
     
-    static bindingSkin(type: new () => IContainer, uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean) {
+    static bindingSkin(type: new () => IContainer, uiPackage: string, componentName: string, data?: any, isWindow?: boolean, autoWarpper?: boolean, optional?: boolean) {
         let info = this.getUIPackage(uiPackage);
         if (!info) {
-            console.error(`UI包 ${uiPackage} 未绑定`);
+            if(!optional) {
+                console.error(`UI包 ${uiPackage},使用组件：${componentName}`);
+            }
             return;
         }
 
@@ -75,10 +79,12 @@ export default class SkinHelper{
         Skin.bindSkin(type, new Skin(`${preifx}${uiPackage}`, uiPackage, componentName, data, isWindow, autoWarpper, info.abName));
     }
 
-    static preloadUIPackage(uiPackage: string, progress?: (p: number) => void) {
+    static preloadUIPackage(uiPackage: string, progress?: (p: number) => void, optional?: boolean) {
         let info = this.getUIPackage(uiPackage);
         if (!info) {
-            console.error(`UI包 ${uiPackage} 未绑定`);
+            if(!optional) {
+                console.error(`UI包 ${uiPackage}`);
+            }
             return;
         }
 
@@ -509,17 +515,20 @@ export default class SkinHelper{
         SkinHelper.checkButtionAnimation(button);
     }
     
-    static createAndInjectByUrl(type: any, url: string, parent: IContainer, data?: any): any {
+    static createAndInjectByUrl(type: any, url: string, parent: IContainer, data?: any, show: boolean = true): any {
         const comp = UIPackage.createObjectFromURL(url) as GComponent;
-        return SkinHelper.createAndInject(type, comp, parent, data);
+        return SkinHelper.createAndInject(type, comp, parent, data, show);
     }
 
-    static createAndInject(type: any, comp: GComponent, parent?: IContainer, data?: any): any {
+    static createAndInject(type: any, comp: GComponent, parent?: IContainer, data?: any, show: boolean = true): any {
         const view = new type() as IView;
         view.inject(comp);
         view.injectSource = parent;
         parent?.addView(view);
-        view.show(data, false);
+        comp.data = view;
+        if(show) {
+            view.show(data, false);
+        }
         return view;
     }
 }

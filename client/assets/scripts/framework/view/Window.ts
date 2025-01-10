@@ -13,6 +13,7 @@ import { CaptureHelper } from "../plugins/capture/CaptureHelper";
 import { LoaderFillType } from "fairygui-cc";
 import { SoundManager } from "../common/SoundManager";
 import { CoroutineUtils } from "../utils/CoroutineUtils";
+import { EWindowLayer } from "./ViewHelper";
 
 export default class Window extends Container implements IWindow, IInjectInfo{
     static EVENT_WINDOW_BEFORE_HIDE = "onwindowbeforehide";
@@ -23,6 +24,7 @@ export default class Window extends Container implements IWindow, IInjectInfo{
     _special: boolean = false;
     _index: number = 0;
 
+    layer: EWindowLayer = EWindowLayer.Normal;
     canAutoDestory = true;
     window: FWindow;
     modal: boolean = true;
@@ -46,7 +48,14 @@ export default class Window extends Container implements IWindow, IInjectInfo{
     private _updating = false;
     private _secondTicker = 0;
     private _enableUpdate = false;
-    private _exitCode = 0;
+    private _exitData: {
+        code: number,
+        data: any,
+    } = {
+        code: 0,
+        data: null,
+    };
+
     private _isShowing = false;
     private _modalLayerColor = new Color;
     
@@ -79,8 +88,8 @@ export default class Window extends Container implements IWindow, IInjectInfo{
         return this.window.visible;
     }
 
-    get exitCode() {
-        return this._exitCode;
+    get exitData() {
+        return this._exitData;
     }
 
     get isShowing() {
@@ -243,7 +252,8 @@ export default class Window extends Container implements IWindow, IInjectInfo{
     show(data?: any) {
         //@ts-ignore
         this._isShown = false;
-        this._exitCode = 0;
+        this._exitData.code = 0;
+        this._exitData.data = null;
         this.component.visible = true;
 
         this.data = data;
@@ -353,8 +363,10 @@ export default class Window extends Container implements IWindow, IInjectInfo{
 
     }
 
-   protected async internalHide(hideImmediately: boolean, code?: number) {
-        this._exitCode = code || 0;
+   protected async internalHide(hideImmediately: boolean, exitCode?: number, exitData?: any) {
+        this._exitData.code = exitCode;
+        this._exitData.data = exitData;
+
         this._component.touchable = false;        
         this.setUpdateEnable(false);
         
@@ -395,8 +407,8 @@ export default class Window extends Container implements IWindow, IInjectInfo{
         }
     }
 
-    hide(code?: number) {
-        this.internalHide(true, code);
+    hide(code?: number, data?: any) {
+        this.internalHide(true, code, data);
     }
 
     dispose() {

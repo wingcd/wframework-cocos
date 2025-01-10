@@ -1,4 +1,4 @@
-import { ELayer, ViewHelper } from "./ViewHelper";
+import { ELayer, EWindowLayer, ViewHelper } from "./ViewHelper";
 import IActivity from "./interface/IActivity";
 import Skin from "./Skin";
 import { GComponent, GRoot, UIConfig, GObject, PopupDirection, Window as GWindow } from "fairygui-cc";
@@ -60,6 +60,8 @@ export class UIManager {
     private _beginCreateTime: number = -1;
     private _watingModualOpend = false;
 
+    private _lastActivityName: string = null;
+
     onResourcesNotReady: (viewType: Function, wait: boolean) => void = null;
     private _waitWindows: WindowContenxInfo[][] = [];
     private _autoShowing = 0;
@@ -75,6 +77,10 @@ export class UIManager {
 
     get camera(): Camera {
         return this._camera;
+    }
+
+    get lastActivityName(): string {
+        return this._lastActivityName;
     }
 
     private static _instance: UIManager = null;
@@ -253,6 +259,23 @@ export class UIManager {
 
             // 防止有的窗口在onHideWindow中调用了showWindow，导致窗口列表被修改
             this._autoShowing = 0.5;
+        }         
+
+        // find last modal window
+        let modelWnd: IWindow = null;
+        for(let i=0;i<this._windows.length;i++) {
+            let w = this._windows[i];
+            if(w.modal) {
+                modelWnd = w;
+                break;
+            }
+        }       
+        if(modelWnd) {
+            let lyr = ViewHelper.instance.getLayer(wnd.layer as number);
+            let index = lyr.getChildIndex(lyr) - 1;
+            GRoot.inst.modalLayer.node.setSiblingIndex(index);
+        }else{
+            GRoot.inst.modalLayer.removeFromParent();
         }
     }
     /**
@@ -509,6 +532,13 @@ export class UIManager {
         if (oldWindow) {
             oldWindow.overlayBy(wnd);
         }
+
+        let lyr = ViewHelper.instance.getLayer(wnd.layer as number);
+        if(modal) {
+            lyr._container.addChild(GRoot.inst.modalLayer.node);
+        }
+        lyr._container.addChild(wnd.window.node);
+
         return wnd;
     }
 
@@ -575,7 +605,7 @@ export class UIManager {
             next = true;
         }, this);
         await CoroutineUtils.until(() => next);
-        return wnd.exitCode;
+        return wnd.exitData;
     }
 
     public hideCurrentWindow(dispose: boolean = false, code?: number, ignoreTopMost?: boolean): IWindow {
@@ -654,6 +684,8 @@ export class UIManager {
                     // 将当前视图移动至上层
                     let nextgo = nextView.viewObject.container;
                     nextgo.parent.setChildIndex(nextgo, nextgo.parent.numChildren);
+
+                    this._lastActivityName = curView.skin.componentName;
                 }
 
                 nextView.enter(data);
@@ -706,6 +738,8 @@ export class UIManager {
             if (withResume) {
                 resume(data);
             }
+
+            this._lastActivityName = curView ? curView.skin.componentName : null;
 
             this.emit(UIManager.EVENT_ACTIVITY_CHANGED, layer, preView, curView);
 

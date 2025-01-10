@@ -69,6 +69,14 @@ export class StringUtils {
         return 0;
     } 
 
+    static padding(num: number, len: number, char: string = "0") {
+        let str = num.toString();
+        while(str.length < len) {
+            str = char + str;
+        }
+        return str;
+    }
+
     static format(source: string, ...params: (string|number|boolean)[]) {
         if(!source) {
             return source;

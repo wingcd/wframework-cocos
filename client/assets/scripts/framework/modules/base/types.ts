@@ -40,6 +40,7 @@ export interface IBaseDAO {
     model: any;
     load(): void;
     initial(): void;
+    checkSave(): void;
     save(focus?: boolean, now?:boolean, fireEvent?: boolean): void;
     easySave(): void;
     update(dt: number): void;

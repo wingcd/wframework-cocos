@@ -21,7 +21,11 @@ export class SoundManager {
     soundVolume: number = 1;
     music: AudioSource;
     sound: AudioSource;
+    loopSound: AudioSource;
     isPlayAudio: boolean;
+
+    private _currentLoopSound: string | number;
+    private _loopSoundCount: number = 0;
 
     private constructor() {
         this._persistRootNode = new Node('SoundManager');
@@ -36,9 +40,15 @@ export class SoundManager {
     }
 
     private async playAudio(name: string|number, loop: boolean, source: AudioSource) {
+        if(!source) return;
+
         let clip: any = await this.audioFinder(name);
         if(!clip) {
             console.error(`音频文件${name}不存在`);
+            return;
+        }
+
+        if(loop && source.clip === clip && source.playing) {
             return;
         }
 
@@ -75,6 +85,35 @@ export class SoundManager {
         await this.playAudio(name, false, this.sound);
     }
 
+    async playLoopSound(name: string|number) {
+        if (!this.soundVolume) {
+            return;
+        }
+
+        if(this._currentLoopSound == name) {
+            this._loopSoundCount++;
+            return;
+        }
+        this._currentLoopSound = name;
+        this._loopSoundCount = 1;
+
+        this.loopSound = this.loopSound || this._persistRootNode.addComponent(AudioSource);
+        await this.playAudio(name, true, this.loopSound);
+    }
+
+    stopLoopSound(force: boolean = false) {
+        if(this.loopSound) {
+            if(!force && this._loopSoundCount > 1) {
+                this._loopSoundCount--;
+                return;
+            }
+            this._currentLoopSound = null;
+            this._loopSoundCount = 0;
+            
+            this.loopSound.stop();
+        }
+    }
+
     /**
      * 播放音效
      * @param clip 
@@ -90,15 +129,17 @@ export class SoundManager {
         this.sound.playOneShot(clip);
     }
 
-    private setVolume(flag: number, source: AudioSource) {
-        source.volume = flag;
-        if(flag > 0) {
+    private setVolume(volume: number, source: AudioSource) {
+        if(!source) return;
+
+        source.volume = volume;
+        if(volume > 0) {
             if(source && !source.playing) {
                 source.play();
             }
         }else{
             if(source && source.playing) {
-                source.stop();
+                source.pause();
             }
         }
     }
@@ -106,10 +147,25 @@ export class SoundManager {
     setMusicVolume(volume: number) {
         this.musicVolume = volume;
         this.music && this.setVolume(volume, this.music);
+
+        console.log('setMusicVolume', volume);
     }
 
     setSoundVolume(volume: number) {
         this.soundVolume = volume;
+    }
+    
+    //看广告时先将音乐暂停
+    pauseAll() {
+        this.setVolume(0, this.music);
+    }
+
+    resumeAll() {
+        if(this.musicVolume == 0) {
+            return;
+        }
+
+        this.setVolume(this.musicVolume, this.music);
     }
 }
 
